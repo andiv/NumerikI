@@ -42,13 +42,15 @@
 
 \@ifundefined{date}{}{\date{}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
-\usepackage{tikz}
-%\usepackage{tikz-3dplot,cancel,polynom,algorithm2e}
-\usetikzlibrary{matrix,arrows,calc,decorations,snakes,intersections,shapes,arrows}
+\usepackage{tikz,pgfplots}
+%\usepackage{tikz-3dplot,cancel,polynom,tocbasic}
+\usetikzlibrary{matrix,arrows,calc,decorations.markings,snakes,intersections}
 \usetikzlibrary{external}
 \tikzexternalize
-\usepackage{latexsym,stmaryrd,stackrel,icomma,braket,bbm,subfig,framed}
+\usepackage{latexsym,stmaryrd,stackrel,icomma,braket,bbm,subfig,framed,booktabs,esvect,scrhack,calc}
+\usepackage [OMLmathrm,OMLmathbf,sfdefault=fav]{isomath}
 \usepackage[explicit]{titlesec}
+\usepackage[activate]{pdfcprot}
 
 \pgfkeys{/pgf/number format/dec sep={\text{,}}}
 
@@ -79,11 +81,9 @@
 %Operatornorm
 \newcommand{\opnor}[1]{\abs{\hspace*{-1.1pt}\norm{#1}\hspace*{-1.1pt}}}
 
-% nicht-totales Differential
-\newcommand{\dBar}{\mathchar'26\mkern-12mu \textnormal{d}}
-
 % Rotieren
 \newcommand{\Rotate}[1]{
+\tikzset{external/export next=false}
 \begin{tikzpicture}
 \node[rotate=90] {\ensuremath{#1}};
 \end{tikzpicture}
@@ -110,16 +110,6 @@
 % Für Z/2Z, um nicht soviel schreiben zu müssen
 \newcommand{\modloT}[2]{\moduloT{ \mathbb{#1}}{#2\mathbb{#1}}}
 
-%Laplace-Beltrami-Operator
-\newcommand{\LBO}{
-\begin{minipage}{6mm}
- \begin{tikzpicture}
-   \node at (0,0){$\Delta$};
-   \draw[line width=0.75] (0.25,-0.13) -- (0.1,0.15);
- \end{tikzpicture}
-\end{minipage}
-}
-
 %Die Modulo-Kommandos in klein, für die Darstellungen unter Quantoren.
 \newcommand{\moduloScriptT}[2]{
 \mbox{\raisebox{0.4ex}{\scriptsize\ensuremath{\displaystyle #1}}
@@ -134,19 +124,6 @@
 }}
 
 \newcommand{\modloScriptT}[2]{\moduloScriptT{ \mathbb{#1}}{#2\mathbb{#1}}}
-
-% stehendes Winkelzeichen
-\newcommand{\winkel}{
-\begin{tikzpicture}[scale=0.25]
-\draw ({-2+3^(1/2)},0) -- (0,1) -- ({2-3^(1/2)},0);
-\draw ($(0,1) + ({cos(235)*0.7},{sin(315)*0.7})$) arc (235:315:0.7);
-\end{tikzpicture}}
-
-% Wurzel mit Häkchen
-\newcommand{\hsqrt}[2][{}]{\setbox0=\hbox{$\sqrt[#1]{\phantom{|}\!\! #2\hspace*{1pt}}$}\dimen0=\ht0
-  \advance\dimen0-0.2\ht0
-  \setbox2=\hbox{\vrule height\ht0 depth -\dimen0}
-  {\box0\lower0.4pt\box2}}
 
 % Damit nicht immer "Kapitel 1" etc. über der Kapitelüberschrift steht
 \titleformat{\chapter}
@@ -165,7 +142,8 @@
 \addtokomafont{descriptionlabel}{\rmfamily}
 \addtokomafont{disposition}{\rmfamily}
 
-\allowdisplaybreaks
+% Zeilenumbrüche in Gleichungen
+ \allowdisplaybreaks
 
 % Kopf- und Fußzeile
 % Höhe der Kopfzeile
@@ -578,8 +556,7 @@ Zur Produktion benötigen wir:
 
 
 \noindent \begin{center}
-\begin{tabular}{|c||c|c|}
-\hline 
+\begin{tabular}{c||c|c}
  & Pils & Weißbier\tabularnewline
 \hline 
 \hline 
@@ -588,7 +565,6 @@ Malz & 2 Einheiten & 4 Einheiten\tabularnewline
 Hopfen & 5 Einheiten & 2 Einheiten\tabularnewline
 \hline 
 Hefe & 5 Einheiten & 4 Einheiten\tabularnewline
-\hline 
 \end{tabular}
 \par\end{center}
 
@@ -687,19 +663,17 @@ a_{nn}x_{n} & =b_{n}
 
 
 \noindent \begin{center}
-\begin{tabular}{|c|c|c|}
-\hline 
+\begin{tabular}{c|c|c}
 Auflösung & Multiplikation/Division & Addition/Subtraktion\tabularnewline
 \hline 
 \hline 
-$x_{n}=\frac{b_{n}}{a_{n}}$ & 1 & 0\tabularnewline
+$x_{n}=\frac{b_{n}}{a_{n}}\vphantom{\vphantom{\Big|}}$ & 1 & 0\tabularnewline
 \hline 
-$x_{n-1}=\frac{\left(b_{n-1}-a_{n-1,n}x_{n}\right)}{a_{n-1,n-1}}$ & 2 & 1\tabularnewline
+$x_{n-1}=\frac{\left(b_{n-1}-a_{n-1,n}x_{n}\right)}{a_{n-1,n-1}}\vphantom{\vphantom{\Big|}}$ & 2 & 1\tabularnewline
 \hline 
-$\vdots$ & $\vdots$ & $\vdots$\tabularnewline
+$\vdots\vphantom{\vphantom{\Big|}}$ & $\vdots$ & $\vdots$\tabularnewline
 \hline 
-$x_{n}=\frac{\left(b_{1}-a_{12}x_{2}-\ldots-a_{1n}x_{n}\right)}{a_{11}}$ & $n$ & $n-1$\tabularnewline
-\hline 
+$x_{n}=\frac{\left(b_{1}-a_{12}x_{2}-\ldots-a_{1n}x_{n}\right)}{a_{11}}\vphantom{\vphantom{\Big|}}$ & $n$ & $n-1$\tabularnewline
 \end{tabular}
 \par\end{center}
 
@@ -5205,14 +5179,36 @@ Quadraturformel. Dann sind äquivalent:
 \item Es gilt $J=I\circ P$ mit
 \begin{align*}
 I\left(f\right) & =\int_{a}^{b}f\left(x\right)\dd x\\
-P:C^{0}\left(\left[a,b\right]\right) & \to P_{n}
+P:C^{0}\left(\left[a,b\right]\right) & \to P_{n}\\
+f & \mapsto P\left(f\right)
 \end{align*}
 und $P\left(f\right)$ ist das Interpolationspolynom zu $x_{1},\ldots,x_{n}$.
 \end{enumerate}
 
 \subsubsection*{Beweis}
 
-\textcolor{green}{TODO: Rest (Beweis) einfügen}
+„i) $\Rightarrow$ ii)“: Da $\omega_{i}\in\mathbb{P}_{n}$ ist, ist
+die Quadraturformel exakt und es folgt:
+\begin{align*}
+\alpha_{i} & =\sum_{j=0}^{n}\alpha_{j}\underbrace{\omega_{j}\left(x_{i}\right)}_{=\delta_{ij}}=J\left(\omega_{i}\right)=I\left(\omega_{i}\right)=\int_{a}^{b}\omega_{i}\left(x\right)\dd x
+\end{align*}
+„ii) $\Rightarrow$ iii)“:
+\begin{align*}
+\left(I\circ P\right)\left(f\right) & =\int_{a}^{b}\sum_{i=0}^{n}f\left(x_{i}\right)\omega_{i}\left(x\right)\dd x=\\
+ & =\sum_{i=0}^{n}f\left(x_{i}\right)f\left(x_{i}\right)\underbrace{\int_{a}^{b}\omega_{i}\left(x\right)\dd x}_{=\alpha_{i}}=\sum_{i=0}^{n}\alpha_{i}f\left(x_{i}\right)=J\left(f\right)
+\end{align*}
+„iii) $\Rightarrow$ i)“: Sei $p\in\mathbb{P}_{n}$, so gilt $P\left(p\right)=p$.
+Es folgt:
+\begin{align*}
+J\left(p\right) & =\left(I\circ P\right)\left(p\right)=I\left(P\left(p\right)\right)=I\left(p\right)
+\end{align*}
+\qqed
+
+
+\subsubsection*{Bemerkung}
+
+Es gibt bei \emph{festen} Stützstellen nur eine Quadraturformel der
+Eigenschaft i).
 
 
 \section{Abgeschlossene Newton-Cotes Formeln}
@@ -5280,8 +5276,64 @@ exakt.
 \end{enumerate}
 
 \subsubsection*{Beweis}
+\begin{enumerate}[label=\roman*)]
+\item Es gilt:
+\begin{align*}
+b-a & =\int_{a}^{b}1\dd x=Q_{n}\left(1\right)=\sum_{i=0}^{n}\alpha_{i}
+\end{align*}
+\qqed[\roman{enumi})]
+\item Es sei $x_{i}=a+ih$ und $h=\frac{b-a}{n}$.
 
-\textcolor{green}{TODO: Rest (Beweis) einfügen}
+\begin{description}
+\item [{Behauptung:}] $\omega_{i}\left(x\right)=\omega_{n-1}\left(a+b-x\right)$
+\item [{Beweis:}] Es gilt:
+\begin{align*}
+a+b-x_{j} & =a+b-a-jh=a+n\cdot\underbrace{\frac{\left(b-a\right)}{n}}_{=h}-jh=\\
+ & =a+\left(n-j\right)\cdot h=x_{n-j}
+\end{align*}
+\begin{align*}
+\omega_{n-i}\left(a+b-x_{j}\right) & =\omega_{n-i}\left(x_{n-j}\right)=\delta_{n-i,n-j}=\delta_{ij}
+\end{align*}
+Außerdem gilt $\omega_{n-i}\left(a+b-x\right)\in\mathbb{P}_{n}\left(x\right)$.
+Die Eindeutigkeit des Interpolationspolynoms liefert:
+\begin{align*}
+\omega_{n-i}\left(a+b-x\right) & =\omega_{i}\left(x\right)
+\end{align*}
+\qqed[Behauptung]
+\end{description}
+
+Es folgt:
+\begin{align*}
+\alpha_{i} & =\int_{a}^{b}\omega_{i}\left(x\right)\dd x=\int_{a}^{b}\omega_{n-i}(\underbrace{a+b-x}_{=:z})\dd x=\\
+ & =-\int_{b}^{a}\omega_{n-i}\left(z\right)\dd z=\int_{a}^{b}\omega_{n-i}\left(z\right)\dd z=\alpha_{n-i}
+\end{align*}
+\qqed[\roman{enumi})]
+
+\item Sei $n$ gerade und $p\in\mathbb{P}_{n+1}$.
+\begin{align*}
+x_{\frac{n}{2}} & =a+\frac{n}{2}\cdot h=a+\frac{n}{2}\cdot\frac{b-a}{n}=a+\frac{b-a}{2}=\frac{a+b}{2}
+\end{align*}
+Zerlege $p$ folgendermaßen mit einem Restpolynom $q\in\mathbb{P}_{n}$.
+\begin{align*}
+p\left(x\right) & =a_{n+1}\left(x-x_{\frac{n}{2}}\right)^{n+1}+q\left(x\right)
+\end{align*}
+Dann gilt:
+\begin{align*}
+\int_{a}^{b}p\left(x\right)\dd x & =\int_{a}^{b}a_{n+1}\left(x-x_{\frac{n}{2}}\right)^{n+1}\dd x+\int q\left(x\right)\dd x=\\
+ & \stackrel{z:=x-x_{\frac{n}{2}}}{=}a_{n+1}\underbrace{\int_{-\frac{b-a}{2}}^{\frac{b-a}{2}}z^{n+1}\dd z}_{=0}+Q_{n}\left(q\right)=Q_{n}\left(p\right)
+\end{align*}
+Nutze für den letzten Schritt die Symmetrie der $\alpha_{i}$, also
+$\alpha_{i}=\alpha_{n-i}$ und die Tatsache, dass $n+1$ ungerade
+ist.
+\begin{align*}
+Q_{n}\left(\left(x-x_{\frac{n}{2}}\right)^{n+1}\right) & =\sum_{i=0}^{n}\alpha_{i}\left(x_{i}-x_{\frac{n}{2}}\right)^{n+1}=\\
+ & =\sum_{i=0}^{\frac{n}{2}-1}\left(\alpha_{i}\left(\left(i-\frac{n}{2}\right)h\right)^{n+1}+\alpha_{n-i}\left(\left(n-i-\frac{n}{2}\right)h\right)^{n+1}\right)=\\
+ & =\sum_{i=0}^{\frac{n}{2}-1}\alpha_{i}h^{n+1}\left(\left(i-\frac{n}{2}\right)^{n+1}+\left(\frac{n}{2}-i\right)^{n+1}\right)=\\
+ & =\sum_{i=0}^{\frac{n}{2}-1}\alpha_{i}h^{n+1}\left(\left(i-\frac{n}{2}\right)^{n+1}-\left(i-\frac{n}{2}\right)^{n+1}\right)=0
+\end{align*}
+\qqed[\roman{enumi})]
+\end{enumerate}
+\qqed
 
 
 \section{Darstellungsformel für den Integrationsfehler}
@@ -5321,7 +5373,27 @@ Verwende im Folgenden die Kurzschreibweise:
 
 \subsubsection*{Beweis}
 
-\textcolor{green}{TODO: Rest (Beweis) einfügen}
+Wir berechnen die Taylor-Entwicklung um $x=a$.
+\begin{align*}
+f\left(x\right) & =f\left(a\right)+f'\left(a\right)\cdot\left(x-a\right)+\ldots+\frac{f^{\left(n\right)}\left(a\right)}{n!}\left(x-a\right)^{n}+r_{n}\left(x\right)
+\end{align*}
+Für das Restglied gilt:
+\begin{align*}
+r_{n}\left(x\right) & =\frac{1}{n!}\int_{a}^{x}f^{\left(n+1\right)}\left(t\right)\left(x-t\right)^{n}\dd t=\\
+ & =\frac{1}{n!}\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(x-t\right)^{n}\Theta\left(x-t\right)\dd t=\\
+ & =\frac{1}{n!}\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(x-t\right)_{+}^{n}\dd t
+\end{align*}
+Wende nun $R$ auf die Taylor-Entwicklung an. Da $R\left(p\right)=0$
+für alle $p\in\mathbb{P}_{n}$ gilt, folgt:
+\begin{align*}
+R\left(f\right) & =R\left(r_{n}\right)=\\
+ & =\frac{1}{n!}\left(\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(.-t\right)_{+}^{n}\dd t\right)=\\
+ & =\frac{1}{n!}\left(\sum_{i=0}^{n}\alpha_{i}\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(x_{i}-t\right)_{+}^{n}\dd t-\int_{a}^{b}\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(x-t\right)_{+}^{n}\dd t\dd x\right)=\\
+ & \stackrel{\text{Fubini}}{=}\frac{1}{n!}\left(\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(\sum_{i=0}^{n}\alpha_{i}\left(x_{i}-t\right)_{+}^{n}-\int_{a}^{b}\left(x-t\right)_{+}^{n}\dd x\right)\dd t\right)=\\
+ & =\frac{1}{n!}\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)R\left(\left(.-t\right)_{+}^{n}\right)\dd t=\\
+ & =\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)K\left(t\right)\dd t
+\end{align*}
+\qqed
 
 
 \section{Fehlerdarstellung bei den Newton-Cotes Formeln}
@@ -5662,22 +5734,14 @@ falls $f$ nicht so oft differenzierbar ist, gehe wie folgt vor: Wähle
 $m_{\text{max}}$, das heißt wir bestimmen iterativ $T_{0,0},T_{1,1},\ldots,T_{m_{\text{max}},m_{\text{max}}},\ldots,T_{i,m_{\text{max}}}$.
 
 \noindent \begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline 
+\begin{tabular}{cccc}
 $T_{0,0}$ &  &  & \tabularnewline
-\hline 
 $T_{1,0}$ & $T_{1,1}$ &  & \tabularnewline
-\hline 
 $\vdots$ &  & $\ddots$ & \tabularnewline
-\hline 
 $T_{m_{\text{max}},0}$ & $\ldots$ & $\ldots$ & $T_{m_{\text{max}},m_{\text{max}}}$\tabularnewline
-\hline 
 $T_{m_{\text{max}}+1,0}$ & $\ldots$ & $\ldots$ & $T_{m_{\text{max}}+1,m_{\text{max}}}$\tabularnewline
-\hline 
 $\vdots$ &  &  & $\vdots$\tabularnewline
-\hline 
 $T_{i,0}$ & $\ldots$ & $\ldots$ & $T_{i,m_{\text{max}}}$\tabularnewline
-\hline 
 \end{tabular}
 \par\end{center}
 
@@ -5744,19 +5808,17 @@ ausdrücken.
 Typische Gewichtsfunktionen sind:
 
 \noindent \begin{center}
-\begin{tabular}{|c|c|}
-\hline 
+\begin{tabular}{c|c}
 $\omega\left(x\right)$ & Intervall\tabularnewline
 \hline 
 \hline 
-$1$ & $\left[-1,1\right]$\tabularnewline
+$1$$\vphantom{\Big|}$ & $\left[-1,1\right]$\tabularnewline
 \hline 
-$e^{-x}$ & $[0,\infty)$\tabularnewline
+$\vphantom{\vphantom{\Big|}}$$e^{-x}$ & $[0,\infty)$\tabularnewline
 \hline 
-$\frac{1}{\sqrt{1-x^{2}}}$ & $\left(-1,1\right)$\tabularnewline
+$\vphantom{\bigg|}$$\frac{1}{\sqrt{1-x^{2}}}$ & $\left(-1,1\right)$\tabularnewline
 \hline 
-$e^{-x^{2}}$ & $\left(-\infty,\infty\right)$\tabularnewline
-\hline 
+$\vphantom{\vphantom{\Big|}}$$e^{-x^{2}}$ & $\left(-\infty,\infty\right)$\tabularnewline
 \end{tabular}
 \par\end{center}
 
@@ -5886,9 +5948,9 @@ Dabei ist $\delta_{i+1}$ wie in der Behauptung.\qqed
 \begin{enumerate}[label=\roman*)]
 \item Da die Polynome $p_{0},\ldots,p_{n}$ orthogonal und ungleich Null
 sind, sind sie auch linear unabhängig und bilden eine Basis von $\mathbb{P}_{n}$.
+\item Für alle $p\in\mathbb{P}_{n}$ gilt $\left\langle p,p_{n+1}\right\rangle _{\omega}$.
+Dies folgt aus i).
 \end{enumerate}
-\textcolor{green}{TODO: Rest einfügen}
-
 %DATE: Mi 9.1.13
 
 
@@ -6162,7 +6224,7 @@ mit der Lösung nichtlinearer Gleichungen).
 Betrachte zunächst ein Beispiel einer Matrix mit vielen Null-Einträgen:
 
 
-\section{Diskretisierung der Poisson-Gleichung}
+\section{Diskretisierung der Poisson-Gleichung\label{sec:Diskretisierung-Poisson-Gleichung}}
 
 Für eine offene Teilmenge $\Omega\subseteq\mathbb{R}^{d}$ und eine
 gegebene Funktion $v:\Omega\to\mathbb{R}$ definiere den Laplace-Operator:
@@ -6207,7 +6269,7 @@ die Menge der Gitterfunktionen $u_{h}:\Omega_{h}\to\mathbb{R}$ beziehungsweise
 $u_{h}:\overline{\Omega}_{h}\to\mathbb{R}$.
 
 
-\subsubsection*{Diskretes Poisson-Problem(DP)}
+\subsubsection*{Diskretes Poisson-Problem (DP)}
 
 Gesucht ist eine Funktion $u_{h}\in\ell^{2}\left(\overline{\Omega}_{h}\right)$
 mit:
@@ -6302,31 +6364,32 @@ Die obige Darstellung von $A_{1}$ zeigt, dass viele Einträge Null
 sind, denn nur etwa $5\times\left(n-1\right)^{2}=19845$ der $\left(n-1\right)^{4}=15\,752\,961$
 Einträge von $A_{1}$ sind von Null verschieden.
 \item Jetzt betrachte $h=\frac{1}{16}$.\\
-\textcolor{green}{TODO: Folie; Nichtnullelemente der Matrix $A_{1}$
-und $A_{2}$}\\
-Cholesky Zerlegung (Symmetrische $LR$-Zerlegung)\\
-\textcolor{green}{TODO: Folie; Nichtnullelemente von $L$ bei der
-Cholesky-Zerlegung $LL^{\TT}$ der Matrix}\\
+\textcolor{green}{TODO: Folie S. 3; Nichtnullelemente der Matrix $A_{1}$}\\
+Cholesky Zerlegung (Symmetrische $LR$-Zerlegung):\\
+\textcolor{green}{TODO: Folie S. 6; Nichtnullelemente von $L$ bei
+der Cholesky-Zerlegung $A=LL^{\TT}$}\\
 Setzen wir $\text{nz}\left(A_{1}\right)$ als die Anzahl der Nichtnullelemente
 von $A_{1}$, so folgt:
 \begin{align*}
 \text{nz}\left(A_{1}\right) & \approx5\cdot h^{-2} & \text{nz}\left(L\right) & \approx h^{-3}
 \end{align*}
-\textcolor{green}{TODO: Folie; Nichtnulleinträge der Matrizen $A_{1}$
-und $L$}\\
-\begin{tabular}{|c||c|c|c|c||c|}
+
+
+
+\noindent \begin{center}
+\begin{tabular}{c||c|c|c|c||c}
+$h$ & $\frac{1}{16}$ & $\frac{1}{32}$ & $\frac{1}{64}$ & $\frac{1}{128}$ & \tabularnewline
 \hline 
-$h$ & $\frac{1}{16}$ &  &  &  & \tabularnewline
 \hline 
+$\text{nz}\left(A_{1}\right)$ & 1065 & 4681 & 19593 & 80137 & $\approx5h^{-2}$\tabularnewline
 \hline 
-$\text{nz}\left(A_{1}\right)$ &  &  &  &  & $\approx5h^{-2}$\tabularnewline
-\hline 
-$\text{nz}\left(L\right)$ &  &  &  &  & $\approx h^{-3}$\tabularnewline
-\hline 
+$\text{nz}\left(L\right)$ & 3389 & 29821 & 250109 & 2048509 & $\approx h^{-3}$\tabularnewline
 \end{tabular}
+\par\end{center}
+
 \end{enumerate}
 
-\section{Allgemeine Iterationsverfahren}
+\section{Allgemeine Iterationsverfahren\label{sec:Allgemeine-Iterationsverfahren}}
 
 Schreibe $Ax=b$ in eine Fixpunktgleichung um.
 \begin{align*}
@@ -6720,8 +6783,6 @@ großer schwach besetzter Gleichungssysteme}; Teubner.\qqed
 
 \section{Kontraktionskriterium für spd-Matrizen}
 
-
-
 \emph{spd} steht für symmetrisch und positiv definit.
 
 \emph{Ziel:} Formuliere eine Bedingung für die Tatsache $\varrho\left(G\right)<1$,
@@ -6746,7 +6807,410 @@ Matrix $B=B^{*}$ heißt positiv bezüglich $\left\langle .,.\right\rangle _{A}$,
 falls $\left\langle Bx,x\right\rangle _{A}>0$ für alle $x\not=0$
 gilt.
 
+%DATE: Mo 21.1.13
 
+
+\section{Lemma}
+
+Sei $G\in\mathbb{R}^{n\times n}$ und $G^{*}$ sei die bezüglich eines
+Skalarprodukts $\left\langle .,.\right\rangle $ adjungierte Matrix
+zu $G$. Ist dann $F:=\mathbbm{1}-G^{*}G$ eine bezüglich $\left\langle .,.\right\rangle $
+positive Matrix, so folgt $\varrho\left(G\right)<1$.
+
+
+\subsubsection*{Beweis}
+
+Da $F$ positiv ist, gilt für alle $x\in\mathbb{R}^{n}\setminus\left\{ 0\right\} $:
+\begin{align*}
+\left\langle Fx,x\right\rangle  & =\left\langle x,x\right\rangle -\left\langle G^{*}Gx,x\right\rangle =\left\langle x,x\right\rangle -\left\langle Gx,Gx\right\rangle >0
+\end{align*}
+Somit folgt $\norm x>\norm{Gx}$ mit der vom Skalarprodukt induzierten
+Norm $\norm .:=\sqrt{\left\langle .,.\right\rangle }$. Da
+\begin{align*}
+S^{n-1} & =\left\{ x\in\mathbb{R}^{n}\big|\norm x=1\right\} 
+\end{align*}
+kompakt ist, folgt:
+\begin{align*}
+\varrho\left(G\right) & \le\opnorm G=\sup_{\norm x=1}\norm{Gx}<1
+\end{align*}
+\qqed
+
+
+\section{Satz\label{sec:Satz-Gau=0000DF-Seidel-spd}}
+
+Das Gauß-Seidel-Verfahren konvergiert für jede symmetrische, positiv
+definite Matrix $A$.
+
+
+\subsubsection*{Beweis}
+
+Für
+\begin{align*}
+G & :=\mathbbm{1}-\left(D+L\right)^{-1}A
+\end{align*}
+ist zu zeigen, dass
+\begin{align*}
+F & =\mathbbm{1}-G^{*}G
+\end{align*}
+positiv definit bezüglich des Skalarprodukts $\left\langle x,y\right\rangle _{A}:=\left\langle x,Ay\right\rangle =x\cdot Ay$.
+\begin{align*}
+\left\langle Gx,Ay\right\rangle =\left\langle Gx,y\right\rangle _{A} & =\left\langle x,G^{*}y\right\rangle _{A}=\left\langle x,AG^{*}y\right\rangle 
+\end{align*}
+ Wegen $R^{*}=L$ folgt:
+\begin{align*}
+G^{*} & =\mathbbm{1}-\underbrace{A^{-1}A^{*}}_{=\mathbbm{1}}\left(D^{*}+L^{*}\right)^{-1}A=\mathbbm{1}-\left(D+R\right)^{-1}A
+\end{align*}
+Somit erhält man:
+\begin{align*}
+F & =\mathbbm{1}-G^{*}G=\mathbbm{1}-\left(\mathbbm{1}-\left(D+R\right)^{-1}A\right)\left(\mathbbm{1}-\left(D+L\right)^{-1}A\right)=\\
+ & =\mathbbm{1}-\mathbbm{1}+\left(D+L\right)^{-1}A+\left(D+R\right)^{-1}A-\left(D+R\right)^{-1}\underbrace{A}_{=D+L+R}\left(D+L\right)^{-1}A=\\
+ & =\left(\left(D+L\right)^{-1}+\left(D+R\right)^{-1}-\left(D+R\right)^{-1}\left(D+L+R\right)\left(D+L\right)^{-1}\right)A=\\
+ & =\left(\left(D+L\right)^{-1}+\left(D+R\right)^{-1}-\left(\mathbbm{1}+\left(D+R\right)^{-1}L\right)\left(D+L\right)^{-1}\right)A=\\
+ & =\left(\left(D+R\right)^{-1}-\left(D+R\right)^{-1}L\left(D+L\right)^{-1}\right)A=\\
+ & =\left(D+R\right)^{-1}\left(\mathbbm{1}-L\left(D+L\right)^{-1}\right)A=\\
+ & =\left(D+R\right)^{-1}\left(D+L-L\right)\left(D+L\right)^{-1}A=\left(D+R\right)^{-1}D\left(D+L\right)^{-1}A
+\end{align*}
+Für $x\not=0$ gilt:
+\begin{align*}
+\left\langle Fx,x\right\rangle _{A} & =\left\langle \left(D+R\right)^{-1}D\left(D+L\right)^{-1}Ax,Ax\right\rangle =\left\langle D\left(D+L\right)^{-1}Ax,\left(D+L\right)^{-1}Ax\right\rangle 
+\end{align*}
+Da $A$ positiv definit ist, gilt $a_{ii}>0$ für $i\in\left\{ 1,\ldots,n\right\} $
+und somit ist
+\begin{align*}
+D^{\frac{1}{2}} & =\left(\begin{array}{ccc}
+\sqrt{a_{11}}\\
+ & \ddots\\
+ &  & \sqrt{a_{nn}}
+\end{array}\right)
+\end{align*}
+reell und selbstadjungiert. Es folgt:
+\begin{align*}
+\left\langle Fx,x\right\rangle _{A} & =\left\langle D^{\frac{1}{2}}\left(D+L\right)^{-1}Ax,D^{\frac{1}{2}}\left(D+L\right)^{-1}Ax\right\rangle \stackrel{x\not=0}{>}0
+\end{align*}
+Daher ist $F$ positiv und somit $\varrho\left(G\right)<1$. Also
+konvergiert das Gauß-Seidel-Verfahren.\qqed
+
+
+\section{Beispiel \textmd{(Poisson-Gleichung)}}
+
+Betrachte das Gleichungssystem aus \ref{sec:Diskretisierung-Poisson-Gleichung}:
+Die Matrix $A_{1}\in\mathbb{R}^{m\times m}$ mit $m=\left(n-1\right)^{2}$
+hat maximal fünf Elemente pro Zeile.\\
+Der Aufwand pro Iteration beim Gesamtschritt- oder Einzelschritt-Verfahren
+ist ca. $10n^{2}$ flops. Der benötigte Speicherplatz ist ebenfalls
+von der Ordnung $n^{2}$.
+
+\emph{Konvergenz}: Die schwache Zeilensummenbedingung ist erfüllt.
+Außerdem ist $A_{1}$ nicht zerfallend. Dies liefert die Konvergenz
+des Verfahrens (siehe Satz \ref{sec:Konvergenzsatz}).\\
+Da $A_{1}$ positiv definit und symmetrisch ist, konvergiert das Verfahren
+nach Satz \ref{sec:Satz-Gau=0000DF-Seidel-spd}.
+
+Die Konvergenzgeschwindigkeit des Gesamtschritt-Verfahrens mit Iterationsmatrix
+$G_{G}$ und des Einzelschritt-Verfahrens mit $G_{E}$ sind wie folgt:
+\begin{itemize}
+\item Einzelschritt-Verfahren: Wegen
+\begin{align*}
+\varrho\left(G_{G}\right) & =\cos\left(\frac{\pi}{n}\right)=1-\frac{1}{2}\left(\frac{\pi}{n}\right)^{2}+\mathcal{O}_{\infty}\left(\frac{1}{n^{4}}\right)
+\end{align*}
+folgt:
+\begin{align*}
+\varrho\left(G_{E}\right) & =\left(\varrho\left(G_{G}\right)\right)^{2}=\left(\cos\left(\frac{\pi}{n}\right)\right)^{2}=1-\left(\frac{\pi}{n}\right)^{2}+\mathcal{O}_{\infty}\left(\frac{1}{n^{4}}\right)
+\end{align*}
+Dies wird von \noun{Hackbusch} genauer gezeigt.\\
+Wir hatten uns überlegt, dass $\varrho\left(G\right)$ angibt, um
+welchen Faktor sich der Fehler verringert. Für $G_{E}$ und $G_{G}$
+gilt aber $\varrho\left(G_{E}\right),\varrho\left(G_{G}\right)\xrightarrow{n\to\infty}1$.
+Also ist die Konvergenzgeschwindigkeit bei kleinem $h=\frac{1}{n}$
+sehr langsam.
+\end{itemize}
+
+\section{SOR-Verfahren}
+
+\emph{Ziel}: Beschleunige das Einzelschritt-Verfahren!
+
+Beim Einzelschritt-Verfahren ist die Iterationsvorschrift:
+\begin{align*}
+x^{\left(k+1\right)} & =x^{\left(k\right)}\underbrace{-D^{-1}\left(Lx^{\left(k+1\right)}+\left(D+R\right)x^{\left(k\right)}-b\right)}_{\text{diese Größe wird zu }x^{\left(k\right)}\text{addiert}}
+\end{align*}
+
+
+Oft ist es günstiger, die Aufaddierung zu verstärken oder abzuschwächen.
+
+
+\subsubsection*{Definition}
+
+Das SOR-Verfahren zur Lösung der Gleichung $Ax=b$ lautet für einen
+Relaxationsparameter $\omega>0$ wie folgt:
+\begin{align*}
+x^{\left(k+1\right)} & =x^{\left(k\right)}-\omega D^{-1}\left(Lx^{\left(k+1\right)}+\left(D+R\right)x^{\left(k\right)}-b\right)
+\end{align*}
+In Komponenten ist dies:
+\begin{align*}
+x_{i}^{\left(k+1\right)} & =x_{i}^{\left(k\right)}-\omega\frac{1}{a_{ii}}\left(\sum_{j=1}^{i-1}a_{ij}x_{j}^{\left(k+1\right)}+\sum_{j=i}^{n}a_{ij}x_{j}^{\left(k\right)}-b_{i}\right)
+\end{align*}
+Die englische Bezeichnung „\foreignlanguage{english}{sucessive overrelaxation}“
+ist für die Abkürzung SOR verantwortlich. Für $\omega=1$ erhält man
+wieder das Einzelschrittverfahren.
+
+
+\section{Lemma}
+
+Für das SOR-Verfahren ist $B$ aus Abschnitt \ref{sec:Allgemeine-Iterationsverfahren}
+als $\left(\frac{1}{\omega}D+L\right)$ zu wählen, das heißt:
+\begin{align*}
+x^{\left(k+1\right)} & =\left(\mathbbm{1}-B^{-1}A\right)x^{\left(k\right)}+B^{-1}b=\\
+ & =\left(\mathbbm{1}-\left(\frac{1}{\omega}D+L\right)^{-1}A\right)x^{\left(k\right)}+\left(\frac{1}{\omega}D+L\right)^{-1}b
+\end{align*}
+
+
+
+\subsubsection*{Beweis}
+
+Aus der Definition des SOR-Verfahrens folgt:
+\begin{align*}
+\left(D+\omega L\right)x^{\left(k+1\right)} & =\left(D+\omega L\right)x^{\left(k\right)}-\omega\left(\mathbbm{1}+\omega LD^{-1}\right)\left(Lx^{\left(k+1\right)}+\left(D+R\right)x^{\left(k\right)}-b\right)=\\
+ & =Dx^{\left(k\right)}-\omega\bigg(L\left(x^{\left(k+1\right)}-x^{\left(k\right)}\right)+\left(D+R\right)x^{\left(k\right)}-b+\\
+ & \qquad+L\underbrace{\omega D^{-1}\left(Lx^{\left(k+1\right)}+\left(D+R\right)x^{\left(k\right)}-b\right)}_{=-\left(x^{\left(k+1\right)}-x^{\left(k\right)}\right)}\bigg)=\\
+ & =Dx^{\left(k\right)}-\omega\left(D+R\right)x^{\left(k\right)}+\omega b
+\end{align*}
+Damit folgt:
+\begin{align*}
+\left(\frac{1}{\omega}D+L\right)x^{\left(k+1\right)} & =\left(\frac{1}{\omega}D+L\right)x^{\left(k\right)}-Ax^{\left(k\right)}+b
+\end{align*}
+Das liefert:
+\begin{align*}
+x^{\left(k+1\right)} & =x^{\left(k\right)}-\left(\frac{1}{\omega}D+L\right)^{-1}Ax^{\left(k\right)}+\left(\frac{1}{\omega}D+L\right)^{-1}b
+\end{align*}
+\qqed
+
+Es soll nun $\omega$ so bestimmt werden, dass die Konvergenzgeschwindigkeit
+zunimmt. (Den besten Wert zu bestimmen ist allerdings schwierig.)
+
+
+\section{Satz}
+
+Die Diagonalelemente von $A\in\mathbb{R}^{n\times n}$ seien von Null
+verschieden. Dann gilt für die Iterationsmatrix des SOR-Verfahrens:
+\begin{align*}
+\varrho\left(\mathbbm{1}-\left(\frac{1}{\omega}D+L\right)^{-1}A\right) & \ge\abs{\omega-1}
+\end{align*}
+
+
+
+\subsubsection*{Beweis}
+
+Es gilt:
+\begin{align*}
+C_{E}\left(\omega\right) & :=\mathbbm{1}-\left(\frac{1}{\omega}D+L\right)^{-1}A=\\
+ & =\left(\frac{1}{\omega}D+L\right)^{-1}\left(\frac{1}{\omega}D+L-L-D-R\right)=\\
+ & =\left(D+\omega L\right)^{-1}\left(\left(\omega-1\right)D-\omega R\right)=\\
+ & =\underbrace{\left(\mathbbm{1}+\omega D^{-1}L^{-1}\right)^{-1}}_{\sr{}{\text{untere Dreiecksmatrix}}{\text{mit }1\text{ auf der Diagonalen}}}\underbrace{\left(\left(\omega-1\right)\mathbbm{1}-\omega D^{-1}R\right)}_{\sr{}{\text{obere Dreiecksmatrix}}{\text{mit }\left(1-\omega\right)\text{ auf der Diagonalen}}}
+\end{align*}
+Es folgt somit:
+\begin{align*}
+\abs{\det\left(C_{E}\left(\omega\right)\right)} & =\abs{1-\omega}^{n}
+\end{align*}
+Wegen $\abs{\det\left(C_{E}\left(\omega\right)\right)}\le\left(\varrho\left(C_{E}\left(\omega\right)\right)\right)^{n}$
+folgt $\abs{1-\omega}\le\varrho\left(C_{E}\left(\omega\right)\right)$.\qqed
+
+Dieser Satz zeigt, dass nur Werte $\omega\in\left(0,2\right)$ konvergente
+Verfahren liefern.
+
+%DATE: Mi 23.1.13
+
+
+\section{Satz}
+
+Sei $A\in\mathbb{R}^{n\times n}$ symmetrisch und positiv definit.
+Dann konvergiert das SOR-Verfahren für alle $\omega\in\left(0,2\right)$.
+
+
+\subsubsection*{Beweis}
+
+\begin{align*}
+C_{E}\left(\omega\right) & =\mathbbm{1}-B^{-1}A=\mathbbm{1}-\left(\frac{1}{\omega}D+L\right)^{-1}A
+\end{align*}
+Zu zeigen ist $\varrho\left(C_{E}\left(\omega\right)\right)<1$: Sei
+$\lambda\in\mathbb{C}$ ein Eigenwert von $C_{E}\left(\omega\right)$
+mit zugehörigem Eigenvektor $x\in\mathbb{C}^{n}$, sodass $\norm x_{2}=1$
+ist. Dann gilt:
+\begin{align*}
+C_{E}\left(\omega\right)x & =\left(\mathbbm{1}-\left(\frac{1}{\omega}D+L\right)^{-1}A\right)x=\lambda x
+\end{align*}
+Das heißt es gilt:
+\begin{align*}
+Ax & =\left(1-\lambda\right)Bx
+\end{align*}
+Dabei ist $\lambda\not=1$, da $A$ positiv definit ist. Mit dem komplex
+konjugierten Vektor
+\begin{align*}
+\overline{x} & =\left(\begin{array}{c}
+\overline{x}_{1}\\
+\vdots\\
+\overline{x}_{n}
+\end{array}\right)
+\end{align*}
+erhalten wir somit:
+\begin{align*}
+\frac{1}{1-\lambda} & =\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}
+\end{align*}
+Da $A$ symmetrisch ist, gilt wegen $B^{\TT}=\frac{1}{\omega}D+L^{\TT}=\frac{1}{\omega}D+R$:
+\begin{align*}
+B+B^{\TT} & =\left(\frac{2}{\omega}-1\right)D+A
+\end{align*}
+Für den Realteil von $\left(1-\lambda\right)^{-1}$ gilt:
+\begin{align*}
+\text{Re}\left(\frac{1}{1-\lambda}\right) & =\text{Re}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}\right)=\frac{1}{2}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}+\overline{\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}}\right)\stackrel{B\text{ reell}}{=}\frac{1}{2}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}+\frac{x^{\TT}B\overline{x}}{x^{\TT}A\overline{x}}\right)=\\
+ & =\frac{1}{2}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}+\frac{\overline{x}^{\TT}B^{\TT}x}{\overline{x}^{\TT}A^{\TT}x}\right)\stackrel{A\text{ symmetrisch}}{=}\frac{1}{2}\cdot\frac{\overline{x}^{\TT}\left(B+B^{\TT}\right)x}{\overline{x}^{\TT}Ax}=\\
+ & =\frac{1}{2}\bigg(\underbrace{\left(\frac{2}{\omega}-1\right)}_{\text{\ensuremath{>0}}}\cdot\underbrace{\frac{\overline{x}^{\TT}Dx}{\overline{x}^{\TT}Ax}}_{\text{\ensuremath{>0} da }A\text{ positiv definit}}+1\bigg)>\frac{1}{2}
+\end{align*}
+Mit $\lambda=u+iv$ für $u,v\in\mathbb{R}$ folgt:
+\begin{align*}
+\frac{1}{2} & <\text{Re}\left(\frac{1}{1-\lambda}\right)=\frac{1-u}{\left(1-u\right)^{2}+v^{2}}\\
+\left(1-u\right)^{2}+v^{2} & <2-2u\\
+1-2u+u^{2}+v^{2} & <2-2u\\
+u^{2}+v^{2} & <1
+\end{align*}
+\qqed
+
+
+\section{Fehlerreduktion bei iterativen Verfahren}
+
+Der Konvergenzsatz \ref{sec:Konvergenzsatz} liefert, dass $\varrho\left(\mathbbm{1}-B^{-1}A\right)$
+entscheidend für die Konvergenz ist. Diese Größe ist auch entscheidend
+für die Konvergenzgeschwindigkeit.
+
+Zur Vereinfachung sei $\left(\mathbbm{1}-B^{-1}A\right)$ diagonalisierbar
+und habe die Eigenwerten $\lambda_{1},\ldots,\lambda_{n}$ mit $\abs{\lambda_{1}}\ge\abs{\lambda_{2}}\ge\ldots\ge\abs{\lambda_{n}}>0$
+zu den Eigenvektoren $v_{1},\ldots,v_{n}$, die eine Basis bilden.
+Betrachte $b,x\in\mathbb{R}^{n}$ mit $Ax=b$. Wähle einen Startwert
+$x^{0}$ und definiere:
+\begin{align*}
+x^{\left(0\right)}-x & =:e^{\left(0\right)}=:\sum_{i=0}^{n}c_{i}v_{i}
+\end{align*}
+Es gilt nun (vergleiche Satz \ref{sec:Konvergenzsatz}):
+\begin{align*}
+e^{\left(k\right)} & =x^{\left(k\right)}-x=\left(\mathbbm{1}-B^{-1}A\right)^{k}e^{\left(0\right)}=\\
+ & =\left(\mathbbm{1}-B^{-1}A\right)^{k}\left(\sum_{i=1}^{n}c_{i}v_{i}\right)=\sum_{i=1}^{n}c_{i}\lambda_{i}^{k}v_{i}=\\
+ & =\lambda_{1}^{k}\bigg(c_{1}v_{1}+\underbrace{\sum_{i=2}^{n}c_{i}\left(\frac{\lambda_{i}}{\lambda_{1}}\right)^{k}v_{i}}_{=:r^{\left(k\right)}}\bigg)=\lambda_{1}^{k}\left(c_{1}v_{1}+r^{\left(k\right)}\right)
+\end{align*}
+Ist nun $c_{1}\not=0$, so existieren $c_{\text{min}},c_{\text{max}}\in\mathbb{R}_{>0}$,
+sodass wegen $\abs{\frac{\lambda_{i}}{\lambda_{1}}}\le1$ gilt:
+\begin{align*}
+0 & <c_{\text{min}}\le\norm{c_{1}v_{1}+r^{\left(k\right)}}\le c_{\text{max}}
+\end{align*}
+Insgesamt folgt:
+\begin{align*}
+\sigma_{k} & :=\left(\frac{\norm{e^{\left(k\right)}}}{\norm{e^{\left(0\right)}}}\right)^{\frac{1}{k}}=\frac{\abs{\lambda_{1}}\cdot\norm{c_{1}v_{1}+r^{\left(k\right)}}^{\frac{1}{k}}}{\norm{e^{\left(0\right)}}^{\frac{1}{k}}}\xrightarrow{k\to\infty}\abs{\lambda_{1}}=\varrho\left(\mathbbm{1}-B^{-1}A\right)
+\end{align*}
+Daher ist $\norm{e^{\left(k\right)}}$ ungefähr gleich $\abs{\lambda_{1}}^{k}\cdot\norm{e^{\left(0\right)}}$
+für große $k$.\\
+Um den Anfangsfehler $\norm{e^{\left(0\right)}}$ um den Faktor $R>1$
+zu erniedrigen, muss (im Grenzfall) gelten:
+\begin{align*}
+\abs{\lambda_{1}}^{k} & <\frac{1}{R}\\
+\Leftrightarrow\qquad k\ln\left(\abs{\lambda_{1}}\right) & <-\ln\left(R\right)\\
+\stackrel{0<\abs{\lambda_{1}}<1}{\Leftrightarrow}\qquad k & >\frac{\ln\left(R\right)}{-\ln\left(\abs{\lambda_{1}}\right)}
+\end{align*}
+Für $R=e$ erhalte die Bedingung:
+\begin{align*}
+k & >\left(-\ln\left(\abs{\lambda_{1}}\right)\right)^{-1}
+\end{align*}
+Wir nennen daher $-\ln\left(\varrho\left(\mathbbm{1}-B^{-1}A\right)\right)$
+die \emph{asymptotische Konvergenzrate}.
+
+
+\section{Fehlerreduktion für das diskrete Poisson-Problem}
+
+Das diskrete Poisson-Problem wurde bereits in \ref{sec:Diskretisierung-Poisson-Gleichung}
+beschrieben. Für $n\in\mathbb{N}_{\ge1}$ setze:
+\begin{align*}
+h & :=\frac{1}{n}
+\end{align*}
+Für das Gesamtschrittverfahren mit
+\begin{align*}
+\varrho\left(\mathbbm{1}-B^{-1}A_{1}\right) & \approx1-\frac{1}{2}\pi^{2}h^{2}
+\end{align*}
+ist die asymptotische Konvergenzrate:
+\begin{align*}
+-\ln\left(\varrho\left(\mathbbm{1}-D^{-1}A_{1}\right)\right) & \approx-\ln\left(1-\frac{\left(\pi h\right)^{2}}{2}\right)\stackrel{h\ll1}{\approx}\frac{1}{2}\left(\pi h\right)^{2}
+\end{align*}
+Um den Startfehler um den Faktor $R$ zu vermindern, sind (asymptotisch)
+\begin{align*}
+K\left(R\right):=\frac{-\ln\left(R\right)}{\ln\left(\varrho\left(\mathbbm{1}-D^{-1}A_{1}\right)\right)}=\frac{-\ln\left(R\right)}{\ln\left(\cos\pi h\right)} & \approx\frac{2}{\pi^{2}h^{2}}\ln R
+\end{align*}
+Iterationsschritte nötig.
+
+Sei $L\left(R\right)$ die tatsächliche Anzahl von Iterationsschritten,
+die zur Reduktion des Startfehlers um einen Faktor $R$ benötigt werden
+und $K\left(R\right)$ die theoretische Schätzung von $L$. Für $R=10^{3}$
+ergibt sich:
+
+\noindent \begin{center}
+\begin{tabular}{c||c|c|c|c}
+$h$ & $\frac{1}{40}$ & $\frac{1}{80}$ & $\frac{1}{160}$ & $\frac{1}{320}$\tabularnewline
+\hline 
+$L\left(10^{3}\right)$ & 2092 & 8345 & 33332 & 133227\tabularnewline
+\hline 
+$K\left(10^{3}\right)$ & 2237 & 8965 & 35833 & 143338\tabularnewline
+\end{tabular}
+\par\end{center}
+
+
+\subsubsection*{Bemerkung}
+\begin{itemize}
+\item $K$ ist eine gute Schätzung für $L$.
+\item Halbieren von $h$ vervierfacht den Aufwand.
+\end{itemize}
+Für das Einzelschrittverfahren ist der Fehler etwa halb so groß:
+\begin{align*}
+\frac{-\ln\left(R\right)}{\ln\left(\varrho\left(\mathbbm{1}-\left(D+L\right)^{-1}A_{1}\right)\right)} & \approx\frac{\ln R}{\pi^{2}h^{2}}
+\end{align*}
+
+
+\noindent \begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+$h$ & $\frac{1}{40}$ & $\frac{1}{80}$ & $\frac{1}{160}$ & $\frac{1}{320}$\tabularnewline
+\hline 
+$L$ & 1056 & 4193 & 16706 & 66694\tabularnewline
+\hline 
+\hline 
+$K$ & 1119 & 4478 & 17916 & 71669\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}
+
+Es gilt $m=\left(n-1\right)^{2}\approx n^{2}$ und mit $h=n^{-1}$
+folgt $m\approx h^{-2}$.
+
+Ein Schritt im Gesamtschritt- (oder Einzelschrittverfahren) kostet
+stets $\text{konst.}\cdot m$ flops. Der Aufwand um den Fehler um
+den Faktor $R$ zu vermindern ist proportional zu $m^{2}$.
+
+
+\section{Optimaler Relaxationsparameter für das diskrete Poissonproblem}
+
+Stelle die Anzahl der nötigen Iteration dar um den Fehler um den Faktor
+$10^{3}$ zu vermindern.
+
+\textcolor{green}{TODO: Folie S. 26; Anzahl der Iterationen in Abhängigkeit
+von $\omega$}
+
+
+\subsubsection*{Bemerkung}
+\begin{itemize}
+\item Das SOR-Verfahren mit optimalen $\omega$ ist deutlich besser als
+das Einzelschrittverfahren, für das $\omega=1$ gilt.
+\item Der optimale Wert von $\omega$ ist stark abhängig vom vorliegenden
+Problem.
+\end{itemize}
+Für das Poisson-Problem ist es möglich, ein optimales $\omega$ zu
+bestimmen.
+
+
+\section{Satz}
 
 
 \part*{Anhang\thispagestyle{empty}}

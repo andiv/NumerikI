@@ -4,13 +4,15 @@
 \begin_header
 \textclass scrreprt
 \begin_preamble
-\usepackage{tikz}
-%\usepackage{tikz-3dplot,cancel,polynom,algorithm2e}
-\usetikzlibrary{matrix,arrows,calc,decorations,snakes,intersections,shapes,arrows}
+\usepackage{tikz,pgfplots}
+%\usepackage{tikz-3dplot,cancel,polynom,tocbasic}
+\usetikzlibrary{matrix,arrows,calc,decorations.markings,snakes,intersections}
 \usetikzlibrary{external}
 \tikzexternalize
-\usepackage{latexsym,stmaryrd,stackrel,icomma,braket,bbm,subfig,framed}
+\usepackage{latexsym,stmaryrd,stackrel,icomma,braket,bbm,subfig,framed,booktabs,esvect,scrhack,calc}
+\usepackage [OMLmathrm,OMLmathbf,sfdefault=fav]{isomath}
 \usepackage[explicit]{titlesec}
+\usepackage[activate]{pdfcprot}
 
 \pgfkeys{/pgf/number format/dec sep={\text{,}}}
 
@@ -41,11 +43,9 @@
 %Operatornorm
 \newcommand{\opnor}[1]{\abs{\hspace*{-1.1pt}\norm{#1}\hspace*{-1.1pt}}}
 
-% nicht-totales Differential
-\newcommand{\dBar}{\mathchar'26\mkern-12mu \textnormal{d}}
-
 % Rotieren
 \newcommand{\Rotate}[1]{
+\tikzset{external/export next=false}
 \begin{tikzpicture}
 \node[rotate=90] {\ensuremath{#1}};
 \end{tikzpicture}
@@ -72,16 +72,6 @@
 % Für Z/2Z, um nicht soviel schreiben zu müssen
 \newcommand{\modloT}[2]{\moduloT{ \mathbb{#1}}{#2\mathbb{#1}}}
 
-%Laplace-Beltrami-Operator
-\newcommand{\LBO}{
-\begin{minipage}{6mm}
- \begin{tikzpicture}
-   \node at (0,0){$\Delta$};
-   \draw[line width=0.75] (0.25,-0.13) -- (0.1,0.15);
- \end{tikzpicture}
-\end{minipage}
-}
-
 %Die Modulo-Kommandos in klein, für die Darstellungen unter Quantoren.
 \newcommand{\moduloScriptT}[2]{
 \mbox{\raisebox{0.4ex}{\scriptsize\ensuremath{\displaystyle #1}}
@@ -96,19 +86,6 @@
 }}
 
 \newcommand{\modloScriptT}[2]{\moduloScriptT{ \mathbb{#1}}{#2\mathbb{#1}}}
-
-% stehendes Winkelzeichen
-\newcommand{\winkel}{
-\begin{tikzpicture}[scale=0.25]
-\draw ({-2+3^(1/2)},0) -- (0,1) -- ({2-3^(1/2)},0);
-\draw ($(0,1) + ({cos(235)*0.7},{sin(315)*0.7})$) arc (235:315:0.7);
-\end{tikzpicture}}
-
-% Wurzel mit Häkchen
-\newcommand{\hsqrt}[2][{}]{\setbox0=\hbox{$\sqrt[#1]{\phantom{|}\!\! #2\hspace*{1pt}}$}\dimen0=\ht0
-  \advance\dimen0-0.2\ht0
-  \setbox2=\hbox{\vrule height\ht0 depth -\dimen0}
-  {\box0\lower0.4pt\box2}}
 
 % Damit nicht immer "Kapitel 1" etc. über der Kapitelüberschrift steht
 \titleformat{\chapter}
@@ -127,7 +104,8 @@
 \addtokomafont{descriptionlabel}{\rmfamily}
 \addtokomafont{disposition}{\rmfamily}
 
-\allowdisplaybreaks
+% Zeilenumbrüche in Gleichungen
+ \allowdisplaybreaks
 
 % Kopf- und Fußzeile
 % Höhe der Kopfzeile
@@ -2797,7 +2775,7 @@ Zur Produktion benötigen wir:
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2806,7 +2784,7 @@ Zur Produktion benötigen wir:
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2815,7 +2793,7 @@ Pils
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2826,7 +2804,7 @@ Weißbier
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2844,7 +2822,7 @@ Malz
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2855,7 +2833,7 @@ Malz
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2873,7 +2851,7 @@ Hopfen
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2884,7 +2862,7 @@ Hopfen
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2893,7 +2871,7 @@ Hefe
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -2902,7 +2880,7 @@ Hefe
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -3309,7 +3287,7 @@ a_{nn}x_{n} & =b_{n}
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -3318,7 +3296,7 @@ Auflösung
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -3327,7 +3305,7 @@ Multiplikation/Division
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -3338,11 +3316,11 @@ Addition/Subtraktion
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $x_{n}=\frac{b_{n}}{a_{n}}$
+\begin_inset Formula $x_{n}=\frac{b_{n}}{a_{n}}\vphantom{\vphantom{\Big|}}$
 \end_inset
 
 
@@ -3359,7 +3337,7 @@ Addition/Subtraktion
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -3370,11 +3348,11 @@ Addition/Subtraktion
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $x_{n-1}=\frac{\left(b_{n-1}-a_{n-1,n}x_{n}\right)}{a_{n-1,n-1}}$
+\begin_inset Formula $x_{n-1}=\frac{\left(b_{n-1}-a_{n-1,n}x_{n}\right)}{a_{n-1,n-1}}\vphantom{\vphantom{\Big|}}$
 \end_inset
 
 
@@ -3391,7 +3369,7 @@ Addition/Subtraktion
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -3402,11 +3380,11 @@ Addition/Subtraktion
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $\vdots$
+\begin_inset Formula $\vdots\vphantom{\vphantom{\Big|}}$
 \end_inset
 
 
@@ -3426,7 +3404,7 @@ Addition/Subtraktion
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -3440,11 +3418,11 @@ Addition/Subtraktion
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $x_{n}=\frac{\left(b_{1}-a_{12}x_{2}-\ldots-a_{1n}x_{n}\right)}{a_{11}}$
+\begin_inset Formula $x_{n}=\frac{\left(b_{1}-a_{12}x_{2}-\ldots-a_{1n}x_{n}\right)}{a_{11}}\vphantom{\vphantom{\Big|}}$
 \end_inset
 
 
@@ -3452,7 +3430,7 @@ Addition/Subtraktion
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -3464,7 +3442,7 @@ Addition/Subtraktion
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -19497,7 +19475,8 @@ Es gilt
 \begin_inset Formula 
 \begin{align*}
 I\left(f\right) & =\int_{a}^{b}f\left(x\right)\dd x\\
-P:C^{0}\left(\left[a,b\right]\right) & \to P_{n}
+P:C^{0}\left(\left[a,b\right]\right) & \to P_{n}\\
+f & \mapsto P\left(f\right)
 \end{align*}
 
 \end_inset
@@ -19518,9 +19497,82 @@ Beweis
 \end_layout
 
 \begin_layout Standard
+„i) 
+\begin_inset Formula $\Rightarrow$
+\end_inset
 
-\color green
-TODO: Rest (Beweis) einfügen
+ ii)“: Da 
+\begin_inset Formula $\omega_{i}\in\mathbb{P}_{n}$
+\end_inset
+
+ ist, ist die Quadraturformel exakt und es folgt:
+\begin_inset Formula 
+\begin{align*}
+\alpha_{i} & =\sum_{j=0}^{n}\alpha_{j}\underbrace{\omega_{j}\left(x_{i}\right)}_{=\delta_{ij}}=J\left(\omega_{i}\right)=I\left(\omega_{i}\right)=\int_{a}^{b}\omega_{i}\left(x\right)\dd x
+\end{align*}
+
+\end_inset
+
+„ii) 
+\begin_inset Formula $\Rightarrow$
+\end_inset
+
+ iii)“:
+\begin_inset Formula 
+\begin{align*}
+\left(I\circ P\right)\left(f\right) & =\int_{a}^{b}\sum_{i=0}^{n}f\left(x_{i}\right)\omega_{i}\left(x\right)\dd x=\\
+ & =\sum_{i=0}^{n}f\left(x_{i}\right)f\left(x_{i}\right)\underbrace{\int_{a}^{b}\omega_{i}\left(x\right)\dd x}_{=\alpha_{i}}=\sum_{i=0}^{n}\alpha_{i}f\left(x_{i}\right)=J\left(f\right)
+\end{align*}
+
+\end_inset
+
+„iii) 
+\begin_inset Formula $\Rightarrow$
+\end_inset
+
+ i)“: Sei 
+\begin_inset Formula $p\in\mathbb{P}_{n}$
+\end_inset
+
+, so gilt 
+\begin_inset Formula $P\left(p\right)=p$
+\end_inset
+
+.
+ Es folgt:
+\begin_inset Formula 
+\begin{align*}
+J\left(p\right) & =\left(I\circ P\right)\left(p\right)=I\left(P\left(p\right)\right)=I\left(p\right)
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Bemerkung
+\end_layout
+
+\begin_layout Standard
+Es gibt bei 
+\emph on
+festen
+\emph default
+ Stützstellen nur eine Quadraturformel der Eigenschaft i).
 \end_layout
 
 \begin_layout Section
@@ -19742,10 +19794,248 @@ Ist
 Beweis
 \end_layout
 
-\begin_layout Standard
+\begin_layout Enumerate
+\begin_inset Argument
+status open
 
-\color green
-TODO: Rest (Beweis) einfügen
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+label=
+\backslash
+roman*)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Es gilt:
+\begin_inset Formula 
+\begin{align*}
+b-a & =\int_{a}^{b}1\dd x=Q_{n}\left(1\right)=\sum_{i=0}^{n}\alpha_{i}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed[
+\backslash
+roman{enumi})]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Es sei 
+\begin_inset Formula $x_{i}=a+ih$
+\end_inset
+
+ und 
+\begin_inset Formula $h=\frac{b-a}{n}$
+\end_inset
+
+.
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+Behauptung: 
+\begin_inset Formula $\omega_{i}\left(x\right)=\omega_{n-1}\left(a+b-x\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Beweis: Es gilt:
+\begin_inset Formula 
+\begin{align*}
+a+b-x_{j} & =a+b-a-jh=a+n\cdot\underbrace{\frac{\left(b-a\right)}{n}}_{=h}-jh=\\
+ & =a+\left(n-j\right)\cdot h=x_{n-j}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\omega_{n-i}\left(a+b-x_{j}\right) & =\omega_{n-i}\left(x_{n-j}\right)=\delta_{n-i,n-j}=\delta_{ij}
+\end{align*}
+
+\end_inset
+
+Außerdem gilt 
+\begin_inset Formula $\omega_{n-i}\left(a+b-x\right)\in\mathbb{P}_{n}\left(x\right)$
+\end_inset
+
+.
+ Die Eindeutigkeit des Interpolationspolynoms liefert:
+\begin_inset Formula 
+\begin{align*}
+\omega_{n-i}\left(a+b-x\right) & =\omega_{i}\left(x\right)
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed[Behauptung]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Es folgt:
+\begin_inset Formula 
+\begin{align*}
+\alpha_{i} & =\int_{a}^{b}\omega_{i}\left(x\right)\dd x=\int_{a}^{b}\omega_{n-i}(\underbrace{a+b-x}_{=:z})\dd x=\\
+ & =-\int_{b}^{a}\omega_{n-i}\left(z\right)\dd z=\int_{a}^{b}\omega_{n-i}\left(z\right)\dd z=\alpha_{n-i}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed[
+\backslash
+roman{enumi})]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Sei 
+\begin_inset Formula $n$
+\end_inset
+
+ gerade und 
+\begin_inset Formula $p\in\mathbb{P}_{n+1}$
+\end_inset
+
+.
+\begin_inset Formula 
+\begin{align*}
+x_{\frac{n}{2}} & =a+\frac{n}{2}\cdot h=a+\frac{n}{2}\cdot\frac{b-a}{n}=a+\frac{b-a}{2}=\frac{a+b}{2}
+\end{align*}
+
+\end_inset
+
+Zerlege 
+\begin_inset Formula $p$
+\end_inset
+
+ folgendermaßen mit einem Restpolynom 
+\begin_inset Formula $q\in\mathbb{P}_{n}$
+\end_inset
+
+.
+\begin_inset Formula 
+\begin{align*}
+p\left(x\right) & =a_{n+1}\left(x-x_{\frac{n}{2}}\right)^{n+1}+q\left(x\right)
+\end{align*}
+
+\end_inset
+
+Dann gilt:
+\begin_inset Formula 
+\begin{align*}
+\int_{a}^{b}p\left(x\right)\dd x & =\int_{a}^{b}a_{n+1}\left(x-x_{\frac{n}{2}}\right)^{n+1}\dd x+\int q\left(x\right)\dd x=\\
+ & \stackrel{z:=x-x_{\frac{n}{2}}}{=}a_{n+1}\underbrace{\int_{-\frac{b-a}{2}}^{\frac{b-a}{2}}z^{n+1}\dd z}_{=0}+Q_{n}\left(q\right)=Q_{n}\left(p\right)
+\end{align*}
+
+\end_inset
+
+Nutze für den letzten Schritt die Symmetrie der 
+\begin_inset Formula $\alpha_{i}$
+\end_inset
+
+, also 
+\begin_inset Formula $\alpha_{i}=\alpha_{n-i}$
+\end_inset
+
+ und die Tatsache, dass 
+\begin_inset Formula $n+1$
+\end_inset
+
+ ungerade ist.
+\begin_inset Formula 
+\begin{align*}
+Q_{n}\left(\left(x-x_{\frac{n}{2}}\right)^{n+1}\right) & =\sum_{i=0}^{n}\alpha_{i}\left(x_{i}-x_{\frac{n}{2}}\right)^{n+1}=\\
+ & =\sum_{i=0}^{\frac{n}{2}-1}\left(\alpha_{i}\left(\left(i-\frac{n}{2}\right)h\right)^{n+1}+\alpha_{n-i}\left(\left(n-i-\frac{n}{2}\right)h\right)^{n+1}\right)=\\
+ & =\sum_{i=0}^{\frac{n}{2}-1}\alpha_{i}h^{n+1}\left(\left(i-\frac{n}{2}\right)^{n+1}+\left(\frac{n}{2}-i\right)^{n+1}\right)=\\
+ & =\sum_{i=0}^{\frac{n}{2}-1}\alpha_{i}h^{n+1}\left(\left(i-\frac{n}{2}\right)^{n+1}-\left(i-\frac{n}{2}\right)^{n+1}\right)=0
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed[
+\backslash
+roman{enumi})]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -19843,9 +20133,68 @@ Beweis
 \end_layout
 
 \begin_layout Standard
+Wir berechnen die Taylor-Entwicklung um 
+\begin_inset Formula $x=a$
+\end_inset
 
-\color green
-TODO: Rest (Beweis) einfügen
+.
+\begin_inset Formula 
+\begin{align*}
+f\left(x\right) & =f\left(a\right)+f'\left(a\right)\cdot\left(x-a\right)+\ldots+\frac{f^{\left(n\right)}\left(a\right)}{n!}\left(x-a\right)^{n}+r_{n}\left(x\right)
+\end{align*}
+
+\end_inset
+
+Für das Restglied gilt:
+\begin_inset Formula 
+\begin{align*}
+r_{n}\left(x\right) & =\frac{1}{n!}\int_{a}^{x}f^{\left(n+1\right)}\left(t\right)\left(x-t\right)^{n}\dd t=\\
+ & =\frac{1}{n!}\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(x-t\right)^{n}\Theta\left(x-t\right)\dd t=\\
+ & =\frac{1}{n!}\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(x-t\right)_{+}^{n}\dd t
+\end{align*}
+
+\end_inset
+
+Wende nun 
+\begin_inset Formula $R$
+\end_inset
+
+ auf die Taylor-Entwicklung an.
+ Da 
+\begin_inset Formula $R\left(p\right)=0$
+\end_inset
+
+ für alle 
+\begin_inset Formula $p\in\mathbb{P}_{n}$
+\end_inset
+
+ gilt, folgt:
+\begin_inset Formula 
+\begin{align*}
+R\left(f\right) & =R\left(r_{n}\right)=\\
+ & =\frac{1}{n!}\left(\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(.-t\right)_{+}^{n}\dd t\right)=\\
+ & =\frac{1}{n!}\left(\sum_{i=0}^{n}\alpha_{i}\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(x_{i}-t\right)_{+}^{n}\dd t-\int_{a}^{b}\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(x-t\right)_{+}^{n}\dd t\dd x\right)=\\
+ & \stackrel{\text{Fubini}}{=}\frac{1}{n!}\left(\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)\left(\sum_{i=0}^{n}\alpha_{i}\left(x_{i}-t\right)_{+}^{n}-\int_{a}^{b}\left(x-t\right)_{+}^{n}\dd x\right)\dd t\right)=\\
+ & =\frac{1}{n!}\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)R\left(\left(.-t\right)_{+}^{n}\right)\dd t=\\
+ & =\int_{a}^{b}f^{\left(n+1\right)}\left(t\right)K\left(t\right)\dd t
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -21078,7 +21427,7 @@ reference "eq:Fehlerdarstellung"
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21090,7 +21439,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21099,7 +21448,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21108,7 +21457,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21119,7 +21468,7 @@ reference "eq:Fehlerdarstellung"
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21131,7 +21480,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21143,7 +21492,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21152,7 +21501,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21163,7 +21512,7 @@ reference "eq:Fehlerdarstellung"
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21175,7 +21524,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21184,7 +21533,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21196,7 +21545,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21207,7 +21556,7 @@ reference "eq:Fehlerdarstellung"
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21219,7 +21568,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21231,7 +21580,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21243,7 +21592,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21257,7 +21606,7 @@ reference "eq:Fehlerdarstellung"
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21269,7 +21618,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21281,7 +21630,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21293,7 +21642,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21307,7 +21656,7 @@ reference "eq:Fehlerdarstellung"
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21319,7 +21668,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21328,7 +21677,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21337,7 +21686,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21351,7 +21700,7 @@ reference "eq:Fehlerdarstellung"
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21363,7 +21712,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21375,7 +21724,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21387,7 +21736,7 @@ reference "eq:Fehlerdarstellung"
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21689,7 +22038,7 @@ Typische Gewichtsfunktionen sind:
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21701,7 +22050,7 @@ Typische Gewichtsfunktionen sind:
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21712,7 +22061,7 @@ Intervall
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21720,11 +22069,15 @@ Intervall
 \end_inset
 
 
+\begin_inset Formula $\vphantom{\Big|}$
+\end_inset
+
+
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21738,10 +22091,14 @@ Intervall
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset Formula $\vphantom{\vphantom{\Big|}}$
+\end_inset
+
+
 \begin_inset Formula $e^{-x}$
 \end_inset
 
@@ -21750,7 +22107,7 @@ Intervall
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21764,10 +22121,14 @@ Intervall
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset Formula $\vphantom{\bigg|}$
+\end_inset
+
+
 \begin_inset Formula $\frac{1}{\sqrt{1-x^{2}}}$
 \end_inset
 
@@ -21776,7 +22137,7 @@ Intervall
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -21790,10 +22151,14 @@ Intervall
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset Formula $\vphantom{\vphantom{\Big|}}$
+\end_inset
+
+
 \begin_inset Formula $e^{-x^{2}}$
 \end_inset
 
@@ -21802,7 +22167,7 @@ Intervall
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -22292,10 +22657,17 @@ Da die Polynome
 .
 \end_layout
 
-\begin_layout Standard
+\begin_layout Enumerate
+Für alle 
+\begin_inset Formula $p\in\mathbb{P}_{n}$
+\end_inset
 
-\color green
-TODO: Rest einfügen
+ gilt 
+\begin_inset Formula $\left\langle p,p_{n+1}\right\rangle _{\omega}$
+\end_inset
+
+.
+ Dies folgt aus i).
 \end_layout
 
 \begin_layout Standard
@@ -23384,6 +23756,13 @@ Betrachte zunächst ein Beispiel einer Matrix mit vielen Null-Einträgen:
 
 \begin_layout Section
 Diskretisierung der Poisson-Gleichung
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Diskretisierung-Poisson-Gleichung"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -23532,7 +23911,7 @@ Es seien nun
 \end_layout
 
 \begin_layout Subsubsection*
-Diskretes Poisson-Problem(DP)
+Diskretes Poisson-Problem (DP)
 \end_layout
 
 \begin_layout Standard
@@ -23798,12 +24177,9 @@ Jetzt betrachte
 
 
 \color green
-TODO: Folie; Nichtnullelemente der Matrix 
+TODO: Folie S.
+ 3; Nichtnullelemente der Matrix 
 \begin_inset Formula $A_{1}$
-\end_inset
-
- und 
-\begin_inset Formula $A_{2}$
 \end_inset
 
 
@@ -23816,21 +24192,22 @@ Cholesky Zerlegung (Symmetrische
 \begin_inset Formula $LR$
 \end_inset
 
--Zerlegung)
+-Zerlegung):
 \begin_inset Newline newline
 \end_inset
 
 
 \color green
-TODO: Folie; Nichtnullelemente von 
+TODO: Folie S.
+ 6; Nichtnullelemente von 
 \begin_inset Formula $L$
 \end_inset
 
  bei der Cholesky-Zerlegung 
-\begin_inset Formula $LL^{\TT}$
+\begin_inset Formula $A=LL^{\TT}$
 \end_inset
 
- der Matrix
+
 \color inherit
 
 \begin_inset Newline newline
@@ -23853,22 +24230,12 @@ Setzen wir
 \end_inset
 
 
-\color green
-TODO: Folie; Nichtnulleinträge der Matrizen 
-\begin_inset Formula $A_{1}$
-\end_inset
+\end_layout
 
- und 
-\begin_inset Formula $L$
-\end_inset
-
-
-\color inherit
-
-\begin_inset Newline newline
-\end_inset
-
-
+\begin_deeper
+\begin_layout Standard
+\noindent
+\align center
 \begin_inset Tabular
 <lyxtabular version="3" rows="3" columns="6">
 <features tabularvalignment="middle">
@@ -23879,7 +24246,7 @@ TODO: Folie; Nichtnulleinträge der Matrizen
 <column alignment="center" valignment="top" width="0">
 <column alignment="center" valignment="top" width="0">
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -23891,7 +24258,7 @@ TODO: Folie; Nichtnulleinträge der Matrizen
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -23903,34 +24270,43 @@ TODO: Folie; Nichtnulleinträge der Matrizen
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset Formula $\frac{1}{32}$
+\end_inset
+
 
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset Formula $\frac{1}{64}$
+\end_inset
+
 
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset Formula $\frac{1}{128}$
+\end_inset
+
 
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -23941,7 +24317,7 @@ TODO: Folie; Nichtnulleinträge der Matrizen
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -23957,7 +24333,7 @@ TODO: Folie; Nichtnulleinträge der Matrizen
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+1065
 \end_layout
 
 \end_inset
@@ -23966,7 +24342,7 @@ TODO: Folie; Nichtnulleinträge der Matrizen
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+4681
 \end_layout
 
 \end_inset
@@ -23975,7 +24351,7 @@ TODO: Folie; Nichtnulleinträge der Matrizen
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+19593
 \end_layout
 
 \end_inset
@@ -23984,12 +24360,12 @@ TODO: Folie; Nichtnulleinträge der Matrizen
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+80137
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -24003,7 +24379,7 @@ TODO: Folie; Nichtnulleinträge der Matrizen
 </cell>
 </row>
 <row>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -24015,43 +24391,43 @@ TODO: Folie; Nichtnulleinträge der Matrizen
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+3389
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+29821
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+250109
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+2048509
 \end_layout
 
 \end_inset
 </cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
 \begin_inset Text
 
 \begin_layout Plain Layout
@@ -24071,8 +24447,16 @@ TODO: Folie; Nichtnulleinträge der Matrizen
 
 \end_layout
 
+\end_deeper
 \begin_layout Section
 Allgemeine Iterationsverfahren
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Allgemeine-Iterationsverfahren"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -25395,16 +25779,1546 @@ Eine (bezüglich
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
-Gauß-Seidel konvergiert für spd.
+
+%DATE: Mo 21.1.13
 \end_layout
 
 \end_inset
 
 
+\end_layout
+
+\begin_layout Section
+Lemma
+\end_layout
+
+\begin_layout Standard
+Sei 
+\begin_inset Formula $G\in\mathbb{R}^{n\times n}$
+\end_inset
+
+ und 
+\begin_inset Formula $G^{*}$
+\end_inset
+
+ sei die bezüglich eines Skalarprodukts 
+\begin_inset Formula $\left\langle .,.\right\rangle $
+\end_inset
+
+ adjungierte Matrix zu 
+\begin_inset Formula $G$
+\end_inset
+
+.
+ Ist dann 
+\begin_inset Formula $F:=\mathbbm{1}-G^{*}G$
+\end_inset
+
+ eine bezüglich 
+\begin_inset Formula $\left\langle .,.\right\rangle $
+\end_inset
+
+ positive Matrix, so folgt 
+\begin_inset Formula $\varrho\left(G\right)<1$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+Beweis
+\end_layout
+
+\begin_layout Standard
+Da 
+\begin_inset Formula $F$
+\end_inset
+
+ positiv ist, gilt für alle 
+\begin_inset Formula $x\in\mathbb{R}^{n}\setminus\left\{ 0\right\} $
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+\left\langle Fx,x\right\rangle  & =\left\langle x,x\right\rangle -\left\langle G^{*}Gx,x\right\rangle =\left\langle x,x\right\rangle -\left\langle Gx,Gx\right\rangle >0
+\end{align*}
+
+\end_inset
+
+Somit folgt 
+\begin_inset Formula $\norm x>\norm{Gx}$
+\end_inset
+
+ mit der vom Skalarprodukt induzierten Norm 
+\begin_inset Formula $\norm .:=\sqrt{\left\langle .,.\right\rangle }$
+\end_inset
+
+.
+ Da
+\begin_inset Formula 
+\begin{align*}
+S^{n-1} & =\left\{ x\in\mathbb{R}^{n}\big|\norm x=1\right\} 
+\end{align*}
+
+\end_inset
+
+kompakt ist, folgt:
+\begin_inset Formula 
+\begin{align*}
+\varrho\left(G\right) & \le\opnorm G=\sup_{\norm x=1}\norm{Gx}<1
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Satz
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Satz-Gauß-Seidel-spd"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Das Gauß-Seidel-Verfahren konvergiert für jede symmetrische, positiv definite
+ Matrix 
+\begin_inset Formula $A$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+Beweis
+\end_layout
+
+\begin_layout Standard
+Für
+\begin_inset Formula 
+\begin{align*}
+G & :=\mathbbm{1}-\left(D+L\right)^{-1}A
+\end{align*}
+
+\end_inset
+
+ist zu zeigen, dass
+\begin_inset Formula 
+\begin{align*}
+F & =\mathbbm{1}-G^{*}G
+\end{align*}
+
+\end_inset
+
+positiv definit bezüglich des Skalarprodukts 
+\begin_inset Formula $\left\langle x,y\right\rangle _{A}:=\left\langle x,Ay\right\rangle =x\cdot Ay$
+\end_inset
+
+.
+\begin_inset Formula 
+\begin{align*}
+\left\langle Gx,Ay\right\rangle =\left\langle Gx,y\right\rangle _{A} & =\left\langle x,G^{*}y\right\rangle _{A}=\left\langle x,AG^{*}y\right\rangle 
+\end{align*}
+
+\end_inset
+
+ Wegen 
+\begin_inset Formula $R^{*}=L$
+\end_inset
+
+ folgt:
+\begin_inset Formula 
+\begin{align*}
+G^{*} & =\mathbbm{1}-\underbrace{A^{-1}A^{*}}_{=\mathbbm{1}}\left(D^{*}+L^{*}\right)^{-1}A=\mathbbm{1}-\left(D+R\right)^{-1}A
+\end{align*}
+
+\end_inset
+
+Somit erhält man:
+\begin_inset Formula 
+\begin{align*}
+F & =\mathbbm{1}-G^{*}G=\mathbbm{1}-\left(\mathbbm{1}-\left(D+R\right)^{-1}A\right)\left(\mathbbm{1}-\left(D+L\right)^{-1}A\right)=\\
+ & =\mathbbm{1}-\mathbbm{1}+\left(D+L\right)^{-1}A+\left(D+R\right)^{-1}A-\left(D+R\right)^{-1}\underbrace{A}_{=D+L+R}\left(D+L\right)^{-1}A=\\
+ & =\left(\left(D+L\right)^{-1}+\left(D+R\right)^{-1}-\left(D+R\right)^{-1}\left(D+L+R\right)\left(D+L\right)^{-1}\right)A=\\
+ & =\left(\left(D+L\right)^{-1}+\left(D+R\right)^{-1}-\left(\mathbbm{1}+\left(D+R\right)^{-1}L\right)\left(D+L\right)^{-1}\right)A=\\
+ & =\left(\left(D+R\right)^{-1}-\left(D+R\right)^{-1}L\left(D+L\right)^{-1}\right)A=\\
+ & =\left(D+R\right)^{-1}\left(\mathbbm{1}-L\left(D+L\right)^{-1}\right)A=\\
+ & =\left(D+R\right)^{-1}\left(D+L-L\right)\left(D+L\right)^{-1}A=\left(D+R\right)^{-1}D\left(D+L\right)^{-1}A
+\end{align*}
+
+\end_inset
+
+Für 
+\begin_inset Formula $x\not=0$
+\end_inset
+
+ gilt:
+\begin_inset Formula 
+\begin{align*}
+\left\langle Fx,x\right\rangle _{A} & =\left\langle \left(D+R\right)^{-1}D\left(D+L\right)^{-1}Ax,Ax\right\rangle =\left\langle D\left(D+L\right)^{-1}Ax,\left(D+L\right)^{-1}Ax\right\rangle 
+\end{align*}
+
+\end_inset
+
+Da 
+\begin_inset Formula $A$
+\end_inset
+
+ positiv definit ist, gilt 
+\begin_inset Formula $a_{ii}>0$
+\end_inset
+
+ für 
+\begin_inset Formula $i\in\left\{ 1,\ldots,n\right\} $
+\end_inset
+
+ und somit ist
+\begin_inset Formula 
+\begin{align*}
+D^{\frac{1}{2}} & =\left(\begin{array}{ccc}
+\sqrt{a_{11}}\\
+ & \ddots\\
+ &  & \sqrt{a_{nn}}
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+reell und selbstadjungiert.
+ Es folgt:
+\begin_inset Formula 
+\begin{align*}
+\left\langle Fx,x\right\rangle _{A} & =\left\langle D^{\frac{1}{2}}\left(D+L\right)^{-1}Ax,D^{\frac{1}{2}}\left(D+L\right)^{-1}Ax\right\rangle \stackrel{x\not=0}{>}0
+\end{align*}
+
+\end_inset
+
+Daher ist 
+\begin_inset Formula $F$
+\end_inset
+
+ positiv und somit 
+\begin_inset Formula $\varrho\left(G\right)<1$
+\end_inset
+
+.
+ Also konvergiert das Gauß-Seidel-Verfahren.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Beispiel 
+\series medium
+(Poisson-Gleichung)
+\end_layout
+
+\begin_layout Standard
+Betrachte das Gleichungssystem aus 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Diskretisierung-Poisson-Gleichung"
+
+\end_inset
+
+: Die Matrix 
+\begin_inset Formula $A_{1}\in\mathbb{R}^{m\times m}$
+\end_inset
+
+ mit 
+\begin_inset Formula $m=\left(n-1\right)^{2}$
+\end_inset
+
+ hat maximal fünf Elemente pro Zeile.
+\begin_inset Newline newline
+\end_inset
+
+Der Aufwand pro Iteration beim Gesamtschritt- oder Einzelschritt-Verfahren
+ ist ca.
+ 
+\begin_inset Formula $10n^{2}$
+\end_inset
+
+ flops.
+ Der benötigte Speicherplatz ist ebenfalls von der Ordnung 
+\begin_inset Formula $n^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Konvergenz
+\emph default
+: Die schwache Zeilensummenbedingung ist erfüllt.
+ Außerdem ist 
+\begin_inset Formula $A_{1}$
+\end_inset
+
+ nicht zerfallend.
+ Dies liefert die Konvergenz des Verfahrens (siehe Satz 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Konvergenzsatz"
+
+\end_inset
+
+).
+\begin_inset Newline newline
+\end_inset
+
+Da 
+\begin_inset Formula $A_{1}$
+\end_inset
+
+ positiv definit und symmetrisch ist, konvergiert das Verfahren nach Satz
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Satz-Gauß-Seidel-spd"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Die Konvergenzgeschwindigkeit des Gesamtschritt-Verfahrens mit Iterationsmatrix
+ 
+\begin_inset Formula $G_{G}$
+\end_inset
+
+ und des Einzelschritt-Verfahrens mit 
+\begin_inset Formula $G_{E}$
+\end_inset
+
+ sind wie folgt:
+\end_layout
+
+\begin_layout Itemize
+Einzelschritt-Verfahren: Wegen
+\begin_inset Formula 
+\begin{align*}
+\varrho\left(G_{G}\right) & =\cos\left(\frac{\pi}{n}\right)=1-\frac{1}{2}\left(\frac{\pi}{n}\right)^{2}+\mathcal{O}_{\infty}\left(\frac{1}{n^{4}}\right)
+\end{align*}
+
+\end_inset
+
+folgt:
+\begin_inset Formula 
+\begin{align*}
+\varrho\left(G_{E}\right) & =\left(\varrho\left(G_{G}\right)\right)^{2}=\left(\cos\left(\frac{\pi}{n}\right)\right)^{2}=1-\left(\frac{\pi}{n}\right)^{2}+\mathcal{O}_{\infty}\left(\frac{1}{n^{4}}\right)
+\end{align*}
+
+\end_inset
+
+Dies wird von 
+\noun on
+Hackbusch
+\noun default
+ genauer gezeigt.
+\begin_inset Newline newline
+\end_inset
+
+Wir hatten uns überlegt, dass 
+\begin_inset Formula $\varrho\left(G\right)$
+\end_inset
+
+ angibt, um welchen Faktor sich der Fehler verringert.
+ Für 
+\begin_inset Formula $G_{E}$
+\end_inset
+
+ und 
+\begin_inset Formula $G_{G}$
+\end_inset
+
+ gilt aber 
+\begin_inset Formula $\varrho\left(G_{E}\right),\varrho\left(G_{G}\right)\xrightarrow{n\to\infty}1$
+\end_inset
+
+.
+ Also ist die Konvergenzgeschwindigkeit bei kleinem 
+\begin_inset Formula $h=\frac{1}{n}$
+\end_inset
+
+ sehr langsam.
+\end_layout
+
+\begin_layout Section
+SOR-Verfahren
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Ziel
+\emph default
+: Beschleunige das Einzelschritt-Verfahren!
+\end_layout
+
+\begin_layout Standard
+Beim Einzelschritt-Verfahren ist die Iterationsvorschrift:
+\begin_inset Formula 
+\begin{align*}
+x^{\left(k+1\right)} & =x^{\left(k\right)}\underbrace{-D^{-1}\left(Lx^{\left(k+1\right)}+\left(D+R\right)x^{\left(k\right)}-b\right)}_{\text{diese Größe wird zu }x^{\left(k\right)}\text{addiert}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Oft ist es günstiger, die Aufaddierung zu verstärken oder abzuschwächen.
+\end_layout
+
+\begin_layout Subsubsection*
+Definition
+\end_layout
+
+\begin_layout Standard
+Das SOR-Verfahren zur Lösung der Gleichung 
+\begin_inset Formula $Ax=b$
+\end_inset
+
+ lautet für einen Relaxationsparameter 
+\begin_inset Formula $\omega>0$
+\end_inset
+
+ wie folgt:
+\begin_inset Formula 
+\begin{align*}
+x^{\left(k+1\right)} & =x^{\left(k\right)}-\omega D^{-1}\left(Lx^{\left(k+1\right)}+\left(D+R\right)x^{\left(k\right)}-b\right)
+\end{align*}
+
+\end_inset
+
+In Komponenten ist dies:
+\begin_inset Formula 
+\begin{align*}
+x_{i}^{\left(k+1\right)} & =x_{i}^{\left(k\right)}-\omega\frac{1}{a_{ii}}\left(\sum_{j=1}^{i-1}a_{ij}x_{j}^{\left(k+1\right)}+\sum_{j=i}^{n}a_{ij}x_{j}^{\left(k\right)}-b_{i}\right)
+\end{align*}
+
+\end_inset
+
+Die englische Bezeichnung „
+\lang english
+sucessive overrelaxation
+\lang ngerman
+“ ist für die Abkürzung SOR verantwortlich.
+ Für 
+\begin_inset Formula $\omega=1$
+\end_inset
+
+ erhält man wieder das Einzelschrittverfahren.
+\end_layout
+
+\begin_layout Section
+Lemma
+\end_layout
+
+\begin_layout Standard
+Für das SOR-Verfahren ist 
+\begin_inset Formula $B$
+\end_inset
+
+ aus Abschnitt 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Allgemeine-Iterationsverfahren"
+
+\end_inset
+
+ als 
+\begin_inset Formula $\left(\frac{1}{\omega}D+L\right)$
+\end_inset
+
+ zu wählen, das heißt:
+\begin_inset Formula 
+\begin{align*}
+x^{\left(k+1\right)} & =\left(\mathbbm{1}-B^{-1}A\right)x^{\left(k\right)}+B^{-1}b=\\
+ & =\left(\mathbbm{1}-\left(\frac{1}{\omega}D+L\right)^{-1}A\right)x^{\left(k\right)}+\left(\frac{1}{\omega}D+L\right)^{-1}b
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Beweis
+\end_layout
+
+\begin_layout Standard
+Aus der Definition des SOR-Verfahrens folgt:
+\begin_inset Formula 
+\begin{align*}
+\left(D+\omega L\right)x^{\left(k+1\right)} & =\left(D+\omega L\right)x^{\left(k\right)}-\omega\left(\mathbbm{1}+\omega LD^{-1}\right)\left(Lx^{\left(k+1\right)}+\left(D+R\right)x^{\left(k\right)}-b\right)=\\
+ & =Dx^{\left(k\right)}-\omega\bigg(L\left(x^{\left(k+1\right)}-x^{\left(k\right)}\right)+\left(D+R\right)x^{\left(k\right)}-b+\\
+ & \qquad+L\underbrace{\omega D^{-1}\left(Lx^{\left(k+1\right)}+\left(D+R\right)x^{\left(k\right)}-b\right)}_{=-\left(x^{\left(k+1\right)}-x^{\left(k\right)}\right)}\bigg)=\\
+ & =Dx^{\left(k\right)}-\omega\left(D+R\right)x^{\left(k\right)}+\omega b
+\end{align*}
+
+\end_inset
+
+Damit folgt:
+\begin_inset Formula 
+\begin{align*}
+\left(\frac{1}{\omega}D+L\right)x^{\left(k+1\right)} & =\left(\frac{1}{\omega}D+L\right)x^{\left(k\right)}-Ax^{\left(k\right)}+b
+\end{align*}
+
+\end_inset
+
+Das liefert:
+\begin_inset Formula 
+\begin{align*}
+x^{\left(k+1\right)} & =x^{\left(k\right)}-\left(\frac{1}{\omega}D+L\right)^{-1}Ax^{\left(k\right)}+\left(\frac{1}{\omega}D+L\right)^{-1}b
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Es soll nun 
+\begin_inset Formula $\omega$
+\end_inset
+
+ so bestimmt werden, dass die Konvergenzgeschwindigkeit zunimmt.
+ (Den besten Wert zu bestimmen ist allerdings schwierig.)
+\end_layout
+
+\begin_layout Section
+Satz
+\end_layout
+
+\begin_layout Standard
+Die Diagonalelemente von 
+\begin_inset Formula $A\in\mathbb{R}^{n\times n}$
+\end_inset
+
+ seien von Null verschieden.
+ Dann gilt für die Iterationsmatrix des SOR-Verfahrens:
+\begin_inset Formula 
+\begin{align*}
+\varrho\left(\mathbbm{1}-\left(\frac{1}{\omega}D+L\right)^{-1}A\right) & \ge\abs{\omega-1}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Beweis
+\end_layout
+
+\begin_layout Standard
+Es gilt:
+\begin_inset Formula 
+\begin{align*}
+C_{E}\left(\omega\right) & :=\mathbbm{1}-\left(\frac{1}{\omega}D+L\right)^{-1}A=\\
+ & =\left(\frac{1}{\omega}D+L\right)^{-1}\left(\frac{1}{\omega}D+L-L-D-R\right)=\\
+ & =\left(D+\omega L\right)^{-1}\left(\left(\omega-1\right)D-\omega R\right)=\\
+ & =\underbrace{\left(\mathbbm{1}+\omega D^{-1}L^{-1}\right)^{-1}}_{\sr{}{\text{untere Dreiecksmatrix}}{\text{mit }1\text{ auf der Diagonalen}}}\underbrace{\left(\left(\omega-1\right)\mathbbm{1}-\omega D^{-1}R\right)}_{\sr{}{\text{obere Dreiecksmatrix}}{\text{mit }\left(1-\omega\right)\text{ auf der Diagonalen}}}
+\end{align*}
+
+\end_inset
+
+Es folgt somit:
+\begin_inset Formula 
+\begin{align*}
+\abs{\det\left(C_{E}\left(\omega\right)\right)} & =\abs{1-\omega}^{n}
+\end{align*}
+
+\end_inset
+
+Wegen 
+\begin_inset Formula $\abs{\det\left(C_{E}\left(\omega\right)\right)}\le\left(\varrho\left(C_{E}\left(\omega\right)\right)\right)^{n}$
+\end_inset
+
+ folgt 
+\begin_inset Formula $\abs{1-\omega}\le\varrho\left(C_{E}\left(\omega\right)\right)$
+\end_inset
+
+.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Dieser Satz zeigt, dass nur Werte 
+\begin_inset Formula $\omega\in\left(0,2\right)$
+\end_inset
+
+ konvergente Verfahren liefern.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%DATE: Mi 23.1.13
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Satz
+\end_layout
+
+\begin_layout Standard
+Sei 
+\begin_inset Formula $A\in\mathbb{R}^{n\times n}$
+\end_inset
+
+ symmetrisch und positiv definit.
+ Dann konvergiert das SOR-Verfahren für alle 
+\begin_inset Formula $\omega\in\left(0,2\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+Beweis
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+C_{E}\left(\omega\right) & =\mathbbm{1}-B^{-1}A=\mathbbm{1}-\left(\frac{1}{\omega}D+L\right)^{-1}A
+\end{align*}
+
+\end_inset
+
+Zu zeigen ist 
+\begin_inset Formula $\varrho\left(C_{E}\left(\omega\right)\right)<1$
+\end_inset
+
+: Sei 
+\begin_inset Formula $\lambda\in\mathbb{C}$
+\end_inset
+
+ ein Eigenwert von 
+\begin_inset Formula $C_{E}\left(\omega\right)$
+\end_inset
+
+ mit zugehörigem Eigenvektor 
+\begin_inset Formula $x\in\mathbb{C}^{n}$
+\end_inset
+
+, sodass 
+\begin_inset Formula $\norm x_{2}=1$
+\end_inset
+
+ ist.
+ Dann gilt:
+\begin_inset Formula 
+\begin{align*}
+C_{E}\left(\omega\right)x & =\left(\mathbbm{1}-\left(\frac{1}{\omega}D+L\right)^{-1}A\right)x=\lambda x
+\end{align*}
+
+\end_inset
+
+Das heißt es gilt:
+\begin_inset Formula 
+\begin{align*}
+Ax & =\left(1-\lambda\right)Bx
+\end{align*}
+
+\end_inset
+
+Dabei ist 
+\begin_inset Formula $\lambda\not=1$
+\end_inset
+
+, da 
+\begin_inset Formula $A$
+\end_inset
+
+ positiv definit ist.
+ Mit dem komplex konjugierten Vektor
+\begin_inset Formula 
+\begin{align*}
+\overline{x} & =\left(\begin{array}{c}
+\overline{x}_{1}\\
+\vdots\\
+\overline{x}_{n}
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+erhalten wir somit:
+\begin_inset Formula 
+\begin{align*}
+\frac{1}{1-\lambda} & =\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}
+\end{align*}
+
+\end_inset
+
+Da 
+\begin_inset Formula $A$
+\end_inset
+
+ symmetrisch ist, gilt wegen 
+\begin_inset Formula $B^{\TT}=\frac{1}{\omega}D+L^{\TT}=\frac{1}{\omega}D+R$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+B+B^{\TT} & =\left(\frac{2}{\omega}-1\right)D+A
+\end{align*}
+
+\end_inset
+
+Für den Realteil von 
+\begin_inset Formula $\left(1-\lambda\right)^{-1}$
+\end_inset
+
+ gilt:
+\begin_inset Formula 
+\begin{align*}
+\text{Re}\left(\frac{1}{1-\lambda}\right) & =\text{Re}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}\right)=\frac{1}{2}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}+\overline{\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}}\right)\stackrel{B\text{ reell}}{=}\frac{1}{2}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}+\frac{x^{\TT}B\overline{x}}{x^{\TT}A\overline{x}}\right)=\\
+ & =\frac{1}{2}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}+\frac{\overline{x}^{\TT}B^{\TT}x}{\overline{x}^{\TT}A^{\TT}x}\right)\stackrel{A\text{ symmetrisch}}{=}\frac{1}{2}\cdot\frac{\overline{x}^{\TT}\left(B+B^{\TT}\right)x}{\overline{x}^{\TT}Ax}=\\
+ & =\frac{1}{2}\bigg(\underbrace{\left(\frac{2}{\omega}-1\right)}_{\text{\ensuremath{>0}}}\cdot\underbrace{\frac{\overline{x}^{\TT}Dx}{\overline{x}^{\TT}Ax}}_{\text{\ensuremath{>0} da }A\text{ positiv definit}}+1\bigg)>\frac{1}{2}
+\end{align*}
+
+\end_inset
+
+Mit 
+\begin_inset Formula $\lambda=u+iv$
+\end_inset
+
+ für 
+\begin_inset Formula $u,v\in\mathbb{R}$
+\end_inset
+
+ folgt:
+\begin_inset Formula 
+\begin{align*}
+\frac{1}{2} & <\text{Re}\left(\frac{1}{1-\lambda}\right)=\frac{1-u}{\left(1-u\right)^{2}+v^{2}}\\
+\left(1-u\right)^{2}+v^{2} & <2-2u\\
+1-2u+u^{2}+v^{2} & <2-2u\\
+u^{2}+v^{2} & <1
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Fehlerreduktion bei iterativen Verfahren
+\end_layout
+
+\begin_layout Standard
+Der Konvergenzsatz 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Konvergenzsatz"
+
+\end_inset
+
+ liefert, dass 
+\begin_inset Formula $\varrho\left(\mathbbm{1}-B^{-1}A\right)$
+\end_inset
+
+ entscheidend für die Konvergenz ist.
+ Diese Größe ist auch entscheidend für die Konvergenzgeschwindigkeit.
+\end_layout
+
+\begin_layout Standard
+Zur Vereinfachung sei 
+\begin_inset Formula $\left(\mathbbm{1}-B^{-1}A\right)$
+\end_inset
+
+ diagonalisierbar und habe die Eigenwerten 
+\begin_inset Formula $\lambda_{1},\ldots,\lambda_{n}$
+\end_inset
+
+ mit 
+\begin_inset Formula $\abs{\lambda_{1}}\ge\abs{\lambda_{2}}\ge\ldots\ge\abs{\lambda_{n}}>0$
+\end_inset
+
+ zu den Eigenvektoren 
+\begin_inset Formula $v_{1},\ldots,v_{n}$
+\end_inset
+
+, die eine Basis bilden.
+ Betrachte 
+\begin_inset Formula $b,x\in\mathbb{R}^{n}$
+\end_inset
+
+ mit 
+\begin_inset Formula $Ax=b$
+\end_inset
+
+.
+ Wähle einen Startwert 
+\begin_inset Formula $x^{0}$
+\end_inset
+
+ und definiere:
+\begin_inset Formula 
+\begin{align*}
+x^{\left(0\right)}-x & =:e^{\left(0\right)}=:\sum_{i=0}^{n}c_{i}v_{i}
+\end{align*}
+
+\end_inset
+
+Es gilt nun (vergleiche Satz 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Konvergenzsatz"
+
+\end_inset
+
+):
+\begin_inset Formula 
+\begin{align*}
+e^{\left(k\right)} & =x^{\left(k\right)}-x=\left(\mathbbm{1}-B^{-1}A\right)^{k}e^{\left(0\right)}=\\
+ & =\left(\mathbbm{1}-B^{-1}A\right)^{k}\left(\sum_{i=1}^{n}c_{i}v_{i}\right)=\sum_{i=1}^{n}c_{i}\lambda_{i}^{k}v_{i}=\\
+ & =\lambda_{1}^{k}\bigg(c_{1}v_{1}+\underbrace{\sum_{i=2}^{n}c_{i}\left(\frac{\lambda_{i}}{\lambda_{1}}\right)^{k}v_{i}}_{=:r^{\left(k\right)}}\bigg)=\lambda_{1}^{k}\left(c_{1}v_{1}+r^{\left(k\right)}\right)
+\end{align*}
+
+\end_inset
+
+Ist nun 
+\begin_inset Formula $c_{1}\not=0$
+\end_inset
+
+, so existieren 
+\begin_inset Formula $c_{\text{min}},c_{\text{max}}\in\mathbb{R}_{>0}$
+\end_inset
+
+, sodass wegen 
+\begin_inset Formula $\abs{\frac{\lambda_{i}}{\lambda_{1}}}\le1$
+\end_inset
+
+ gilt:
+\begin_inset Formula 
+\begin{align*}
+0 & <c_{\text{min}}\le\norm{c_{1}v_{1}+r^{\left(k\right)}}\le c_{\text{max}}
+\end{align*}
+
+\end_inset
+
+Insgesamt folgt:
+\begin_inset Formula 
+\begin{align*}
+\sigma_{k} & :=\left(\frac{\norm{e^{\left(k\right)}}}{\norm{e^{\left(0\right)}}}\right)^{\frac{1}{k}}=\frac{\abs{\lambda_{1}}\cdot\norm{c_{1}v_{1}+r^{\left(k\right)}}^{\frac{1}{k}}}{\norm{e^{\left(0\right)}}^{\frac{1}{k}}}\xrightarrow{k\to\infty}\abs{\lambda_{1}}=\varrho\left(\mathbbm{1}-B^{-1}A\right)
+\end{align*}
+
+\end_inset
+
+Daher ist 
+\begin_inset Formula $\norm{e^{\left(k\right)}}$
+\end_inset
+
+ ungefähr gleich 
+\begin_inset Formula $\abs{\lambda_{1}}^{k}\cdot\norm{e^{\left(0\right)}}$
+\end_inset
+
+ für große 
+\begin_inset Formula $k$
+\end_inset
+
+.
+\begin_inset Newline newline
+\end_inset
+
+Um den Anfangsfehler 
+\begin_inset Formula $\norm{e^{\left(0\right)}}$
+\end_inset
+
+ um den Faktor 
+\begin_inset Formula $R>1$
+\end_inset
+
+ zu erniedrigen, muss (im Grenzfall) gelten:
+\begin_inset Formula 
+\begin{align*}
+\abs{\lambda_{1}}^{k} & <\frac{1}{R}\\
+\Leftrightarrow\qquad k\ln\left(\abs{\lambda_{1}}\right) & <-\ln\left(R\right)\\
+\stackrel{0<\abs{\lambda_{1}}<1}{\Leftrightarrow}\qquad k & >\frac{\ln\left(R\right)}{-\ln\left(\abs{\lambda_{1}}\right)}
+\end{align*}
+
+\end_inset
+
+Für 
+\begin_inset Formula $R=e$
+\end_inset
+
+ erhalte die Bedingung:
+\begin_inset Formula 
+\begin{align*}
+k & >\left(-\ln\left(\abs{\lambda_{1}}\right)\right)^{-1}
+\end{align*}
+
+\end_inset
+
+Wir nennen daher 
+\begin_inset Formula $-\ln\left(\varrho\left(\mathbbm{1}-B^{-1}A\right)\right)$
+\end_inset
+
+ die 
+\emph on
+asymptotische Konvergenzrate
+\emph default
+.
+\end_layout
+
+\begin_layout Section
+Fehlerreduktion für das diskrete Poisson-Problem
+\end_layout
+
+\begin_layout Standard
+Das diskrete Poisson-Problem wurde bereits in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Diskretisierung-Poisson-Gleichung"
+
+\end_inset
+
+ beschrieben.
+ Für 
+\begin_inset Formula $n\in\mathbb{N}_{\ge1}$
+\end_inset
+
+ setze:
+\begin_inset Formula 
+\begin{align*}
+h & :=\frac{1}{n}
+\end{align*}
+
+\end_inset
+
+Für das Gesamtschrittverfahren mit
+\begin_inset Formula 
+\begin{align*}
+\varrho\left(\mathbbm{1}-B^{-1}A_{1}\right) & \approx1-\frac{1}{2}\pi^{2}h^{2}
+\end{align*}
+
+\end_inset
+
+ist die asymptotische Konvergenzrate:
+\begin_inset Formula 
+\begin{align*}
+-\ln\left(\varrho\left(\mathbbm{1}-D^{-1}A_{1}\right)\right) & \approx-\ln\left(1-\frac{\left(\pi h\right)^{2}}{2}\right)\stackrel{h\ll1}{\approx}\frac{1}{2}\left(\pi h\right)^{2}
+\end{align*}
+
+\end_inset
+
+Um den Startfehler um den Faktor 
+\begin_inset Formula $R$
+\end_inset
+
+ zu vermindern, sind (asymptotisch)
+\begin_inset Formula 
+\begin{align*}
+K\left(R\right):=\frac{-\ln\left(R\right)}{\ln\left(\varrho\left(\mathbbm{1}-D^{-1}A_{1}\right)\right)}=\frac{-\ln\left(R\right)}{\ln\left(\cos\pi h\right)} & \approx\frac{2}{\pi^{2}h^{2}}\ln R
+\end{align*}
+
+\end_inset
+
+Iterationsschritte nötig.
+\end_layout
+
+\begin_layout Standard
+Sei 
+\begin_inset Formula $L\left(R\right)$
+\end_inset
+
+ die tatsächliche Anzahl von Iterationsschritten, die zur Reduktion des
+ Startfehlers um einen Faktor 
+\begin_inset Formula $R$
+\end_inset
+
+ benötigt werden und 
+\begin_inset Formula $K\left(R\right)$
+\end_inset
+
+ die theoretische Schätzung von 
+\begin_inset Formula $L$
+\end_inset
+
+.
+ Für 
+\begin_inset Formula $R=10^{3}$
+\end_inset
+
+ ergibt sich:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $h$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\frac{1}{40}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\frac{1}{80}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\frac{1}{160}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\frac{1}{320}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $L\left(10^{3}\right)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2092
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8345
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+33332
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+133227
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $K\left(10^{3}\right)$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2237
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8965
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+35833
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+143338
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Bemerkung
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $K$
+\end_inset
+
+ ist eine gute Schätzung für 
+\begin_inset Formula $L$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+Halbieren von 
+\begin_inset Formula $h$
+\end_inset
+
+ vervierfacht den Aufwand.
+\end_layout
+
+\begin_layout Standard
+Für das Einzelschrittverfahren ist der Fehler etwa halb so groß:
+\begin_inset Formula 
+\begin{align*}
+\frac{-\ln\left(R\right)}{\ln\left(\varrho\left(\mathbbm{1}-\left(D+L\right)^{-1}A_{1}\right)\right)} & \approx\frac{\ln R}{\pi^{2}h^{2}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $h$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\frac{1}{40}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\frac{1}{80}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\frac{1}{160}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\frac{1}{320}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $L$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1056
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4193
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+16706
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+66694
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $K$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1119
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4478
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+17916
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+71669
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Es gilt 
+\begin_inset Formula $m=\left(n-1\right)^{2}\approx n^{2}$
+\end_inset
+
+ und mit 
+\begin_inset Formula $h=n^{-1}$
+\end_inset
+
+ folgt 
+\begin_inset Formula $m\approx h^{-2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Ein Schritt im Gesamtschritt- (oder Einzelschrittverfahren) kostet stets
+ 
+\begin_inset Formula $\text{konst.}\cdot m$
+\end_inset
+
+ flops.
+ Der Aufwand um den Fehler um den Faktor 
+\begin_inset Formula $R$
+\end_inset
+
+ zu vermindern ist proportional zu 
+\begin_inset Formula $m^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Optimaler Relaxationsparameter für das diskrete Poissonproblem
+\end_layout
+
+\begin_layout Standard
+Stelle die Anzahl der nötigen Iteration dar um den Fehler um den Faktor
+ 
+\begin_inset Formula $10^{3}$
+\end_inset
+
+ zu vermindern.
+\end_layout
+
+\begin_layout Standard
+
+\color green
+TODO: Folie S.
+ 26; Anzahl der Iterationen in Abhängigkeit von 
+\begin_inset Formula $\omega$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Bemerkung
+\end_layout
+
+\begin_layout Itemize
+Das SOR-Verfahren mit optimalen 
+\begin_inset Formula $\omega$
+\end_inset
+
+ ist deutlich besser als das Einzelschrittverfahren, für das 
+\begin_inset Formula $\omega=1$
+\end_inset
+
+ gilt.
+\end_layout
+
+\begin_layout Itemize
+Der optimale Wert von 
+\begin_inset Formula $\omega$
+\end_inset
+
+ ist stark abhängig vom vorliegenden Problem.
+\end_layout
+
+\begin_layout Standard
+Für das Poisson-Problem ist es möglich, ein optimales 
+\begin_inset Formula $\omega$
+\end_inset
+
+ zu bestimmen.
+\end_layout
+
+\begin_layout Section
+Satz
 \end_layout
 
 \begin_layout Part*
