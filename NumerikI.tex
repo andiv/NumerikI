@@ -47,7 +47,7 @@
 \usetikzlibrary{matrix,arrows,calc,decorations.markings,snakes,intersections}
 \usetikzlibrary{external}
 \tikzexternalize
-\usepackage{latexsym,stmaryrd,stackrel,icomma,braket,bbm,subfig,framed,booktabs,esvect,scrhack,calc}
+\usepackage{latexsym,stmaryrd,stackrel,braket,bbm,subfig,framed,booktabs,esvect,scrhack,calc}
 \usepackage [OMLmathrm,OMLmathbf,sfdefault=fav]{isomath}
 \usepackage[explicit]{titlesec}
 \usepackage[activate]{pdfcprot}
@@ -965,14 +965,13 @@ l_{n,1} & \dots & l_{n,n-1} & r_{n,n}
 
 Es seien $f,g:D\to\mathbb{R}^{m}$, $D\subseteq\mathbb{R}^{n}$, $n,m\in\mathbb{N}$.
 \begin{enumerate}[label=\roman*)]
-\item Wir sagen $f=\mathcal{O}_{x_{0}}\left(g\right)$ für $x\to x_{0}$,
-falls gilt:
+\item Wir sagen $f=\mathcal{O}_{x\to x_{0}}\left(g\right)$, falls gilt:
 \begin{align*}
 \lim_{\sr{}{x\to x_{0}}{x\in D\setminus\left\{ x_{0}\right\} }}\sup & \frac{\norm{f\left(x\right)}}{\norm{g\left(x\right)}}<\infty
 \end{align*}
 (d. h. es gibt ein $K>0$ mit $\norm{f\left(x\right)}\le K\norm{g\left(x\right)}$
 für $x$ nahe $x_{0}$.)
-\item Wir sagen $f=o_{x_{0}}\left(g\right)$ für $x\to x_{0}$, falls gilt:
+\item Wir sagen $f=o_{x\to x_{0}}\left(g\right)$, falls gilt:
 \begin{align*}
 \lim_{\sr{}{x\to x_{0}}{x\in D\setminus\left\{ x_{0}\right\} }}\frac{\norm{f\left(x\right)}}{\norm{g\left(x\right)}} & =0
 \end{align*}
@@ -981,8 +980,11 @@ Bemerkung: $x_{0}=\pm\infty$ ist zugelassen.
 
 \subsubsection*{Bemerkung}
 
-Wenn klar ist, was $x_{0}$ ist, schreibt man häufig einfach $\mathcal{O}\left(g\right)$
-beziehungsweise $o\left(g\right)$.
+Hängt $g$ nur von einer Variablen ab, gibt es also keine Parameter,
+so schreibe zur Einfachheit $\mathcal{O}_{x_{0}}\left(g\right)$ statt
+$\mathcal{O}_{x\to x_{0}}\left(g\right)$. Wenn zudem klar ist, welche
+$x_{0}$ gemeint ist, schreibt man häufig nur $\mathcal{O}\left(g\right)$.
+Analoges gilt für $o\left(g\right)$.
 
 
 \section{Aufwand des Gaußschen Eliminationsverfahrens}
@@ -2045,8 +2047,6 @@ Es gilt bei Vernachlässigung quadratischer Fehlerterme:
 \varrho_{4} & \le\varepsilon+\underbrace{K\left(f_{4},f_{3}\right)}_{=\frac{f_{3}}{-p+f_{3}}}\varrho_{3}\le\left(1+2\frac{\sqrt{pq}}{\sqrt{p^{2}+q}-p}\right)\varepsilon & \delta_{4} & \le\varepsilon+K\left(g_{4},g_{3}\right)\delta_{3}\le3\varepsilon\\
  &  & \delta_{5} & \le4\varepsilon
 \end{align*}
-
-
 %DATE: Mi 7.11.12
 
 \begin{align*}
@@ -2972,14 +2972,14 @@ r & =\pm\sqrt{a^{2}+e^{2}} & c & =\frac{a}{r} & s & =\frac{e}{r}
 \end{align*}
 Im allgemeiner Fall ist die Matrix von der Form $A\in\mathbb{R}^{m\times n}$.
 Wie rotiere ich?\\
-Antwort: Bette Givens-Rotation im $\mathbb{R}^{n}$ ein. 
+Antwort: Bette die Givens-Rotation in den $\mathbb{R}^{n}$ ein. 
 \begin{align*}
 G_{i,k} & =\begin{pmatrix}1\\
  & \ddots\\
  &  & 1\\
- &  &  & c_{1} & \dots & s\\
+ &  &  & c & \dots & s\\
  &  &  & \vdots & 1 & \vdots\\
- &  &  & -s & \dots & c_{2}\\
+ &  &  & -s & \dots & c\\
  &  &  &  &  &  & 1\\
  &  &  &  &  &  &  & \ddots\\
  &  &  &  &  &  &  &  & 1
@@ -3088,8 +3088,6 @@ $Q$ nie explizit ausrechnen!
 Viele Matrizen in der Anwendung sind dünn besetzt, das heißt ganz
 viele Einträge sind Null. In diesem Fall braucht man nur noch wenige
 Rotationen um eine obere Dreiecksgestalt zu erhalten.
-
-
 
 
 \subsubsection*{Bemerkung zu Givens-Rotationen}
@@ -6308,8 +6306,8 @@ schreiben:
 \begin{align*}
 A_{1}x & =b
 \end{align*}
-Dabei sind $A_{1}\in\mathbb{R}^{m\times m}$ und $b\in\mathbb{R}^{m}$
-mit:
+Dabei sind $A_{1}\in\mathbb{R}^{m\times m}$, $T\in\mathbb{R}^{\left(n-1\right)\times\left(n-1\right)}$
+und $b\in\mathbb{R}^{m}$ mit:
 \begin{align*}
 A_{1} & =\frac{1}{h^{2}}\left(\begin{array}{ccccc}
 T & -\mathbbm{1} & 0 & \ldots & 0\\
@@ -6341,7 +6339,7 @@ f\left(h,jh\right)+\frac{1}{h^{2}}g\left(0,jh\right)\\
 f\left(2h,jh\right)\\
 \vdots\\
 f\left(1-2h,jh\right)\\
-f\left(1-h,h\right)+\frac{1}{h^{2}}g\left(1,jh\right)
+f\left(1-h,jh\right)+\frac{1}{h^{2}}g\left(1,jh\right)
 \end{array}\right)
 \end{align*}
 \begin{align*}
@@ -6651,7 +6649,7 @@ bei der Berechnung von $x_{i}^{\left(k+1\right)}$ die Werte $x_{1}^{\left(k+1\ri
 schon zur Verfügung, was genutzt werden soll.\\
 Für $i\in\left\{ 1,\ldots,n\right\} $ erhalte:
 \begin{align*}
-x_{i}^{\left(k+1\right)} & =\frac{1}{a_{ii}}\left(-\sum_{j=1}^{i-1}a_{ij}x_{j}^{\left(k+1\right)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{\left(k\right)}\right)+b
+x_{i}^{\left(k+1\right)} & =\frac{1}{a_{ii}}\left(-\sum_{j=1}^{i-1}a_{ij}x_{j}^{\left(k+1\right)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{\left(k\right)}+b\right)
 \end{align*}
 Dies ist äquivalent zu:
 \begin{align*}
@@ -6678,12 +6676,12 @@ gilt:
 \begin{align*}
 \abs{a_{ii}} & >\sum_{\sr{}{j=1}{j\not=i}}^{n}\abs{a_{ij}}
 \end{align*}
-$A$ erfüllt die \emph{schwache Zeilensummenbedingung}, falls für
-$i\in\left\{ 1,\ldots,n\right\} $ gilt:
+$A$ erfüllt die \emph{schwache Zeilensummenbedingung}, falls neben
 \begin{align*}
 \abs{a_{ii}} & \ge\sum_{\sr{}{j=1}{j\not=i}}^{n}\abs{a_{ij}}
 \end{align*}
-
+für $i\in\left\{ 1,\ldots,n\right\} $ auch für mindestens ein $i$
+die strenge Ungleichung ,,$>$`` gilt.
 
 
 \section{Definition \textmd{(zerfallend)}}
@@ -7063,7 +7061,7 @@ Für den Realteil von $\left(1-\lambda\right)^{-1}$ gilt:
 \begin{align*}
 \text{Re}\left(\frac{1}{1-\lambda}\right) & =\text{Re}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}\right)=\frac{1}{2}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}+\overline{\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}}\right)\stackrel{B\text{ reell}}{=}\frac{1}{2}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}+\frac{x^{\TT}B\overline{x}}{x^{\TT}A\overline{x}}\right)=\\
  & =\frac{1}{2}\left(\frac{\overline{x}^{\TT}Bx}{\overline{x}^{\TT}Ax}+\frac{\overline{x}^{\TT}B^{\TT}x}{\overline{x}^{\TT}A^{\TT}x}\right)\stackrel{A\text{ symmetrisch}}{=}\frac{1}{2}\cdot\frac{\overline{x}^{\TT}\left(B+B^{\TT}\right)x}{\overline{x}^{\TT}Ax}=\\
- & =\frac{1}{2}\bigg(\underbrace{\left(\frac{2}{\omega}-1\right)}_{\text{\ensuremath{>0}}}\cdot\underbrace{\frac{\overline{x}^{\TT}Dx}{\overline{x}^{\TT}Ax}}_{\text{\ensuremath{>0} da }A\text{ positiv definit}}+1\bigg)>\frac{1}{2}
+ & =\frac{1}{2}\bigg(\underbrace{\left(\frac{2}{\omega}-1\right)}_{\text{\ensuremath{>0}}}\cdot\underbrace{\frac{\overline{x}^{\TT}Dx}{\overline{x}^{\TT}Ax}}_{\text{\ensuremath{>0}da }A\text{ positiv definit}}+1\bigg)>\frac{1}{2}
 \end{align*}
 Mit $\lambda=u+iv$ für $u,v\in\mathbb{R}$ folgt:
 \begin{align*}
@@ -7170,15 +7168,12 @@ Für das Einzelschrittverfahren ist der Fehler etwa halb so groß:
 
 
 \noindent \begin{center}
-\begin{tabular}{|c|c|c|c|c|}
-\hline 
+\begin{tabular}{c||c|c|c|c}
 $h$ & $\frac{1}{40}$ & $\frac{1}{80}$ & $\frac{1}{160}$ & $\frac{1}{320}$\tabularnewline
 \hline 
-$L$ & 1056 & 4193 & 16706 & 66694\tabularnewline
+$L\left(10^{3}\right)$ & 1056 & 4193 & 16706 & 66694\tabularnewline
 \hline 
-\hline 
-$K$ & 1119 & 4478 & 17916 & 71669\tabularnewline
-\hline 
+$K\left(10^{3}\right)$ & 1119 & 4478 & 17916 & 71669\tabularnewline
 \end{tabular}
 \par\end{center}
 
@@ -7211,6 +7206,451 @@ bestimmen.
 
 
 \section{Satz}
+
+%DATE: 28.01.13
+
+Wir betrachten die diskretisierte Poisson-Gleichung
+\begin{align*}
+A_{1}x & =b
+\end{align*}
+wie in \ref{sec:Diskretisierung-Poisson-Gleichung}. Es sei $\mu:=\varrho\left(\mathbbm{1}-D^{-1}A_{1}\right)<1$
+der Spektralradius des Jacobi-Verfahren, also des Gauß-Seidel-Verfahrens,
+und sei $M_{\omega}$ die Iterationsmatrix des SOR-Verfahrens. Dann
+ist $\varrho\left(M_{\omega}\right)$ für folgenden Relaxationsparameter
+minimal:
+\begin{align*}
+\omega_{\text{opt}} & =\frac{2}{1+\sqrt{1-\mu^{2}}}=1+\left(\frac{\mu}{1+\sqrt{1-\mu^{2}}}\right)^{2}=2\left(1+\sin\left(\frac{\pi}{n}\right)\right)
+\end{align*}
+Weiter gilt mit $h=\frac{1}{n}$:
+\begin{align*}
+\varrho\left(M_{\omega}\right) & =\omega_{\text{opt}}-1=\frac{\left(\cos\left(\pi h\right)\right)^{2}}{\left(1+\sin\left(\pi h\right)\right)^{2}}=\frac{1-\sin\left(\pi h\right)}{1+\sin\left(\pi h\right)}\approx1-2\pi h
+\end{align*}
+Um einen Startfehler um einen Faktor $R$ zu reduzieren, sind $K$
+Iterationen nötig und es gilt:
+\begin{align*}
+K & =-\frac{\ln\left(R\right)}{\ln\left(\varrho\left(M_{\omega_{\text{opt}}}\right)\right)}\approx\frac{1}{2\pi h}\ln\left(R\right)\approx\frac{\ln\left(R\right)}{2\pi}\sqrt{m}
+\end{align*}
+Der Aufwand pro Iteration ist also proportional zu $m$. Der Gesamtaufwand
+zur Reduktion um den Faktor ist also proportional zu $m^{\frac{3}{2}}$.
+
+
+\subsubsection*{Bemerkung}
+\begin{itemize}
+\item Noch deutlich besser ist das vorkonditionierte cg-Verfahren (,,\foreignlanguage{english}{conjugate
+gradient}``), auch pcg-Verfahren genannt.
+\item Am schnellsten sind Mehrgitterverfahren, deren Aufwand proportional
+zu $m$ ist. (Jacobi-Verfahren und Gauß-Seidel-Verfahren gehen hier
+ein.)
+\end{itemize}
+
+\section{SSOR-Verfahren}
+
+Die symmetrische SOR-Methode (SSOR) ist eine Variante des SOR-Verfahrens.
+Die Idee ist, dass ein erster Teilschritt die Neuberechnung der Vektorkomponenten
+mit kleinen Indizes beginnt und ein zweiter Teilschritt mit großen
+Indizes. Konkret heißt das, man berechnet
+\begin{align*}
+x_{i}^{\left(k+\frac{1}{2}\right)} & =x_{i}^{\left(k\right)}-\frac{\omega}{a_{ii}}\left(\sum_{j=1}^{i-1}a_{ij}x^{\left(k+\frac{1}{2}\right)}+\sum_{j=i}^{n}a_{ij}x_{j}^{\left(k\right)}-b_{i}\right)
+\end{align*}
+für aufsteigendes $i\in\left\{ 1,\ldots,n\right\} $ und dann
+\begin{align*}
+x_{i}^{\left(k+1\right)} & =x_{i}^{\left(k+\frac{1}{2}\right)}-\frac{\omega}{a_{ii}}\left(\sum_{j=i+1}^{n}a_{ij}x^{\left(k+1\right)}+\sum_{j=1}^{i}a_{ij}x_{j}^{\left(k+\frac{1}{2}\right)}-b_{i}\right)
+\end{align*}
+für absteigendes $i\in\left\{ n,\ldots,1\right\} $. Die Iterationsmatrix
+ist $\mathbbm{1}-B^{-1}A$ mit:
+\begin{align*}
+B^{-1} & =\omega\left(2-\omega\right)\left(D+\omega R\right)^{-1}D\left(D+\omega L\right)^{-1}
+\end{align*}
+
+
+
+\chapter{Eigenwertaufgaben}
+
+
+\section{Einleitung}
+
+Bestimmung von Eigenwerten ist in der Praxis von großer Bedeutung:
+\begin{itemize}
+\item Analyse des Schwingungsverhaltens von mechanischen oder elektrischen
+Systemen (Eigenfrequenzen, Resonanzen, die z.B. einen Brückeneinsturz
+auslösen können)
+\item Die Reihenfolge der Auflistung von Suchtreffern bei Google wird mit
+Hilfe von Eigenwertaufgaben bestimmt, deren Lösung nummerisch berechnet
+wird.\\
+(siehe \noun{Deufelhard}/\noun{Hohmann})
+\end{itemize}
+Zunächst wollen wir die Eigenwerte theoretisch lokalisieren.
+
+
+\section{Satz von Gerschgorin}
+
+Die Eigenwerte einer Matrix $A=\left(a_{ij}\right)_{ij}\in\mathbb{C}^{n\times n}$
+liegen in der Vereinigung aller Gerschgorinkreise
+\begin{align*}
+K_{i} & :=\left\{ z\in\mathbb{C}\big|\abs{z-a_{ii}}\le r_{i}\right\} 
+\end{align*}
+mit den Radien:
+\begin{align*}
+r_{i} & :=\sum_{\sr{}{k=1}{k\not=i}}^{n}\abs{a_{jk}}
+\end{align*}
+
+
+
+\subsubsection*{Beweis}
+
+Sei $v\not=0$ mit $Av=\lambda v$, das heißt für $l\in\left\{ 1,\ldots,n\right\} $:
+\begin{align*}
+\left(\lambda-a_{ll}\right)v_{l} & =\sum_{\sr{}{k=1}{k\not=l}}^{n}a_{lk}v_{k}
+\end{align*}
+Sei nun $l$ so, dass gilt:
+\begin{align*}
+\abs{v_{l}} & =\norm v_{\infty}=\max_{i\in\left\{ 1,\ldots,n\right\} }\abs{v_{i}}>0
+\end{align*}
+Dann folgt wegen $\abs{\frac{v_{k}}{v_{l}}}\le1$:
+\begin{align*}
+\abs{\lambda-a_{ll}} & \le\sum_{\sr{}{k=1}{k\not=l}}^{n}\abs{a_{lk}}=r_{l}
+\end{align*}
+\qqed
+
+Die obige Aussage lässt sich verschärfen, indem man $A^{\TT}$ oder
+$D^{-1}AD$ etc. betrachtet. Je weniger sich $A$ von einer Diagonalmatrix
+unterscheidet, desto schärfer ist die Abschätzung.
+
+
+\subsubsection*{Beispiel}
+
+\begin{align*}
+A & =\left(\begin{array}{ccc}
+1+\frac{\ii}{2} & 0{,}5 & 0{,}1\\
+0{,}3 & 1-\frac{\ii}{1} & 0{,}5\\
+0{,}4 & 0 & -0{,}5
+\end{array}\right)
+\end{align*}
+Die Gerschgorin-Radien sind:
+\begin{align*}
+r_{1} & =0{,}6 & r_{2} & =0{,}8 & r_{3} & =0{,}4
+\end{align*}
+
+
+\textcolor{green}{TODO: Rest von Folie}
+
+
+\section{Satz}
+
+Bilden $k$ Gerschgorinkreise eine Menge $G$, die zu den restlichen
+Kreisen $K_{j}$ disjunkt ist, dann liegen in $G$ genau $k$ Eigenwerte
+der Matrix.
+
+
+\subsubsection*{Beweis:}
+
+Verwende eine Homotopiemethode. Betrachte:
+\begin{align*}
+A\left(t\right) & :=\underbrace{\left(\begin{array}{ccc}
+a_{11} &  & 0\\
+ & \ddots\\
+0 &  & a_{nn}
+\end{array}\right)}_{=:D}+t\left(A-D\right)
+\end{align*}
+Dann gilt $A\left(0\right)=D$ und $A\left(1\right)=A$. Seien $\lambda_{i}\left(t\right)$
+die Eigenwerte von $A\left(t\right)$ für $i\in\left\{ 1,\ldots,n\right\} $.
+Für $t=0$ gilt $\lambda_{i}\left(0\right)=a_{ii}$ und es liegen
+genau $k$ Eigenwerte in $G$ und $\left(n-k\right)$ in den restlichen
+$K_{i}$. $\lambda_{i}\left(t\right)$ ist stetig in $t$, da die
+Nullstellen des charakteristischen Polynoms stetig von den Koeffizienten
+abhängen. Weiter ist $K_{i}\left(t\right)\subseteq K_{i}$ für $t\in\left[0,1\right]$.
+Aus der Stetigkeit folgt dann die Behauptung, da ein Eigenwert nicht
+aus $G$ herausspringen kann.\qqed
+
+
+\subsubsection*{Beispiel}
+
+\begin{align*}
+A & =\left(\begin{array}{ccc}
+1 & 0{,}1 & -0{,}1\\
+0 & 2 & 0{,}4\\
+-0{,}2 & 0 & 3
+\end{array}\right)
+\end{align*}
+Es folgt:
+\begin{align*}
+K_{1} & =\left\{ \mu\big|\abs{\mu-1}\le0{,}2\right\} \\
+K_{2} & =\left\{ \mu\big|\abs{\mu-2}\le0{,}4\right\} \\
+K_{3} & =\left\{ \mu\big|\abs{\mu-3}\le0{,}2\right\} 
+\end{align*}
+\textcolor{green}{TODO: Plot der Gerschgorin-Kreise}
+
+Je ein Eigenwert liegt in jedem Kreis, also müssen alle Eigenwerte
+reell sein, da sonst immer ein paar von komplex-konjugierten Eigenwerten
+existieren würde.
+
+
+\section{Potenzmethode (Vektoriteration)\label{sec:Potenzmethode-(Vektoriteration)}}
+
+Sei $A\in\mathbb{R}^{n\times n}$ eine in $\mathbb{C}$ diagonalisierbare
+Matrix und sei der dominante Eigenwert einfach, das heißt:
+\begin{align*}
+\abs{\lambda_{1}} & >\abs{\lambda_{2}}\ge\ldots\ge\abs{\lambda_{n}}
+\end{align*}
+Seien $v_{1},\ldots,v_{n}$ die zugehörigen Eigenvektoren, ohne Einschränkung
+mit $\norm{v_{i}}_{2}=1$ für alle $i\in\left\{ 1,\ldots,n\right\} $.
+Die Vektoriteration ist gegeben durch $x^{\left(k+1\right)}=Ax^{\left(k\right)}$.
+Da $A$ reell ist, folgt $\lambda_{1}\in\mathbb{R}$, da sonst $\overline{\lambda_{1}}$
+ebenfalls ein Eigenwert wäre, aber $\abs{\overline{\lambda_{1}}}=\abs{\lambda_{1}}$
+gilt, im Widerspruch dazu, dass $\lambda_{1}$ der betragsmäßig größte
+Eigenwert ist. Dann kann auch $v_{1}\in\mathbb{R}^{n}$ gewählt werden,
+da die Eigenwertgleichung getrennt für den Real- und den Imaginärteil
+von $v$ gilt, weil $A$ reell ist. Schreibe nun den Startwert $x^{\left(0\right)}$
+wie folgt:
+\begin{align*}
+x^{\left(0\right)} & =\sum_{i=1}^{n}\alpha_{i}v_{i}
+\end{align*}
+Wir nehmen an, dass $x^{\left(0\right)}$ nicht senkrecht zu $v_{1}$
+ist, also $\alpha_{1}\not=0$ gilt.\\
+Für die Iterierten $x^{\left(k\right)}\in\mathbb{R}^{n}$ gilt:
+\begin{align*}
+x^{\left(k\right)} & =A^{k}x^{\left(0\right)}=\sum_{i=1}^{n}\alpha_{i}\lambda_{i}^{k}v_{i}=\\
+ & =\lambda_{1}^{k}\bigg(\alpha_{1}v_{1}+\underbrace{\sum_{i=2}^{n}\alpha_{i}\left(\frac{\lambda_{i}}{\lambda_{1}}\right)^{k}v_{i}}_{=:r^{\left(k\right)}}\bigg)=\lambda_{1}^{k}\left(\alpha_{1}v_{1}+r^{\left(k\right)}\right)
+\end{align*}
+Außerdem gilt:
+\begin{align*}
+\norm{r^{\left(k\right)}}_{2} & \le\sum_{i=2}^{n}\abs{\alpha_{i}}\cdot\abs{\frac{\lambda_{i}}{\lambda_{1}}}^{k}\cdot\underbrace{\norm{v_{i}}_{2}}_{=1}\le c\left(\alpha_{2},\ldots,\alpha_{n}\right)\cdot\abs{\frac{\lambda_{2}}{\lambda_{1}}}^{k}\xrightarrow{k\to\infty}0
+\end{align*}
+Für große $k$ zeigt $x^{\left(k\right)}$ also in Richtung von $v_{1}$.
+
+%DATE: Mi 30.1.13
+
+Wir wollen die Aussage, dass die durch $x^{\left(k\right)}=A^{k}x^{\left(0\right)}$
+definierte Richtung gegen die durch $v_{1}$ definierte Richtung konvergiert,
+präzisieren.
+
+Zwischen zwei eindimensionalen Unterräumen 
+\begin{align*}
+T_{v} & =\left\{ \alpha v\big|\alpha\in\mathbb{R}\right\}  & \norm v_{2} & =1\\
+T_{w} & =\left\{ \alpha w\big|\alpha\in\mathbb{R}\right\}  & \norm w_{2} & =1
+\end{align*}
+führen wir folgenden Abstand ein:
+\begin{align*}
+d\left(T_{v},T_{w}\right) & :=\min_{z\in T_{w}}\norm{z-v}_{2}=\min_{\alpha\in\mathbb{R}}\norm{\alpha w-v}_{2}
+\end{align*}
+\textcolor{green}{TODO: Abb25}
+
+Setze $v=v_{1}$ und $w=\frac{x^{\left(k\right)}}{\norm{x^{\left(k\right)}}}$.
+Wir wissen:
+\begin{align*}
+\frac{1}{\lambda_{1}^{k}\alpha_{1}}x^{\left(k\right)} & =v_{1}+\frac{1}{\alpha_{1}}r^{\left(k\right)}
+\end{align*}
+\begin{align*}
+d\left(T_{\frac{x^{\left(k\right)}}{\norm{x^{\left(k\right)}}}},T_{v_{1}}\right) & \le\norm{\frac{1}{\lambda_{1}^{k}\alpha_{1}}x^{\left(k\right)}-v_{1}}_{2}=\frac{1}{\abs{\alpha_{1}}}\cdot\norm{r^{\left(k\right)}}_{2}=\mathcal{O}_{k\to\infty}\left(\abs{\frac{\lambda_{2}}{\lambda_{1}}}^{k}\right)\xrightarrow{k\to\infty}0
+\end{align*}
+Zur Annäherung von $\lambda_{1}$ benutze:
+\begin{align*}
+\lambda^{\left(k\right)} & =\frac{\left(x^{\left(k\right)}\right)^{\TT}Ax^{\left(k\right)}}{\norm{x^{\left(k\right)}}_{2}^{2}}=\frac{\left(x^{\left(k\right)}\right)^{\TT}x^{\left(k+1\right)}}{\norm{x^{\left(k\right)}}_{2}^{2}}
+\end{align*}
+Denn es gilt:
+\begin{align*}
+\frac{v_{1}^{\TT}Av_{1}}{\norm{v_{1}}_{2}^{2}} & =\frac{\lambda_{1}v_{1}^{\TT}v_{1}}{\norm{v_{1}}_{2}^{2}}=\lambda_{1}
+\end{align*}
+Setze nun:
+\begin{align*}
+c_{k} & :=\frac{1}{\lambda_{1}^{k}\alpha_{1}}
+\end{align*}
+Es gilt:
+\begin{align*}
+c_{k+1} & =\frac{1}{\lambda_{1}^{k+1}\alpha_{1}}=\frac{1}{\lambda_{1}}c_{k}
+\end{align*}
+Wir erhalten:
+\begin{align*}
+\lambda^{\left(k\right)} & =\lambda_{1}\frac{\left(c_{k}x^{\left(k\right)}\right)^{\TT}\left(c_{k+1}x^{\left(k+1\right)}\right)}{\norm{c_{k}x^{\left(k\right)}}_{2}^{2}}=\lambda_{1}\frac{\left(v_{1}+\frac{1}{\alpha_{1}}r^{\left(k\right)}\right)^{\TT}\left(v_{1}+\frac{1}{\alpha_{1}}r^{\left(k+1\right)}\right)}{\norm{v_{1}+\frac{1}{\alpha_{1}}r^{\left(k\right)}}_{2}^{2}}=\\
+ & \sr ={\norm{v_{1}}_{2}=1}{\text{Cauchy-Schwarz-Ug.}}\lambda_{1}\frac{1+\mathcal{O}_{k\to\infty}\left(\abs{\frac{\lambda_{2}}{\lambda_{1}}}^{k}\right)}{1+\mathcal{O}_{k\to\infty}\left(\abs{\frac{\lambda_{2}}{\lambda_{1}}}^{k}\right)}=\lambda_{1}\left(1+\mathcal{O}_{k\to\infty}\left(\abs{\frac{\lambda_{2}}{\lambda_{1}}}^{k}\right)\right)
+\end{align*}
+Dies zeigt $\lambda^{\left(k\right)}\xrightarrow{k\to\infty}\lambda_{1}$.
+
+Da $\norm{x^{\left(k\right)}}_{2}\to\infty$ divergiert, falls $\abs{\lambda_{1}}>1$
+gilt, und $\norm{x^{\left(k\right)}}_{2}\to0$ konvergiert, falls
+$\abs{\lambda_{1}}<1$ gilt, ist es zweckmäßig, die Iterierten zu
+normieren. Betrachte also $\frac{x^{\left(k\right)}}{\norm{x^{\left(k\right)}}}$
+statt $x^{\left(k\right)}$. (Skalierung)
+
+
+\section{Algorithmus \textmd{(Vektoriteration, Potenzmethode)\label{sec:Algorithmus-Vektoriteration}}}
+
+Wähle zunächst einen Startvektor $y^{\left(0\right)}$ mit $\norm{y^{\left(0\right)}}_{2}=1$.
+Für aufsteigendes $k\in\mathbb{N}_{\ge0}$ berechne dann:
+\begin{align*}
+\tilde{y}^{\left(k+1\right)} & =Ay^{\left(k\right)}\\
+\lambda^{\left(k\right)} & =\left(y^{\left(k\right)}\right)^{\TT}\tilde{y}^{\left(k+1\right)}\\
+y^{\left(k+1\right)} & =\frac{\tilde{y}^{\left(k+1\right)}}{\norm{\tilde{y}^{\left(k+1\right)}}_{2}}
+\end{align*}
+
+
+
+\subsubsection*{Bemerkung}
+
+Mit $x^{\left(0\right)}=y^{\left(0\right)}$ folgt per Induktion:
+\begin{align*}
+y^{\left(k\right)} & =\frac{x^{\left(k\right)}}{\norm{x^{\left(k\right)}}_{2}}=\frac{A^{k}x^{\left(0\right)}}{\norm{A^{k}x^{\left(0\right)}}_{2}}
+\end{align*}
+Der Induktionsanfang $k=0$ ist klar. 
+\begin{align*}
+y^{\left(k+1\right)} & =\frac{Ay^{\left(k\right)}}{\norm{Ay^{\left(k\right)}}}\sr ={\text{Induktions-}}{\text{voraussetzung}}\frac{AA^{k}x^{\left(0\right)}}{\norm{AA^{k}x^{\left(0\right)}}_{2}}
+\end{align*}
+Also liefert der obige Algorithmus bis auf einen Faktor in $x^{\left(k\right)}$,
+die Folgen $\left(x^{\left(k\right)}\right)$ und $\left(\lambda^{\left(k\right)}\right)$.
+
+
+\section{Satz}
+
+Unter den Voraussetzungen in \ref{sec:Potenzmethode-(Vektoriteration)}
+approximiert die Vektoriteration in \ref{sec:Algorithmus-Vektoriteration}
+den dominanten Eigenwert $\lambda_{1}\in\mathbb{R}$ und einen zugehörigen
+normierten Eigenvektor $v_{1}\in\mathbb{R}^{n}$. Es gilt
+\begin{align*}
+\abs{\lambda^{\left(k\right)}-\lambda_{1}} & =\mathcal{O}_{k\to\infty}\left(\abs{\frac{\lambda_{2}}{\lambda_{1}}}^{k}\right)\xrightarrow{k\to\infty}0
+\end{align*}
+und:
+\begin{align*}
+\dd\left(T_{y^{\left(k\right)}},T_{v_{1}}\right) & =\mathcal{O}_{k\to\infty}\left(\abs{\frac{\lambda_{2}}{\lambda_{1}}}^{k}\right)\xrightarrow{k\to\infty}0
+\end{align*}
+
+
+
+\subsubsection*{Beweis}
+
+Obige Überlegungen beweisen diesen Satz.\qqed
+
+
+\subsubsection*{Bemerkung}
+\begin{enumerate}[label=\roman*)]
+\item Die Effizienz, das heißt die Konvergenzgeschwindigkeit, hängt von
+$\abs{\frac{\lambda_{2}}{\lambda_{1}}}$ ab.
+\item Für eine mehrfache Nullstelle $\lambda_{1}=\ldots=\lambda_{m}$ mit
+$\abs{\lambda_{m}}>\abs{\lambda_{m+1}}$ konvergiert das Verfahren
+weiterhin gegen $\lambda_{1}$.\\
+Gilt $\abs{\lambda_{1}}=\abs{\lambda_{2}}$, aber $\lambda_{1}\not=\lambda_{2}$,
+so erhält man im Allgemeinen keine Konvergenz.
+\item Nachteile des Verfahrens:
+
+\begin{itemize}
+\item Es kann nur der betragsmäßig größte Eigenwert berechnet werden.
+\item Falls $\abs{\lambda_{1}}\approx\abs{\lambda_{2}}$ gilt, ist die Konvergenz
+langsam.
+\end{itemize}
+\end{enumerate}
+
+\section{Inverse Vektoriteration}
+
+Es sei $A$ eine invertierbare Matrix mit Eigenwerten $\lambda_{i}$.
+Weiter sei $v$ ein Eigenvektor zum Eigenwert $\lambda$. Für ein
+beliebiges $\tilde{\lambda}\in\mathbb{R}$ gilt:
+\begin{align*}
+\left(A-\tilde{\lambda}\mathbbm{1}\right)v & =\left(\lambda-\tilde{\lambda}\right)v\\
+\Leftrightarrow\qquad\left(A-\tilde{\lambda}\mathbbm{1}\right)^{-1}v & =\frac{1}{\lambda-\tilde{\lambda}}v
+\end{align*}
+Sei $\tilde{\lambda}$ ein guter Schätzwert von $\lambda_{i}$ ist,
+das heißt für alle $j\not=i$ gilt:
+\begin{align*}
+\abs{\tilde{\lambda}-\lambda_{i}} & <\abs{\tilde{\lambda}-\lambda_{j}}
+\end{align*}
+Dann ist $\frac{1}{\lambda_{i}-\tilde{\lambda}}$ der betragsmäßig
+maximale Eigenwert von $\left(A-\tilde{\lambda}\mathbbm{1}\right)^{-1}$
+und hat den Eigenvektor~$v$. Die Potenzmethode angewandt auf $\left(A-\tilde{\lambda}\mathbbm{1}\right)^{-1}$
+liefert:
+\begin{align*}
+\mu & =\frac{1}{\lambda_{i}-\tilde{\lambda}}
+\end{align*}
+Somit folgt:
+\begin{align*}
+\lambda_{i} & =\frac{1}{\mu}-\tilde{\lambda}
+\end{align*}
+Der Eigenvektor ist jeweils $v$.
+
+Die reine inverse Vektoriteration verwendet $\tilde{\lambda}=0$.
+Verwendet man $\tilde{\lambda}\not=0$, so sagt man dazu \emph{Spektralverschiebung}.
+
+
+\section{Inverse Vektoriteration mit Spektralverschiebung}
+
+\emph{Algorithmus}:
+
+Wähle $x^{\left(0\right)}\in\mathbb{R}^{n}\setminus\left\{ 0\right\} $
+und setze:
+\begin{align*}
+v^{\left(0\right)} & :=\frac{x^{\left(0\right)}}{\norm{x^{\left(0\right)}}_{2}}
+\end{align*}
+Für aufsteigendes $k\in\mathbb{N}_{\ge0}$ löse folgendes Gleichungssystem
+und berechne:
+\begin{align}
+\left(A-\tilde{\lambda}\mathbbm{1}\right)\tilde{x}^{\left(k+1\right)} & =v^{\left(k\right)}\label{eq:Gls}
+\end{align}
+\begin{align*}
+\lambda^{\left(k\right)} & =\frac{1}{\left(v^{\left(k\right)}\right)^{\TT}\tilde{x}^{\left(k+1\right)}}+\tilde{\lambda}\\
+v^{\left(k+1\right)} & =\frac{\tilde{x}^{\left(k+1\right)}}{\norm{\tilde{x}^{\left(k+1\right)}}}
+\end{align*}
+Bei der Implementierung muss man noch ein Abbruchkriterium hinzufügen.
+
+In \eqref{eq:Gls} muss je Iteration ein lineares Gleichungssystem
+gelöst werden. Der Aufwand ist also höher, als bei der Potenzmethode.
+Wird einmal eine $LR$- beziehungsweise eine $QR$-Zerlegung von $A-\tilde{\lambda}\mathbbm{1}$
+berechnet (Aufwand $\mathcal{O}_{\infty}\left(n^{3}\right)$), so
+braucht \eqref{eq:Gls} noch eine Vorwärts- und eine Rückwärtssubstitution
+(Aufwand $\mathcal{O}_{\infty}\left(n^{2}\right)$). Als Schätzung
+für $\tilde{\lambda}$ können die Gerschgorin-Kreise benutzt werden.
+
+\emph{Konvergenzgeschwindigkeit}:
+\begin{align*}
+\frac{\abs{\lambda_{i}-\tilde{\lambda}}}{\min_{j\not=i}\abs{\lambda_{j}-\tilde{\lambda}}}
+\end{align*}
+Dies folgt aus dem Resultat für die Potenzmethode.
+
+Jetzt suchen wir eine Methode, die es erlaubt, \emph{alle} Eigenwerte
+zu berechnen.
+
+
+\section{\texorpdfstring{$QR$}{QR}-Algorithmus}
+
+Es sei $A\in\mathbb{R}^{n\times n}$ mit $QR$-Zerlegung $A=QR$,
+das heißt $Q$ orthogonal und $R$ eine obere Dreiecksmatrix. Wir
+definiere:
+\begin{align*}
+A_{0} & :=A
+\end{align*}
+Für aufsteigendes $k\in\mathbb{N}_{\ge0}$ berechne:
+\begin{align*}
+A_{k} & =Q_{k}R_{k}\\
+A_{k+1} & =R_{k}Q_{k}
+\end{align*}
+Dabei ist $Q_{k}R_{k}$ die $QR$-Zerlegung von $A_{k}$.
+
+
+\section{Lemma}
+
+Die Matrizen $A_{k}$ haben folgende Eigenschaften:
+\begin{enumerate}[label=\roman*)]
+\item Die Matrizen $A_{k}$ sind alle konjugiert zu $A$, das heißt gehen
+durch eine Ähnlichkeitstransformation aus $A$ hervor.
+\item Ist $A$ symmetrisch, so sind alle $A_{k}$ symmetrisch.
+\item Ist $A$ symmetrisch und tridiagonal, so auch alle $A_{k}$.
+\end{enumerate}
+
+\subsubsection*{Beweis}
+\begin{enumerate}[label=\roman*)]
+\item Sei $A=QR$ und $A':=RQ$. Dann gilt, da $Q$ orthogonal ist, also
+$QQ^{\TT}=\mathbbm{1}$ gilt:
+\begin{align*}
+QA'Q^{\TT} & =QRQQ^{\TT}=QR=A
+\end{align*}
+
+\item Es gilt:
+\begin{align*}
+\left(A'\right)^{\TT} & =\left(A'\right)^{\TT}Q^{\TT}Q=Q^{\TT}R^{\TT}Q^{\TT}Q=Q^{\TT}\left(QR\right)^{\TT}Q=Q^{\TT}A^{\TT}Q=Q^{\TT}AQ=A'
+\end{align*}
+
+\item Nutze Givens-Rotationen zur Berechnung der $QR$-Zerlegung und die
+Struktur von $A$.\\
+\textcolor{green}{TODO: Beweis einfügen}
+\end{enumerate}
+\qqed
 
 
 \part*{Anhang\thispagestyle{empty}}
