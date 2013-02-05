@@ -28725,6 +28725,13 @@ Dabei ist
 
 \begin_layout Section
 Lemma
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Lem-Eigenschaften_Ak"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -28860,24 +28867,128 @@ Es gilt:
 \end_inset
 
 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%DATE: Mo 04.2.13
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Enumerate
-Nutze Givens-Rotationen zur Berechnung der 
+Realisiere die 
 \begin_inset Formula $QR$
 \end_inset
 
--Zerlegung und die Struktur von 
+-Zerlegung von 
 \begin_inset Formula $A$
 \end_inset
 
-.
-\begin_inset Newline newline
+ durch Givens-Rotationen.
+\begin_inset Formula 
+\begin{align*}
+A & =\left(\begin{array}{ccccc}
+* & * &  &  & 0\\
+* & * & \ddots\\
+ & \ddots & \ddots & \ddots\\
+ &  & \ddots & \ddots & *\\
+0 &  &  & * & *
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+Wähle 
+\begin_inset Formula $\left(n-1\right)$
+\end_inset
+
+ Givens-Rotationen 
+\begin_inset Formula $G_{1,2},\ldots,G_{n-1,n}$
+\end_inset
+
+, sodass gilt:
+\begin_inset Formula 
+\begin{align*}
+G_{n-1,n}\cdot\ldots\cdot G_{2,3}G_{1,2}A & =R\\
+Q & =G_{1,2}^{\TT}\cdot\ldots\cdot G_{n-1,n}^{\TT}
+\end{align*}
+
 \end_inset
 
 
-\color green
-TODO: Beweis einfügen
+\begin_inset Formula 
+\begin{align*}
+A=\left(\begin{array}{ccccc}
+* & * &  &  & 0\\
+\otimes & * & \ddots\\
+ & \ddots & \ddots & \ddots\\
+ &  & \ddots & \ddots & *\\
+0 &  &  & \otimes & *
+\end{array}\right) & \xrightarrow[\text{Rotationen an}]{\text{wende Givens-}}\left(\begin{array}{ccccc}
+* & * & * &  & 0\\
+ & * & \ddots & \ddots\\
+ &  & \ddots & \ddots & *\\
+ &  &  & \ddots & *\\
+0 &  &  &  & *
+\end{array}\right)=R\\
+ & \longrightarrow\left(\begin{array}{ccccc}
+* & * & \oplus &  & 0\\
+* & * & \ddots & \ddots\\
+ & \ddots & \ddots & \ddots & \oplus\\
+ &  & \ddots & \ddots & *\\
+0 &  &  & * & *
+\end{array}\right)=RQ
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula $\otimes$
+\end_inset
+
+ sind die zu eliminierenden Positionen und 
+\begin_inset Formula $\oplus$
+\end_inset
+
+ sind neu erzeugte „
+\lang english
+fill in
+\lang ngerman
+“ Elemente.
+\begin_inset Newline newline
+\end_inset
+
+Die Spalten 
+\begin_inset Formula $\left(1,2\right),\ldots,\left(n-1,n\right)$
+\end_inset
+
+ werden nacheinander linear kombiniert.
+\begin_inset Newline newline
+\end_inset
+
+Wegen 
+\begin_inset Formula 
+\begin{align*}
+A' & =RQ=Q^{\TT}AQ=\left(Q^{\TT}AQ\right)^{\TT}
+\end{align*}
+
+\end_inset
+
+ist 
+\begin_inset Formula $A'$
+\end_inset
+
+ symmetrisch und somit verschwinden alle 
+\begin_inset Formula $\oplus$
+\end_inset
+
+.
+ Dies zeigt die Behauptung.
 \end_layout
 
 \begin_layout Standard
@@ -28890,6 +29001,867 @@ status open
 \backslash
 qqed
 \end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Definition 
+\series medium
+(Hessenbergform)
+\end_layout
+
+\begin_layout Standard
+Eine Matrix 
+\begin_inset Formula $B\in\mathbb{R}^{n\times n}$
+\end_inset
+
+ hat 
+\emph on
+(obere) Hessenbergform
+\emph default
+, wenn 
+\begin_inset Formula $b_{ij}=0$
+\end_inset
+
+ für 
+\begin_inset Formula $i>j+1$
+\end_inset
+
+ gilt, das heißt:
+\begin_inset Formula 
+\begin{align*}
+B & =\left(\begin{array}{cccc}
+* & \ldots & \ldots & *\\
+* & \ddots &  & \vdots\\
+ & \ddots & \ddots & \vdots\\
+0 &  & * & *
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+Eine solche Matrix nennt man 
+\emph on
+Hessenbergmatrix
+\emph default
+.
+\end_layout
+
+\begin_layout Section
+Satz
+\end_layout
+
+\begin_layout Standard
+Zu jeder Matrix 
+\begin_inset Formula $A\in\mathbb{R}^{n\times n}$
+\end_inset
+
+ existieren 
+\begin_inset Formula $\left(n-2\right)$
+\end_inset
+
+ Householder-Matrizen 
+\begin_inset Formula $H_{j}$
+\end_inset
+
+ für 
+\begin_inset Formula $j\in\left\{ 1,\ldots,n-2\right\} $
+\end_inset
+
+ mit
+\begin_inset Formula 
+\begin{align*}
+Q & =H_{n-2}\cdot\ldots\cdot H_{1}
+\end{align*}
+
+\end_inset
+
+für die
+\begin_inset Formula 
+\begin{align*}
+B & =QAQ^{\TT}
+\end{align*}
+
+\end_inset
+
+Hessenberg-Gestalt hat.
+\end_layout
+
+\begin_layout Subsubsection*
+Beweis
+\end_layout
+
+\begin_layout Standard
+Schreibe die Matrix in der Form
+\begin_inset Formula 
+\begin{align*}
+A & =\left(\begin{array}{cc}
+a_{11} & *\\
+\tilde{a_{1}} & \tilde{A}
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+mit 
+\begin_inset Formula $\tilde{A}\in\mathbb{R}^{\left(n-1\right)\times\left(n-1\right)}$
+\end_inset
+
+ und 
+\begin_inset Formula $\tilde{a}_{1}\in\mathbb{R}^{n-1}$
+\end_inset
+
+.
+ Wähle eine Householder-Matrix 
+\begin_inset Formula $\tilde{H}_{1}\in\mathbb{R}^{\left(n-1\right)\times\left(n-1\right)}$
+\end_inset
+
+ mit:
+\begin_inset Formula 
+\begin{align*}
+\tilde{H}_{1}\tilde{a}_{1} & =\norm{\tilde{a}_{1}}_{2}\cdot e_{1}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula $e_{1}\in\mathbb{R}^{n-1}$
+\end_inset
+
+ ist der erste Einheitsvektor.
+ Mit
+\begin_inset Formula 
+\begin{align*}
+H_{1} & =\left(\begin{array}{cccc}
+1 & 0 & \ldots & 0\\
+0\\
+\vdots &  & \tilde{H}_{1}\\
+0
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+erhalten wir:
+\begin_inset Formula 
+\begin{align*}
+H_{1}AH_{1}^{\TT} & =\left(\begin{array}{cc}
+1 & 0\\
+0 & \tilde{H}_{1}
+\end{array}\right)\left(\begin{array}{cc}
+a_{11} & *\\
+\tilde{a}_{1} & \tilde{A}
+\end{array}\right)\left(\begin{array}{cc}
+1 & 0\\
+0 & \tilde{H}_{1}^{\TT}
+\end{array}\right)=\\
+ & =\left(\begin{array}{cc}
+1 & 0\\
+0 & \tilde{H}_{1}
+\end{array}\right)\left(\begin{array}{cc}
+a_{11} & *\\
+\tilde{a}_{1} & \tilde{A}\tilde{H}_{1}^{\TT}
+\end{array}\right)=\left(\begin{array}{cc}
+a_{11} & *\\
+\tilde{H}_{1}\tilde{a}_{1} & \tilde{H}_{1}\tilde{A}\tilde{H}_{1}^{\TT}
+\end{array}\right)=\\
+ & =\left(\begin{array}{cc}
+a_{11} & *\\
+\norm{\tilde{a}_{1}}_{2}e_{1} & \tilde{H}_{1}\tilde{A}\tilde{H}_{1}^{\TT}
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+Damit hat die erste Spalte die gewünschte Form.
+ Wende nun dieses Verfahren rekursiv auf 
+\begin_inset Formula $\tilde{H}_{1}A\tilde{H}_{1}^{\TT}$
+\end_inset
+
+ etc.
+ an.
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Bemerkung
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+label=
+\backslash
+roman*)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Eine symmetrische Hessenberg-Matrix hat Tridiagonalform.
+\end_layout
+
+\begin_layout Enumerate
+Die Überlegungen zum Beweis von Lemma 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Lem-Eigenschaften_Ak"
+
+\end_inset
+
+ iii) liefern, dass der 
+\begin_inset Formula $QR$
+\end_inset
+
+-Algorithmus die Hessenbergform erhält.
+\end_layout
+
+\begin_layout Standard
+Jetzt zur 
+\emph on
+Konvergenz
+\emph default
+ des 
+\begin_inset Formula $QR$
+\end_inset
+
+-Algorithmus.
+ (Die Eigenwerte sind paarweise verschieden!)
+\end_layout
+
+\begin_layout Section
+Satz
+\end_layout
+
+\begin_layout Standard
+Sei 
+\begin_inset Formula $A\in\mathbb{R}^{n\times n}$
+\end_inset
+
+ symmetrisch mit den Eigenwerten 
+\begin_inset Formula $\lambda_{1},\ldots,\lambda_{n}$
+\end_inset
+
+ mit
+\begin_inset Formula 
+\begin{align*}
+\abs{\lambda_{1}} & >\abs{\lambda_{2}}>\ldots>\abs{\lambda_{n}}>0
+\end{align*}
+
+\end_inset
+
+und es gelte 
+\begin_inset Formula $A=T^{-1}\Lambda T$
+\end_inset
+
+ mit
+\begin_inset Formula 
+\begin{align*}
+\Lambda & =\left(\begin{array}{ccc}
+\lambda_{1} &  & 0\\
+ & \ddots\\
+0 &  & \lambda_{n}
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+und einer Matrix 
+\begin_inset Formula $T$
+\end_inset
+
+, die eine 
+\begin_inset Formula $LR$
+\end_inset
+
+-Zerlegung besitzt.
+ Dann gilt mit:
+\begin_inset Formula 
+\begin{align*}
+A_{k} & =\left(a_{ij}^{\left(k\right)}\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+label=
+\backslash
+alph*)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula ${\displaystyle \lim_{k\to\infty}Q_{k}=\mathbbm{1}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula ${\displaystyle \lim_{k\to\infty}R_{k}=\Lambda}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Es gilt 
+\begin_inset Formula $a_{ij}^{\left(k\right)}=o_{k\to\infty}\left(\abs{\frac{\lambda_{i}}{\lambda_{j}}}^{k}\right)$
+\end_inset
+
+ für 
+\begin_inset Formula $i>j$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection*
+Beweis
+\end_layout
+
+\begin_layout Description
+Behauptung: Für 
+\begin_inset Formula $k\in\mathbb{N}_{\ge1}$
+\end_inset
+
+ gilt:
+\begin_inset Formula 
+\begin{align*}
+A^{k} & =\underbrace{Q_{1}\cdot\ldots\cdot Q_{k}}_{=:P_{k}}\cdot\underbrace{R_{k}\cdot\ldots\cdot R_{1}}_{=:U_{k}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Beweis: Für 
+\begin_inset Formula $k=1$
+\end_inset
+
+ gilt dies nach Voraussetzung.
+\begin_inset Newline newline
+\end_inset
+
+Induktionsschritt 
+\begin_inset Formula $k\leadsto k+1$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{align*}
+Q_{k+1}R_{k+1} & =A_{k+1}=Q_{k}^{\TT}\cdot\ldots\cdot Q_{1}^{\TT}\cdot A\cdot Q_{1}\cdot\ldots\cdot Q_{k}=P_{k}^{-1}AP_{k}
+\end{align*}
+
+\end_inset
+
+Damit folgt:
+\begin_inset Formula 
+\begin{align*}
+A^{k+1} & =A\cdot A^{k}\sr ={\text{Induktions-}}{\text{voraussetzung}}A\cdot P_{k}\cdot U_{k}=P_{k}\cdot Q_{k+1}\cdot R_{k+1}\cdot U_{k}=P_{k+1}\cdot U_{k+1}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed[Behauptung]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Es folgt:
+\begin_inset Formula 
+\begin{align*}
+A^{k} & =T^{-1}\Lambda^{k}T
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\Lambda^{k} & =\left(\begin{array}{ccc}
+\lambda_{1}^{k} &  & 0\\
+ & \ddots\\
+0 &  & \lambda_{n}^{k}
+\end{array}\right)
+\end{align*}
+
+\end_inset
+
+Mit 
+\begin_inset Formula $A=T^{-1}\Lambda T$
+\end_inset
+
+ und 
+\begin_inset Formula $T=LR$
+\end_inset
+
+ folgt:
+\begin_inset Formula 
+\begin{align*}
+A^{k} & =T^{-1}\Lambda LR=T^{-1}\left(\Lambda^{k}L\Lambda^{-k}\right)\left(\Lambda^{k}R\right)
+\end{align*}
+
+\end_inset
+
+Es gilt 
+\begin_inset Formula $l_{ii}=1$
+\end_inset
+
+ und:
+\begin_inset Formula 
+\begin{align*}
+\left(\Lambda^{k}L\Lambda^{-k}\right)_{ij} & =\left(l_{ij}\left(\frac{\lambda_{i}}{\lambda_{j}}\right)^{k}\right)
+\end{align*}
+
+\end_inset
+
+Für 
+\begin_inset Formula $k\to\infty$
+\end_inset
+
+ ergibt sich
+\begin_inset Formula 
+\begin{align*}
+\Lambda^{k}L\Lambda^{-k} & =\mathbbm{1}+E_{k}
+\end{align*}
+
+\end_inset
+
+mit 
+\begin_inset Formula $E_{k}\xrightarrow{k\to\infty}0$
+\end_inset
+
+.
+ Somit gilt:
+\begin_inset Formula 
+\begin{align*}
+A^{k} & =T^{-1}\left(\mathbbm{1}+E_{k}\right)\Lambda^{k}R
+\end{align*}
+
+\end_inset
+
+Für 
+\begin_inset Formula $\mathbbm{1}+E_{k}$
+\end_inset
+
+ mache eine 
+\begin_inset Formula $QR$
+\end_inset
+
+-Zerlegung:
+\begin_inset Formula 
+\begin{align*}
+\mathbbm{1}+E_{k} & =\tilde{Q}_{k}\tilde{R}_{k}
+\end{align*}
+
+\end_inset
+
+Dabei sollen alle Diagonalelemente von 
+\begin_inset Formula $\tilde{R}_{k}$
+\end_inset
+
+ positiv sein.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Beobachtung
+\emph default
+: Die 
+\begin_inset Formula $QR$
+\end_inset
+
+-Zerlegung mit positiven Einträgen auf Diagonaleinträgen von 
+\begin_inset Formula $R$
+\end_inset
+
+ ist eindeutig.
+\end_layout
+
+\begin_layout Standard
+Die Einträge von 
+\begin_inset Formula $Q$
+\end_inset
+
+ und 
+\begin_inset Formula $R$
+\end_inset
+
+ hängen stetig von den Einträgen der Matrix ab, wie man im Berechnungsverfahren
+ sieht.
+ Es gilt:
+\begin_inset Formula 
+\begin{align*}
+A^{k} & =\underbrace{T^{-1}\tilde{Q}_{k}}_{\text{orthogonal}}\cdot\underbrace{\tilde{R}_{k}\Lambda^{k}R}_{\text{obere Dreiecksmatix}}
+\end{align*}
+
+\end_inset
+
+Wähle 
+\begin_inset Formula $T$
+\end_inset
+
+ orthogonal, sodass in den Spalten eine Orthonormalbasis aus den Eigenvektoren.
+ Die Eindeutigkeit der 
+\begin_inset Formula $QR$
+\end_inset
+
+-Zerlegung liefert aber bis auf Vorzeichen auf der Diagonale von 
+\begin_inset Formula $R$
+\end_inset
+
+.
+\begin_inset Formula 
+\begin{align*}
+P_{k} & =T^{-1}\tilde{Q}_{k}\\
+U_{k} & =\tilde{R}_{k}\Lambda^{k}R
+\end{align*}
+
+\end_inset
+
+Für 
+\begin_inset Formula $k\to\infty$
+\end_inset
+
+ folgt:
+\begin_inset Formula 
+\begin{align*}
+Q_{k} & =\underbrace{P_{k-1}^{\TT}}_{=P_{k-1}^{-1}}P_{k}=\tilde{Q}_{k-1}^{\TT}\cdot T\cdot T^{-1}\tilde{Q}_{k}=\tilde{Q}_{k-1}^{\TT}\tilde{Q}_{k}\xrightarrow{k\to\infty}\mathbbm{1}
+\end{align*}
+
+\end_inset
+
+Dies folgt wegen:
+\begin_inset Formula 
+\begin{align*}
+\tilde{Q}_{k}\tilde{R}_{k} & =\mathbbm{1}+E_{k}\to\mathbbm{1}=\underbrace{\mathbbm{1}\cdot\mathbbm{1}}_{QR\text{-Zerlegung von }\mathbbm{1}}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\Rightarrow\qquad\tilde{Q}_{k}\tilde{R}_{k} & \to\mathbbm{1}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+R_{k} & =U_{k}\cdot U_{k-1}^{-1}=\tilde{R}_{k}\Lambda^{k}R\cdot R^{-1}\Lambda^{-\left(k-1\right)}\tilde{R}_{k-1}^{-1}=\tilde{R}_{k}\Lambda\tilde{R}_{k-1}^{-1}\xrightarrow{k\to\infty}\Lambda
+\end{align*}
+
+\end_inset
+
+Es gilt:
+\begin_inset Formula 
+\begin{align*}
+\lim_{k\to\infty}A_{k} & =\lim_{k\to\infty}Q_{k}R_{k}=\lim_{k\to\infty}R_{k}=\Lambda
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Bemerkung
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+label=
+\backslash
+roman*)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Eine genauere Analyse zeigt, dass dieses Verfahren in der Tat auch für mehrfache
+ Eigenwerte 
+\begin_inset Formula $\lambda_{1}=\ldots=\lambda_{j}\not=0$
+\end_inset
+
+ konvergiert.
+ (Falls 
+\begin_inset Formula $\lambda_{i}=-\lambda_{k}$
+\end_inset
+
+ gilt, so konvergiert das Verfahren für die anderen Eigenwerte.) Für 
+\begin_inset Formula $\lambda_{i}=-\lambda_{i+1}$
+\end_inset
+
+ konvergiert das Verfahren nicht.
+\end_layout
+
+\begin_layout Enumerate
+In der Praxis geht man wie folgt:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+label=
+\backslash
+Roman*)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Bringe die Matrix auf die Hessenberg-Form.
+\end_layout
+
+\begin_layout Enumerate
+Wende den 
+\begin_inset Formula $QR$
+\end_inset
+
+-Algorithmus an.
+ (Falls es Probleme mit der Konvergenz gibt, ersetze 
+\begin_inset Formula $A$
+\end_inset
+
+ durch 
+\begin_inset Formula $A-\mu\mathbbm{1}$
+\end_inset
+
+.)
+\begin_inset Newline newline
+\end_inset
+
+Ist 
+\begin_inset Formula $A$
+\end_inset
+
+ symmetrisch, so ist die Hessenberg-Form tridiagonal, was einen geringen
+ Aufwand im 
+\begin_inset Formula $QR$
+\end_inset
+
+-Verfahren bewirkt.
+\end_layout
+
+\end_deeper
+\begin_layout Chapter
+Das Verfahren der konjugierten Gradienten 
+\series medium
+(
+\begin_inset Formula $cg$
+\end_inset
+
+-Verfahren)
+\end_layout
+
+\begin_layout Standard
+Sei 
+\begin_inset Formula $A\in\mathbb{R}^{n\times n}$
+\end_inset
+
+ symmetrisch und positiv definit, sowie 
+\begin_inset Formula $b\in\mathbb{R}^{n}$
+\end_inset
+
+.
+ Gesucht ist eine Lösung 
+\begin_inset Formula $x\in\mathbb{R}^{n}$
+\end_inset
+
+ von 
+\begin_inset Formula $Ax=b$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Idee
+\emph default
+: Nähere 
+\begin_inset Formula $x$
+\end_inset
+
+ sukzessive in Unterräumen möglichst genau an.
+\end_layout
+
+\begin_layout Standard
+Wähle einen Abstandsbegriff, der von 
+\begin_inset Formula $A$
+\end_inset
+
+ abhängt.
+ Definiere das Skalarprodukt wie folgt:
+\begin_inset Formula 
+\begin{align*}
+\left\langle y,z\right\rangle _{A} & :=y\cdot Az=\sum_{i,j}a_{ij}y_{i}z_{j}\qquad\fall_{y,z\in\mathbb{R}^{n}}
+\end{align*}
+
+\end_inset
+
+Die Norm
+\begin_inset Formula 
+\begin{align*}
+\norm y_{A} & =\sqrt{\left\langle y,y\right\rangle _{A}}
+\end{align*}
+
+\end_inset
+
+heißt 
+\emph on
+Energienorm
+\emph default
+.
+\end_layout
+
+\begin_layout Standard
+Sei 
+\begin_inset Formula $x_{0}\in\mathbb{R}^{n}$
+\end_inset
+
+ und 
+\begin_inset Formula $U_{1}\subseteq U_{2}\subseteq\ldots\subseteq U_{n}=\mathbb{R}^{n}$
+\end_inset
+
+ eine Folge von linearen Unterräumen mit 
+\begin_inset Formula $\dim U_{k}=k$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Gesucht ist 
+\begin_inset Formula $x_{k}\in x_{0}+U_{k}=\left\{ x_{0}+u\big|u\in U_{k}\right\} $
+\end_inset
+
+, sodass gilt:
+\begin_inset Formula 
+\begin{align*}
+\norm{x_{k}-x}_{A} & =\min_{y\in x_{0}+U_{k}}\norm{y-x}_{A}
+\end{align*}
+
+\end_inset
+
+Das heißt, wir suchen die beste Approximation im affinen Unterraum 
+\begin_inset Formula $x_{0}+U_{k}$
+\end_inset
+
+.
+ Hierbei gilt 
+\begin_inset Formula $\dim\left(x_{0}+U_{k}\right)=k$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Der Projektionssatz liefert:
+\begin_inset Formula 
+\begin{align*}
+\left\langle x_{k}-x,y\right\rangle  & =0\qquad\fall_{y\in U_{k}}
+\end{align*}
 
 \end_inset
 

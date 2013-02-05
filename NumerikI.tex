@@ -7623,7 +7623,7 @@ A_{k+1} & =R_{k}Q_{k}
 Dabei ist $Q_{k}R_{k}$ die $QR$-Zerlegung von $A_{k}$.
 
 
-\section{Lemma}
+\section{Lemma\label{sec:Lem-Eigenschaften_Ak}}
 
 Die Matrizen $A_{k}$ haben folgende Eigenschaften:
 \begin{enumerate}[label=\roman*)]
@@ -7645,12 +7645,324 @@ QA'Q^{\TT} & =QRQQ^{\TT}=QR=A
 \begin{align*}
 \left(A'\right)^{\TT} & =\left(A'\right)^{\TT}Q^{\TT}Q=Q^{\TT}R^{\TT}Q^{\TT}Q=Q^{\TT}\left(QR\right)^{\TT}Q=Q^{\TT}A^{\TT}Q=Q^{\TT}AQ=A'
 \end{align*}
-
-\item Nutze Givens-Rotationen zur Berechnung der $QR$-Zerlegung und die
-Struktur von $A$.\\
-\textcolor{green}{TODO: Beweis einfügen}
+%DATE: Mo 04.2.13
+\item Realisiere die $QR$-Zerlegung von $A$ durch Givens-Rotationen.
+\begin{align*}
+A & =\left(\begin{array}{ccccc}
+* & * &  &  & 0\\
+* & * & \ddots\\
+ & \ddots & \ddots & \ddots\\
+ &  & \ddots & \ddots & *\\
+0 &  &  & * & *
+\end{array}\right)
+\end{align*}
+Wähle $\left(n-1\right)$ Givens-Rotationen $G_{1,2},\ldots,G_{n-1,n}$,
+sodass gilt:
+\begin{align*}
+G_{n-1,n}\cdot\ldots\cdot G_{2,3}G_{1,2}A & =R\\
+Q & =G_{1,2}^{\TT}\cdot\ldots\cdot G_{n-1,n}^{\TT}
+\end{align*}
+\begin{align*}
+A=\left(\begin{array}{ccccc}
+* & * &  &  & 0\\
+\otimes & * & \ddots\\
+ & \ddots & \ddots & \ddots\\
+ &  & \ddots & \ddots & *\\
+0 &  &  & \otimes & *
+\end{array}\right) & \xrightarrow[\text{Rotationen an}]{\text{wende Givens-}}\left(\begin{array}{ccccc}
+* & * & * &  & 0\\
+ & * & \ddots & \ddots\\
+ &  & \ddots & \ddots & *\\
+ &  &  & \ddots & *\\
+0 &  &  &  & *
+\end{array}\right)=R\\
+ & \longrightarrow\left(\begin{array}{ccccc}
+* & * & \oplus &  & 0\\
+* & * & \ddots & \ddots\\
+ & \ddots & \ddots & \ddots & \oplus\\
+ &  & \ddots & \ddots & *\\
+0 &  &  & * & *
+\end{array}\right)=RQ
+\end{align*}
+$\otimes$ sind die zu eliminierenden Positionen und $\oplus$ sind
+neu erzeugte „\foreignlanguage{english}{fill in}“ Elemente.\\
+Die Spalten $\left(1,2\right),\ldots,\left(n-1,n\right)$ werden nacheinander
+linear kombiniert.\\
+Wegen 
+\begin{align*}
+A' & =RQ=Q^{\TT}AQ=\left(Q^{\TT}AQ\right)^{\TT}
+\end{align*}
+ist $A'$ symmetrisch und somit verschwinden alle $\oplus$. Dies
+zeigt die Behauptung.
 \end{enumerate}
 \qqed
+
+
+\section{Definition \textmd{(Hessenbergform)}}
+
+Eine Matrix $B\in\mathbb{R}^{n\times n}$ hat \emph{(obere) Hessenbergform},
+wenn $b_{ij}=0$ für $i>j+1$ gilt, das heißt:
+\begin{align*}
+B & =\left(\begin{array}{cccc}
+* & \ldots & \ldots & *\\
+* & \ddots &  & \vdots\\
+ & \ddots & \ddots & \vdots\\
+0 &  & * & *
+\end{array}\right)
+\end{align*}
+Eine solche Matrix nennt man \emph{Hessenbergmatrix}.
+
+
+\section{Satz}
+
+Zu jeder Matrix $A\in\mathbb{R}^{n\times n}$ existieren $\left(n-2\right)$
+Householder-Matrizen $H_{j}$ für $j\in\left\{ 1,\ldots,n-2\right\} $
+mit
+\begin{align*}
+Q & =H_{n-2}\cdot\ldots\cdot H_{1}
+\end{align*}
+für die
+\begin{align*}
+B & =QAQ^{\TT}
+\end{align*}
+Hessenberg-Gestalt hat.
+
+
+\subsubsection*{Beweis}
+
+Schreibe die Matrix in der Form
+\begin{align*}
+A & =\left(\begin{array}{cc}
+a_{11} & *\\
+\tilde{a_{1}} & \tilde{A}
+\end{array}\right)
+\end{align*}
+mit $\tilde{A}\in\mathbb{R}^{\left(n-1\right)\times\left(n-1\right)}$
+und $\tilde{a}_{1}\in\mathbb{R}^{n-1}$. Wähle eine Householder-Matrix
+$\tilde{H}_{1}\in\mathbb{R}^{\left(n-1\right)\times\left(n-1\right)}$
+mit:
+\begin{align*}
+\tilde{H}_{1}\tilde{a}_{1} & =\norm{\tilde{a}_{1}}_{2}\cdot e_{1}
+\end{align*}
+$e_{1}\in\mathbb{R}^{n-1}$ ist der erste Einheitsvektor. Mit
+\begin{align*}
+H_{1} & =\left(\begin{array}{cccc}
+1 & 0 & \ldots & 0\\
+0\\
+\vdots &  & \tilde{H}_{1}\\
+0
+\end{array}\right)
+\end{align*}
+erhalten wir:
+\begin{align*}
+H_{1}AH_{1}^{\TT} & =\left(\begin{array}{cc}
+1 & 0\\
+0 & \tilde{H}_{1}
+\end{array}\right)\left(\begin{array}{cc}
+a_{11} & *\\
+\tilde{a}_{1} & \tilde{A}
+\end{array}\right)\left(\begin{array}{cc}
+1 & 0\\
+0 & \tilde{H}_{1}^{\TT}
+\end{array}\right)=\\
+ & =\left(\begin{array}{cc}
+1 & 0\\
+0 & \tilde{H}_{1}
+\end{array}\right)\left(\begin{array}{cc}
+a_{11} & *\\
+\tilde{a}_{1} & \tilde{A}\tilde{H}_{1}^{\TT}
+\end{array}\right)=\left(\begin{array}{cc}
+a_{11} & *\\
+\tilde{H}_{1}\tilde{a}_{1} & \tilde{H}_{1}\tilde{A}\tilde{H}_{1}^{\TT}
+\end{array}\right)=\\
+ & =\left(\begin{array}{cc}
+a_{11} & *\\
+\norm{\tilde{a}_{1}}_{2}e_{1} & \tilde{H}_{1}\tilde{A}\tilde{H}_{1}^{\TT}
+\end{array}\right)
+\end{align*}
+Damit hat die erste Spalte die gewünschte Form. Wende nun dieses Verfahren
+rekursiv auf $\tilde{H}_{1}A\tilde{H}_{1}^{\TT}$ etc. an.\qqed
+
+
+\subsubsection*{Bemerkung}
+\begin{enumerate}[label=\roman*)]
+\item Eine symmetrische Hessenberg-Matrix hat Tridiagonalform.
+\item Die Überlegungen zum Beweis von Lemma \ref{sec:Lem-Eigenschaften_Ak}
+iii) liefern, dass der $QR$-Algorithmus die Hessenbergform erhält.
+\end{enumerate}
+Jetzt zur \emph{Konvergenz} des $QR$-Algorithmus. (Die Eigenwerte
+sind paarweise verschieden!)
+
+
+\section{Satz}
+
+Sei $A\in\mathbb{R}^{n\times n}$ symmetrisch mit den Eigenwerten
+$\lambda_{1},\ldots,\lambda_{n}$ mit
+\begin{align*}
+\abs{\lambda_{1}} & >\abs{\lambda_{2}}>\ldots>\abs{\lambda_{n}}>0
+\end{align*}
+und es gelte $A=T^{-1}\Lambda T$ mit
+\begin{align*}
+\Lambda & =\left(\begin{array}{ccc}
+\lambda_{1} &  & 0\\
+ & \ddots\\
+0 &  & \lambda_{n}
+\end{array}\right)
+\end{align*}
+und einer Matrix $T$, die eine $LR$-Zerlegung besitzt. Dann gilt
+mit:
+\begin{align*}
+A_{k} & =\left(a_{ij}^{\left(k\right)}\right)
+\end{align*}
+
+\begin{enumerate}[label=\alph*)]
+\item ${\displaystyle \lim_{k\to\infty}Q_{k}=\mathbbm{1}}$
+\item ${\displaystyle \lim_{k\to\infty}R_{k}=\Lambda}$
+\item Es gilt $a_{ij}^{\left(k\right)}=o_{k\to\infty}\left(\abs{\frac{\lambda_{i}}{\lambda_{j}}}^{k}\right)$
+für $i>j$.
+\end{enumerate}
+
+\subsubsection*{Beweis}
+\begin{description}
+\item [{Behauptung:}] Für $k\in\mathbb{N}_{\ge1}$ gilt:
+\begin{align*}
+A^{k} & =\underbrace{Q_{1}\cdot\ldots\cdot Q_{k}}_{=:P_{k}}\cdot\underbrace{R_{k}\cdot\ldots\cdot R_{1}}_{=:U_{k}}
+\end{align*}
+
+\item [{Beweis:}] Für $k=1$ gilt dies nach Voraussetzung.\\
+Induktionsschritt $k\leadsto k+1$:
+\begin{align*}
+Q_{k+1}R_{k+1} & =A_{k+1}=Q_{k}^{\TT}\cdot\ldots\cdot Q_{1}^{\TT}\cdot A\cdot Q_{1}\cdot\ldots\cdot Q_{k}=P_{k}^{-1}AP_{k}
+\end{align*}
+Damit folgt:
+\begin{align*}
+A^{k+1} & =A\cdot A^{k}\sr ={\text{Induktions-}}{\text{voraussetzung}}A\cdot P_{k}\cdot U_{k}=P_{k}\cdot Q_{k+1}\cdot R_{k+1}\cdot U_{k}=P_{k+1}\cdot U_{k+1}
+\end{align*}
+\qqed[Behauptung]
+\end{description}
+Es folgt:
+\begin{align*}
+A^{k} & =T^{-1}\Lambda^{k}T
+\end{align*}
+\begin{align*}
+\Lambda^{k} & =\left(\begin{array}{ccc}
+\lambda_{1}^{k} &  & 0\\
+ & \ddots\\
+0 &  & \lambda_{n}^{k}
+\end{array}\right)
+\end{align*}
+Mit $A=T^{-1}\Lambda T$ und $T=LR$ folgt:
+\begin{align*}
+A^{k} & =T^{-1}\Lambda LR=T^{-1}\left(\Lambda^{k}L\Lambda^{-k}\right)\left(\Lambda^{k}R\right)
+\end{align*}
+Es gilt $l_{ii}=1$ und:
+\begin{align*}
+\left(\Lambda^{k}L\Lambda^{-k}\right)_{ij} & =\left(l_{ij}\left(\frac{\lambda_{i}}{\lambda_{j}}\right)^{k}\right)
+\end{align*}
+Für $k\to\infty$ ergibt sich
+\begin{align*}
+\Lambda^{k}L\Lambda^{-k} & =\mathbbm{1}+E_{k}
+\end{align*}
+mit $E_{k}\xrightarrow{k\to\infty}0$. Somit gilt:
+\begin{align*}
+A^{k} & =T^{-1}\left(\mathbbm{1}+E_{k}\right)\Lambda^{k}R
+\end{align*}
+Für $\mathbbm{1}+E_{k}$ mache eine $QR$-Zerlegung:
+\begin{align*}
+\mathbbm{1}+E_{k} & =\tilde{Q}_{k}\tilde{R}_{k}
+\end{align*}
+Dabei sollen alle Diagonalelemente von $\tilde{R}_{k}$ positiv sein.
+
+\emph{Beobachtung}: Die $QR$-Zerlegung mit positiven Einträgen auf
+Diagonaleinträgen von $R$ ist eindeutig.
+
+Die Einträge von $Q$ und $R$ hängen stetig von den Einträgen der
+Matrix ab, wie man im Berechnungsverfahren sieht. Es gilt:
+\begin{align*}
+A^{k} & =\underbrace{T^{-1}\tilde{Q}_{k}}_{\text{orthogonal}}\cdot\underbrace{\tilde{R}_{k}\Lambda^{k}R}_{\text{obere Dreiecksmatix}}
+\end{align*}
+Wähle $T$ orthogonal, sodass in den Spalten eine Orthonormalbasis
+aus den Eigenvektoren. Die Eindeutigkeit der $QR$-Zerlegung liefert
+aber bis auf Vorzeichen auf der Diagonale von $R$.
+\begin{align*}
+P_{k} & =T^{-1}\tilde{Q}_{k}\\
+U_{k} & =\tilde{R}_{k}\Lambda^{k}R
+\end{align*}
+Für $k\to\infty$ folgt:
+\begin{align*}
+Q_{k} & =\underbrace{P_{k-1}^{\TT}}_{=P_{k-1}^{-1}}P_{k}=\tilde{Q}_{k-1}^{\TT}\cdot T\cdot T^{-1}\tilde{Q}_{k}=\tilde{Q}_{k-1}^{\TT}\tilde{Q}_{k}\xrightarrow{k\to\infty}\mathbbm{1}
+\end{align*}
+Dies folgt wegen:
+\begin{align*}
+\tilde{Q}_{k}\tilde{R}_{k} & =\mathbbm{1}+E_{k}\to\mathbbm{1}=\underbrace{\mathbbm{1}\cdot\mathbbm{1}}_{QR\text{-Zerlegung von }\mathbbm{1}}
+\end{align*}
+\begin{align*}
+\Rightarrow\qquad\tilde{Q}_{k}\tilde{R}_{k} & \to\mathbbm{1}
+\end{align*}
+\begin{align*}
+R_{k} & =U_{k}\cdot U_{k-1}^{-1}=\tilde{R}_{k}\Lambda^{k}R\cdot R^{-1}\Lambda^{-\left(k-1\right)}\tilde{R}_{k-1}^{-1}=\tilde{R}_{k}\Lambda\tilde{R}_{k-1}^{-1}\xrightarrow{k\to\infty}\Lambda
+\end{align*}
+Es gilt:
+\begin{align*}
+\lim_{k\to\infty}A_{k} & =\lim_{k\to\infty}Q_{k}R_{k}=\lim_{k\to\infty}R_{k}=\Lambda
+\end{align*}
+\qqed
+
+
+\subsubsection*{Bemerkung}
+\begin{enumerate}[label=\roman*)]
+\item Eine genauere Analyse zeigt, dass dieses Verfahren in der Tat auch
+für mehrfache Eigenwerte $\lambda_{1}=\ldots=\lambda_{j}\not=0$ konvergiert.
+(Falls $\lambda_{i}=-\lambda_{k}$ gilt, so konvergiert das Verfahren
+für die anderen Eigenwerte.) Für $\lambda_{i}=-\lambda_{i+1}$ konvergiert
+das Verfahren nicht.
+\item In der Praxis geht man wie folgt:
+
+\begin{enumerate}[label=\Roman*)]
+\item Bringe die Matrix auf die Hessenberg-Form.
+\item Wende den $QR$-Algorithmus an. (Falls es Probleme mit der Konvergenz
+gibt, ersetze $A$ durch $A-\mu\mathbbm{1}$.)\\
+Ist $A$ symmetrisch, so ist die Hessenberg-Form tridiagonal, was
+einen geringen Aufwand im $QR$-Verfahren bewirkt.
+\end{enumerate}
+\end{enumerate}
+
+\chapter{Das Verfahren der konjugierten Gradienten \textmd{($cg$-Verfahren)}}
+
+Sei $A\in\mathbb{R}^{n\times n}$ symmetrisch und positiv definit,
+sowie $b\in\mathbb{R}^{n}$. Gesucht ist eine Lösung $x\in\mathbb{R}^{n}$
+von $Ax=b$.
+
+\emph{Idee}: Nähere $x$ sukzessive in Unterräumen möglichst genau
+an.
+
+Wähle einen Abstandsbegriff, der von $A$ abhängt. Definiere das Skalarprodukt
+wie folgt:
+\begin{align*}
+\left\langle y,z\right\rangle _{A} & :=y\cdot Az=\sum_{i,j}a_{ij}y_{i}z_{j}\qquad\fall_{y,z\in\mathbb{R}^{n}}
+\end{align*}
+Die Norm
+\begin{align*}
+\norm y_{A} & =\sqrt{\left\langle y,y\right\rangle _{A}}
+\end{align*}
+heißt \emph{Energienorm}.
+
+Sei $x_{0}\in\mathbb{R}^{n}$ und $U_{1}\subseteq U_{2}\subseteq\ldots\subseteq U_{n}=\mathbb{R}^{n}$
+eine Folge von linearen Unterräumen mit $\dim U_{k}=k$.
+
+Gesucht ist $x_{k}\in x_{0}+U_{k}=\left\{ x_{0}+u\big|u\in U_{k}\right\} $,
+sodass gilt:
+\begin{align*}
+\norm{x_{k}-x}_{A} & =\min_{y\in x_{0}+U_{k}}\norm{y-x}_{A}
+\end{align*}
+Das heißt, wir suchen die beste Approximation im affinen Unterraum
+$x_{0}+U_{k}$. Hierbei gilt $\dim\left(x_{0}+U_{k}\right)=k$.
+
+Der Projektionssatz liefert:
+\begin{align*}
+\left\langle x_{k}-x,y\right\rangle  & =0\qquad\fall_{y\in U_{k}}
+\end{align*}
+
 
 
 \part*{Anhang\thispagestyle{empty}}
