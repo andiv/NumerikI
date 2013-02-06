@@ -6649,7 +6649,7 @@ bei der Berechnung von $x_{i}^{\left(k+1\right)}$ die Werte $x_{1}^{\left(k+1\ri
 schon zur Verfügung, was genutzt werden soll.\\
 Für $i\in\left\{ 1,\ldots,n\right\} $ erhalte:
 \begin{align*}
-x_{i}^{\left(k+1\right)} & =\frac{1}{a_{ii}}\left(-\sum_{j=1}^{i-1}a_{ij}x_{j}^{\left(k+1\right)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{\left(k\right)}+b\right)
+x_{i}^{\left(k+1\right)} & =\frac{1}{a_{ii}}\left(-\sum_{j=1}^{i-1}a_{ij}x_{j}^{\left(k+1\right)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{\left(k\right)}+b_{i}\right)
 \end{align*}
 Dies ist äquivalent zu:
 \begin{align*}
@@ -7948,22 +7948,226 @@ Die Norm
 heißt \emph{Energienorm}.
 
 Sei $x_{0}\in\mathbb{R}^{n}$ und $U_{1}\subseteq U_{2}\subseteq\ldots\subseteq U_{n}=\mathbb{R}^{n}$
-eine Folge von linearen Unterräumen mit $\dim U_{k}=k$.
-
-Gesucht ist $x_{k}\in x_{0}+U_{k}=\left\{ x_{0}+u\big|u\in U_{k}\right\} $,
+eine Folge linearer Unterräumen mit $\dim U_{k}=k$. Gesucht ist $x_{k}\in x_{0}+U_{k}=\left\{ x_{0}+u\big|u\in U_{k}\right\} $,
 sodass gilt:
 \begin{align*}
 \norm{x_{k}-x}_{A} & =\min_{y\in x_{0}+U_{k}}\norm{y-x}_{A}
 \end{align*}
 Das heißt, wir suchen die beste Approximation im affinen Unterraum
-$x_{0}+U_{k}$. Hierbei gilt $\dim\left(x_{0}+U_{k}\right)=k$.
+$x_{0}+U_{k}$. Hierbei sei $\dim\left(x_{0}+U_{k}\right)=k$.
 
 Der Projektionssatz liefert:
 \begin{align*}
 \left\langle x_{k}-x,y\right\rangle  & =0\qquad\fall_{y\in U_{k}}
 \end{align*}
+%DATE: Mi 6.2.13
+
+Sei nun $\left\{ p_{1},\ldots,p_{k}\right\} $ eine bezüglich des
+$\left\langle .,.\right\rangle _{A}$-Skalarprodukts orthogonale Basis
+von $U_{k}$. Es gilt:
+\begin{align*}
+\left\langle p_{i},p_{j}\right\rangle _{A} & =\delta_{ij}\left\langle p_{j},p_{j}\right\rangle _{A}
+\end{align*}
+Definiere das Residuum:
+\begin{align*}
+r_{k} & =b-Ax_{k}=A\left(x-x_{k}\right)
+\end{align*}
+Jetzt gilt (vergleiche Projektionssatz \ref{sec:Satz-Projektionssatz}):
+\begin{align}
+x_{k} & =x_{0}+\sum_{j=1}^{k}\frac{\left\langle p_{j},x-x_{0}\right\rangle _{A}}{\left\langle p_{j},p_{j}\right\rangle _{A}}p_{j}=x_{0}+\sum_{j=1}^{k}\frac{p_{j}\cdot A\left(x-x_{0}\right)}{\left\langle p_{j},p_{j}\right\rangle _{A}}p_{j}=\nonumber \\
+ & =x_{0}+\sum_{j=1}^{k}\frac{p_{j}\cdot r_{0}}{\left\langle p_{j},p_{j}\right\rangle _{A}}p_{j}\label{eq:x_k}
+\end{align}
+\emph{Bemerkung}: Die Unbekannte $x$ taucht rechts nicht mehr auf.
+
+\emph{Frage}: Wie wähle ich die Unterräume $U_{k}$?
+
+Wähle einen Krylov-Raum ($k\in\left\{ 1,2,\ldots,n\right\} $):
+\begin{align*}
+U_{0} & =\left\{ 0\right\} \\
+U_{k} & =\text{span}\left\{ r_{0},Ar_{0},\ldots,A^{k-1}r_{0}\right\} 
+\end{align*}
+Definiere:
+\begin{align*}
+\alpha_{k} & :=\frac{\left\langle p_{k},x-x_{0}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}
+\end{align*}
+Aus \eqref{eq:x_k} folgt:
+\begin{align*}
+x_{k} & =x_{k-1}+\alpha_{k}p_{k}\\
+r_{k} & =b-Ax_{k}=b-Ax_{k-1}-A\left(x_{k}-x_{k-1}\right)=\\
+ & =r_{k-1}-\alpha_{k}Ap_{k}
+\end{align*}
+Es folgt durch iterierte Anwendung:
+\begin{align*}
+r_{k}\cdot p_{l} & =r_{l-1}\cdot p_{l}-\sum_{j=l}^{k}\alpha_{j}\left\langle p_{j},p_{l}\right\rangle _{A}=\\
+ & =\left\langle x-x_{l-1},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}=\left\langle x-x_{0},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}
+\end{align*}
+Die letzte Zeile gilt wegen:
+\begin{align}
+x_{l-1} & =x_{0}+\sum_{j=1}^{l-1}\alpha_{j}p_{j}\nonumber \\
+\Rightarrow\qquad\left\langle x_{l-1},p_{l}\right\rangle _{A} & =\left\langle x_{0},p_{l}\right\rangle _{A}\label{eq:xl-1}
+\end{align}
+Insgesamt folgt:
+\begin{align}
+r_{k}\cdot p_{l} & =\left\langle x-x_{0},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{k}\right\rangle _{A}\stackrel{\text{Definition}}{=}\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}=0\label{eq:r_kp_l}
+\end{align}
 
 
+Jetzt folgt ein Lemma, dass uns eine einfache Berechnungsvorschrift
+liefert.
+
+
+\section{Lemma}
+
+Sei $x_{0}\in\mathbb{R}^{n}$, $\left\{ p_{1},\ldots,p_{k}\right\} $
+sei eine $A$-orthogonale Basis von $U_{k}=\text{span}\left\{ r_{0},Ar_{0},\ldots,A^{k-1}r_{0}\right\} $
+mit $p_{1}=r_{0}$. Außerdem seien $\alpha_{k},r_{_{k}}$wie oben
+definiert und $r_{k}\not=0$.
+
+Dann sind die Residuen $r_{0},\ldots,r_{k}$ paarweise orthogonal,
+das heißt für $i,j\in\left\{ 0,\ldots,k\right\} $ gilt:
+\begin{align*}
+r_{i}\cdot r_{j} & =\delta_{ij}r_{i}\cdot r_{i}
+\end{align*}
+Außerdem spannen sie $U_{k+1}$ auf, das heißt $U_{k}=\text{span}\left\{ r_{0},r_{1},\ldots,r_{k}\right\} $,
+und für $l\in\left\{ 1,\ldots,k\right\} $ gilt:
+\begin{align*}
+r_{k}\cdot p_{l} & =0
+\end{align*}
+
+
+
+\subsubsection*{Beweis}
+
+Wir zeigen nur die letzte Aussage, da der Rest sich von oben ergibt.
+Führe hierzu eine vollständige Induktion über $k$ durch.
+
+Induktionsanfang bei $k=0$: Ist klar, da es kein $l\in\left\{ 1,\ldots,0\right\} =\emptyset$
+gibt.
+
+Induktionsschritt $k-1\leadsto k$: Es gilt:
+\begin{align*}
+r_{k}-r_{l-1} & =-A\left(x_{k}-x_{l-1}\right)=-A\sum_{j=l}^{k}\alpha_{j}p_{j}
+\end{align*}
+\begin{align*}
+r_{k}\cdot p_{l} & =r_{l-1}\cdot p_{l}-\sum_{j=l}^{k}\alpha_{j}\left\langle p_{j},p_{l}\right\rangle _{A}=\left\langle x-x_{l-1},p_{l}\right\rangle _{A}=\\
+ & =\left\langle x-x_{l-1},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}\stackrel{\eqref{eq:xl-1}}{=}\left\langle x-x_{0},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}
+\end{align*}
+Wie oben folgt:
+\begin{align*}
+r_{k}\cdot p_{l} & \stackrel{\eqref{eq:r_kp_l}}{=}0
+\end{align*}
+\qqed
+
+Aus dem Lemma folgt:
+
+Entweder gilt
+\begin{align*}
+r_{k} & =0 & \Rightarrow\qquad b-Ax_{k} & =0 & \Rightarrow\qquad x & =x_{k}\quad\text{fertig}
+\end{align*}
+oder die $p_{1},\ldots,p_{k},r_{k}$ sind linear unabhängig und spannen
+$U_{k+1}$ auf.
+
+Wir wählen:
+\begin{align*}
+p_{k+1} & =r_{k}-\sum_{j=1}^{k}\frac{\left\langle r_{k},p_{j}\right\rangle _{A}}{\left\langle p_{j},p_{j}\right\rangle _{A}}p_{j}\stackrel{Ap_{j}=\frac{1}{\alpha_{j}}\left(r_{j}-r_{j-1}\right)}{=}r_{k}-\frac{\left\langle r_{k},p_{k}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}p_{k}
+\end{align*}
+\begin{align*}
+x_{k} & =x_{k-1}+\alpha_{k}p_{k}\\
+p_{k+1} & =r_{k}+\beta_{k+1}p_{k}\\
+\beta_{k+1} & =-\frac{\left\langle r_{k},p_{k}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}
+\end{align*}
+Es gilt:
+\begin{align*}
+\alpha_{k} & =\frac{\left\langle x-x_{0},p_{k}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}=\frac{\left\langle x-x_{k-1},p_{k}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}=\frac{r_{k-1}\cdot p_{k}}{\left\langle p_{k},p_{k}\right\rangle _{A}}=\frac{r_{k-1}\cdot r_{k-1}}{\left\langle p_{k},p_{k}\right\rangle _{A}}\\
+\beta_{k+1} & =-\frac{\left\langle r_{k},p_{k}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}=-\alpha_{k}\cdot\frac{\left\langle r_{k},p_{k}\right\rangle _{A}}{r_{k-1}\cdot r_{k-1}}=\frac{r_{k}\cdot\left(-\alpha_{k}Ap_{k}\right)}{r_{k-1}\cdot r_{k-1}}=\\
+ & =\frac{r_{k}\cdot\left(r_{k}-r_{k-1}\right)}{r_{k-1}\cdot r_{k-1}}=\frac{r_{k}\cdot r_{k}}{r_{k-1}\cdot r_{k-1}}
+\end{align*}
+
+
+
+\section{\texorpdfstring{$cg$}{cg}-Algorithmus}
+
+Wähle Startwert $x_{0}$ und setzte $r_{0}:=b-Ax_{0}$ und $p_{1}=r_{0}$.
+Für $k\in\mathbb{N}_{\ge1}$ definiere:
+\begin{align*}
+\alpha_{k} & =\frac{r_{k-1}\cdot r_{k-1}}{p_{k}\cdot Ap_{k}} & x_{k} & =x_{k-1}+\alpha_{k}p_{k} & r_{k} & =r_{k-1}-\alpha Ap_{k}
+\end{align*}
+Falls $\norm{r_{k}}_{2}$ klein genug ist, stoppe den Algorithmus.
+\begin{align*}
+\beta_{k+1} & =\frac{r_{k}\cdot r_{k}}{r_{k-1}\cdot r_{k-1}} & p_{k+1} & =r_{k}+\beta_{k+1}p_{k}
+\end{align*}
+
+
+
+\subsubsection*{Bemerkung}
+\begin{enumerate}[label=\roman*)]
+\item Theoretisch hat man nach $n$ Schritten die exakte Lösung. In der
+Praxis hört man oft schon vorher auf. Nach $n$ Schritten ist die
+Lösung oft noch durch Rundungsfehler gestört.
+\item Konvergenzgeschwindigkeit, ist gegeben durch folgende Abschätzung:
+\begin{align*}
+\norm{x_{k}-x}_{A} & \le2\left(\frac{\sqrt{\kappa_{2}\left(A\right)}-1}{\sqrt{\kappa_{2}\left(A\right)}+1}\right)^{k}\norm{x_{0}-x}_{A}
+\end{align*}
+Dabei ist $\kappa_{2}\left(A\right)$ die euklidische Kondition. Die
+Konvergenz ist schnell, falls $\kappa_{2}\left(A\right)$ nahe bei
+1 ist. In der Praxis ist $\kappa_{2}\left(A\right)$ sehr groß.\\
+\emph{Ausweg}: Löse statt $Ax=b$ die Gleichung
+\begin{align*}
+W^{-1}Ax & =W^{-1}b
+\end{align*}
+mit einer einfach zu invertierenden Matrix $W$, sodass gilt:
+\begin{align*}
+\kappa_{2}\left(W^{-1}A\right) & \ll\kappa_{2}\left(A\right)
+\end{align*}
+
+\end{enumerate}
+\textcolor{green}{TODO: Abb Effizienz}
+
+\noindent \begin{center}
+\begin{tabular}{c|c|c}
+Verfahren$\vphantom{\Big|}$ & Anzahl der Operationen & Zeit ($N=3\cdot10^{4}$, $t_{\text{flop}}=56\,\mu\text{s}$)\tabularnewline
+\hline 
+\hline 
+Cramersche Regel$\vphantom{\Big|}$ & $\sim N!$ & $\approx10^{10^{5}}\text{ Jahre}=\text{„\ensuremath{\infty}“}$\tabularnewline
+\hline 
+Gaußsches Eliminations-$\vphantom{\Big|}$ & $\sim N^{2}$ & $14\,\text{h}$\tabularnewline
+verfahren für Bandmatrizen$\vphantom{\Big|}$ &  & \tabularnewline
+\hline 
+Überrelaxationsverfahren,$\vphantom{\Big|}$ & $\sim N^{1{,}5}$ & $4\,\text{min}\ 51\,\text{s}$\tabularnewline
+SOR (1960) &  & \tabularnewline
+\hline 
+Mehrgitter-Verfahren (1980)$\vphantom{\Big|}$ & $\sim N$ & $1{,}68\,\text{s}$\tabularnewline
+\end{tabular}
+\par\end{center}
+
+Beispiele von Anwendungen numerischer Verfahren:
+\begin{enumerate}
+\item Wetterprognose
+\item Klimaprognose
+\item Numerischer Windkanal
+\end{enumerate}
+\textcolor{green}{TODO: Folien}
+
+Schnelle lineare Löser in der Wettervorhersage:
+
+Heutzutage:
+\begin{itemize}
+\item Maschenweite von ca. $40\,\text{km}$, ergibt ca. 400000 Gitterpunkte
+\item In der Höhe 40 Schichten.
+\item Insgesamt ca. 16 Millionen Gitterpunkte
+\end{itemize}
+Zu lösen ist in jedem Zeitschritt ein Gleichungssystem mit 16 Millionen
+Unbekannten.
+
+Es werden für 10 Tage-Vorhersage ca. 6500 Zeitschritte der Länge ca.
+2 Minuten verwendet.
+
+Zukunft:
+\begin{itemize}
+\item Maschenweite von ca. $20\,\text{km}$, ergibt ca. 2 Millionen Gitterpunkte
+\item In der Höhe 100 Schichten.
+\item Insgesamt ca. 200 Millionen Gitterpunkte
+\end{itemize}
 
 \part*{Anhang\thispagestyle{empty}}
 

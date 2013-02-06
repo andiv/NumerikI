@@ -25261,7 +25261,7 @@ Für
  erhalte:
 \begin_inset Formula 
 \begin{align*}
-x_{i}^{\left(k+1\right)} & =\frac{1}{a_{ii}}\left(-\sum_{j=1}^{i-1}a_{ij}x_{j}^{\left(k+1\right)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{\left(k\right)}+b\right)
+x_{i}^{\left(k+1\right)} & =\frac{1}{a_{ii}}\left(-\sum_{j=1}^{i-1}a_{ij}x_{j}^{\left(k+1\right)}-\sum_{j=i+1}^{n}a_{ij}x_{j}^{\left(k\right)}+b_{i}\right)
 \end{align*}
 
 \end_inset
@@ -29824,15 +29824,12 @@ Sei
 \begin_inset Formula $U_{1}\subseteq U_{2}\subseteq\ldots\subseteq U_{n}=\mathbb{R}^{n}$
 \end_inset
 
- eine Folge von linearen Unterräumen mit 
+ eine Folge linearer Unterräumen mit 
 \begin_inset Formula $\dim U_{k}=k$
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Standard
-Gesucht ist 
+ Gesucht ist 
 \begin_inset Formula $x_{k}\in x_{0}+U_{k}=\left\{ x_{0}+u\big|u\in U_{k}\right\} $
 \end_inset
 
@@ -29849,7 +29846,7 @@ Das heißt, wir suchen die beste Approximation im affinen Unterraum
 \end_inset
 
 .
- Hierbei gilt 
+ Hierbei sei 
 \begin_inset Formula $\dim\left(x_{0}+U_{k}\right)=k$
 \end_inset
 
@@ -29866,6 +29863,895 @@ Der Projektionssatz liefert:
 \end_inset
 
 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%DATE: Mi 6.2.13
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Sei nun 
+\begin_inset Formula $\left\{ p_{1},\ldots,p_{k}\right\} $
+\end_inset
+
+ eine bezüglich des 
+\begin_inset Formula $\left\langle .,.\right\rangle _{A}$
+\end_inset
+
+-Skalarprodukts orthogonale Basis von 
+\begin_inset Formula $U_{k}$
+\end_inset
+
+.
+ Es gilt:
+\begin_inset Formula 
+\begin{align*}
+\left\langle p_{i},p_{j}\right\rangle _{A} & =\delta_{ij}\left\langle p_{j},p_{j}\right\rangle _{A}
+\end{align*}
+
+\end_inset
+
+Definiere das Residuum:
+\begin_inset Formula 
+\begin{align*}
+r_{k} & =b-Ax_{k}=A\left(x-x_{k}\right)
+\end{align*}
+
+\end_inset
+
+Jetzt gilt (vergleiche Projektionssatz 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Satz-Projektionssatz"
+
+\end_inset
+
+):
+\begin_inset Formula 
+\begin{align}
+x_{k} & =x_{0}+\sum_{j=1}^{k}\frac{\left\langle p_{j},x-x_{0}\right\rangle _{A}}{\left\langle p_{j},p_{j}\right\rangle _{A}}p_{j}=x_{0}+\sum_{j=1}^{k}\frac{p_{j}\cdot A\left(x-x_{0}\right)}{\left\langle p_{j},p_{j}\right\rangle _{A}}p_{j}=\nonumber \\
+ & =x_{0}+\sum_{j=1}^{k}\frac{p_{j}\cdot r_{0}}{\left\langle p_{j},p_{j}\right\rangle _{A}}p_{j}\label{eq:x_k}
+\end{align}
+
+\end_inset
+
+
+\emph on
+Bemerkung
+\emph default
+: Die Unbekannte 
+\begin_inset Formula $x$
+\end_inset
+
+ taucht rechts nicht mehr auf.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+Frage
+\emph default
+: Wie wähle ich die Unterräume 
+\begin_inset Formula $U_{k}$
+\end_inset
+
+?
+\end_layout
+
+\begin_layout Standard
+Wähle einen Krylov-Raum (
+\begin_inset Formula $k\in\left\{ 1,2,\ldots,n\right\} $
+\end_inset
+
+):
+\begin_inset Formula 
+\begin{align*}
+U_{0} & =\left\{ 0\right\} \\
+U_{k} & =\text{span}\left\{ r_{0},Ar_{0},\ldots,A^{k-1}r_{0}\right\} 
+\end{align*}
+
+\end_inset
+
+Definiere:
+\begin_inset Formula 
+\begin{align*}
+\alpha_{k} & :=\frac{\left\langle p_{k},x-x_{0}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}
+\end{align*}
+
+\end_inset
+
+Aus 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:x_k"
+
+\end_inset
+
+ folgt:
+\begin_inset Formula 
+\begin{align*}
+x_{k} & =x_{k-1}+\alpha_{k}p_{k}\\
+r_{k} & =b-Ax_{k}=b-Ax_{k-1}-A\left(x_{k}-x_{k-1}\right)=\\
+ & =r_{k-1}-\alpha_{k}Ap_{k}
+\end{align*}
+
+\end_inset
+
+Es folgt durch iterierte Anwendung:
+\begin_inset Formula 
+\begin{align*}
+r_{k}\cdot p_{l} & =r_{l-1}\cdot p_{l}-\sum_{j=l}^{k}\alpha_{j}\left\langle p_{j},p_{l}\right\rangle _{A}=\\
+ & =\left\langle x-x_{l-1},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}=\left\langle x-x_{0},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}
+\end{align*}
+
+\end_inset
+
+Die letzte Zeile gilt wegen:
+\begin_inset Formula 
+\begin{align}
+x_{l-1} & =x_{0}+\sum_{j=1}^{l-1}\alpha_{j}p_{j}\nonumber \\
+\Rightarrow\qquad\left\langle x_{l-1},p_{l}\right\rangle _{A} & =\left\langle x_{0},p_{l}\right\rangle _{A}\label{eq:xl-1}
+\end{align}
+
+\end_inset
+
+Insgesamt folgt:
+\begin_inset Formula 
+\begin{align}
+r_{k}\cdot p_{l} & =\left\langle x-x_{0},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{k}\right\rangle _{A}\stackrel{\text{Definition}}{=}\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}=0\label{eq:r_kp_l}
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Jetzt folgt ein Lemma, dass uns eine einfache Berechnungsvorschrift liefert.
+\end_layout
+
+\begin_layout Section
+Lemma
+\end_layout
+
+\begin_layout Standard
+Sei 
+\begin_inset Formula $x_{0}\in\mathbb{R}^{n}$
+\end_inset
+
+, 
+\begin_inset Formula $\left\{ p_{1},\ldots,p_{k}\right\} $
+\end_inset
+
+ sei eine 
+\begin_inset Formula $A$
+\end_inset
+
+-orthogonale Basis von 
+\begin_inset Formula $U_{k}=\text{span}\left\{ r_{0},Ar_{0},\ldots,A^{k-1}r_{0}\right\} $
+\end_inset
+
+ mit 
+\begin_inset Formula $p_{1}=r_{0}$
+\end_inset
+
+.
+ Außerdem seien 
+\begin_inset Formula $\alpha_{k},r_{_{k}}$
+\end_inset
+
+wie oben definiert und 
+\begin_inset Formula $r_{k}\not=0$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Dann sind die Residuen 
+\begin_inset Formula $r_{0},\ldots,r_{k}$
+\end_inset
+
+ paarweise orthogonal, das heißt für 
+\begin_inset Formula $i,j\in\left\{ 0,\ldots,k\right\} $
+\end_inset
+
+ gilt:
+\begin_inset Formula 
+\begin{align*}
+r_{i}\cdot r_{j} & =\delta_{ij}r_{i}\cdot r_{i}
+\end{align*}
+
+\end_inset
+
+Außerdem spannen sie 
+\begin_inset Formula $U_{k+1}$
+\end_inset
+
+ auf, das heißt 
+\begin_inset Formula $U_{k}=\text{span}\left\{ r_{0},r_{1},\ldots,r_{k}\right\} $
+\end_inset
+
+, und für 
+\begin_inset Formula $l\in\left\{ 1,\ldots,k\right\} $
+\end_inset
+
+ gilt:
+\begin_inset Formula 
+\begin{align*}
+r_{k}\cdot p_{l} & =0
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Beweis
+\end_layout
+
+\begin_layout Standard
+Wir zeigen nur die letzte Aussage, da der Rest sich von oben ergibt.
+ Führe hierzu eine vollständige Induktion über 
+\begin_inset Formula $k$
+\end_inset
+
+ durch.
+\end_layout
+
+\begin_layout Standard
+Induktionsanfang bei 
+\begin_inset Formula $k=0$
+\end_inset
+
+: Ist klar, da es kein 
+\begin_inset Formula $l\in\left\{ 1,\ldots,0\right\} =\emptyset$
+\end_inset
+
+ gibt.
+\end_layout
+
+\begin_layout Standard
+Induktionsschritt 
+\begin_inset Formula $k-1\leadsto k$
+\end_inset
+
+: Es gilt:
+\begin_inset Formula 
+\begin{align*}
+r_{k}-r_{l-1} & =-A\left(x_{k}-x_{l-1}\right)=-A\sum_{j=l}^{k}\alpha_{j}p_{j}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+r_{k}\cdot p_{l} & =r_{l-1}\cdot p_{l}-\sum_{j=l}^{k}\alpha_{j}\left\langle p_{j},p_{l}\right\rangle _{A}=\left\langle x-x_{l-1},p_{l}\right\rangle _{A}=\\
+ & =\left\langle x-x_{l-1},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}\stackrel{\eqref{eq:xl-1}}{=}\left\langle x-x_{0},p_{l}\right\rangle _{A}-\alpha_{l}\left\langle p_{l},p_{l}\right\rangle _{A}
+\end{align*}
+
+\end_inset
+
+Wie oben folgt:
+\begin_inset Formula 
+\begin{align*}
+r_{k}\cdot p_{l} & \stackrel{\eqref{eq:r_kp_l}}{=}0
+\end{align*}
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+qqed
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Aus dem Lemma folgt:
+\end_layout
+
+\begin_layout Standard
+Entweder gilt
+\begin_inset Formula 
+\begin{align*}
+r_{k} & =0 & \Rightarrow\qquad b-Ax_{k} & =0 & \Rightarrow\qquad x & =x_{k}\quad\text{fertig}
+\end{align*}
+
+\end_inset
+
+oder die 
+\begin_inset Formula $p_{1},\ldots,p_{k},r_{k}$
+\end_inset
+
+ sind linear unabhängig und spannen 
+\begin_inset Formula $U_{k+1}$
+\end_inset
+
+ auf.
+\end_layout
+
+\begin_layout Standard
+Wir wählen:
+\begin_inset Formula 
+\begin{align*}
+p_{k+1} & =r_{k}-\sum_{j=1}^{k}\frac{\left\langle r_{k},p_{j}\right\rangle _{A}}{\left\langle p_{j},p_{j}\right\rangle _{A}}p_{j}\stackrel{Ap_{j}=\frac{1}{\alpha_{j}}\left(r_{j}-r_{j-1}\right)}{=}r_{k}-\frac{\left\langle r_{k},p_{k}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}p_{k}
+\end{align*}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+x_{k} & =x_{k-1}+\alpha_{k}p_{k}\\
+p_{k+1} & =r_{k}+\beta_{k+1}p_{k}\\
+\beta_{k+1} & =-\frac{\left\langle r_{k},p_{k}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}
+\end{align*}
+
+\end_inset
+
+Es gilt:
+\begin_inset Formula 
+\begin{align*}
+\alpha_{k} & =\frac{\left\langle x-x_{0},p_{k}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}=\frac{\left\langle x-x_{k-1},p_{k}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}=\frac{r_{k-1}\cdot p_{k}}{\left\langle p_{k},p_{k}\right\rangle _{A}}=\frac{r_{k-1}\cdot r_{k-1}}{\left\langle p_{k},p_{k}\right\rangle _{A}}\\
+\beta_{k+1} & =-\frac{\left\langle r_{k},p_{k}\right\rangle _{A}}{\left\langle p_{k},p_{k}\right\rangle _{A}}=-\alpha_{k}\cdot\frac{\left\langle r_{k},p_{k}\right\rangle _{A}}{r_{k-1}\cdot r_{k-1}}=\frac{r_{k}\cdot\left(-\alpha_{k}Ap_{k}\right)}{r_{k-1}\cdot r_{k-1}}=\\
+ & =\frac{r_{k}\cdot\left(r_{k}-r_{k-1}\right)}{r_{k-1}\cdot r_{k-1}}=\frac{r_{k}\cdot r_{k}}{r_{k-1}\cdot r_{k-1}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+texorpdfstring{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula $cg$
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}{cg}
+\end_layout
+
+\end_inset
+
+-Algorithmus
+\end_layout
+
+\begin_layout Standard
+Wähle Startwert 
+\begin_inset Formula $x_{0}$
+\end_inset
+
+ und setzte 
+\begin_inset Formula $r_{0}:=b-Ax_{0}$
+\end_inset
+
+ und 
+\begin_inset Formula $p_{1}=r_{0}$
+\end_inset
+
+.
+ Für 
+\begin_inset Formula $k\in\mathbb{N}_{\ge1}$
+\end_inset
+
+ definiere:
+\begin_inset Formula 
+\begin{align*}
+\alpha_{k} & =\frac{r_{k-1}\cdot r_{k-1}}{p_{k}\cdot Ap_{k}} & x_{k} & =x_{k-1}+\alpha_{k}p_{k} & r_{k} & =r_{k-1}-\alpha Ap_{k}
+\end{align*}
+
+\end_inset
+
+Falls 
+\begin_inset Formula $\norm{r_{k}}_{2}$
+\end_inset
+
+ klein genug ist, stoppe den Algorithmus.
+\begin_inset Formula 
+\begin{align*}
+\beta_{k+1} & =\frac{r_{k}\cdot r_{k}}{r_{k-1}\cdot r_{k-1}} & p_{k+1} & =r_{k}+\beta_{k+1}p_{k}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Bemerkung
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+label=
+\backslash
+roman*)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Theoretisch hat man nach 
+\begin_inset Formula $n$
+\end_inset
+
+ Schritten die exakte Lösung.
+ In der Praxis hört man oft schon vorher auf.
+ Nach 
+\begin_inset Formula $n$
+\end_inset
+
+ Schritten ist die Lösung oft noch durch Rundungsfehler gestört.
+\end_layout
+
+\begin_layout Enumerate
+Konvergenzgeschwindigkeit, ist gegeben durch folgende Abschätzung:
+\begin_inset Formula 
+\begin{align*}
+\norm{x_{k}-x}_{A} & \le2\left(\frac{\sqrt{\kappa_{2}\left(A\right)}-1}{\sqrt{\kappa_{2}\left(A\right)}+1}\right)^{k}\norm{x_{0}-x}_{A}
+\end{align*}
+
+\end_inset
+
+Dabei ist 
+\begin_inset Formula $\kappa_{2}\left(A\right)$
+\end_inset
+
+ die euklidische Kondition.
+ Die Konvergenz ist schnell, falls 
+\begin_inset Formula $\kappa_{2}\left(A\right)$
+\end_inset
+
+ nahe bei 1 ist.
+ In der Praxis ist 
+\begin_inset Formula $\kappa_{2}\left(A\right)$
+\end_inset
+
+ sehr groß.
+\begin_inset Newline newline
+\end_inset
+
+
+\emph on
+Ausweg
+\emph default
+: Löse statt 
+\begin_inset Formula $Ax=b$
+\end_inset
+
+ die Gleichung
+\begin_inset Formula 
+\begin{align*}
+W^{-1}Ax & =W^{-1}b
+\end{align*}
+
+\end_inset
+
+mit einer einfach zu invertierenden Matrix 
+\begin_inset Formula $W$
+\end_inset
+
+, sodass gilt:
+\begin_inset Formula 
+\begin{align*}
+\kappa_{2}\left(W^{-1}A\right) & \ll\kappa_{2}\left(A\right)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\color green
+TODO: Abb Effizienz
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="3">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Verfahren
+\begin_inset Formula $\vphantom{\Big|}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Anzahl der Operationen
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Zeit (
+\begin_inset Formula $N=3\cdot10^{4}$
+\end_inset
+
+, 
+\begin_inset Formula $t_{\text{flop}}=56\,\mu\text{s}$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Cramersche Regel
+\begin_inset Formula $\vphantom{\Big|}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\sim N!$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\approx10^{10^{5}}\text{ Jahre}=\text{„\infty“}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gaußsches Eliminations-
+\begin_inset Formula $\vphantom{\Big|}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\sim N^{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $14\,\text{h}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+verfahren für Bandmatrizen
+\begin_inset Formula $\vphantom{\Big|}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Überrelaxationsverfahren,
+\begin_inset Formula $\vphantom{\Big|}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\sim N^{1{,}5}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $4\,\text{min}\ 51\,\text{s}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SOR (1960)
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Mehrgitter-Verfahren (1980)
+\begin_inset Formula $\vphantom{\Big|}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\sim N$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1{,}68\,\text{s}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Beispiele von Anwendungen numerischer Verfahren:
+\end_layout
+
+\begin_layout Enumerate
+Wetterprognose
+\end_layout
+
+\begin_layout Enumerate
+Klimaprognose
+\end_layout
+
+\begin_layout Enumerate
+Numerischer Windkanal
+\end_layout
+
+\begin_layout Standard
+
+\color green
+TODO: Folien
+\end_layout
+
+\begin_layout Standard
+Schnelle lineare Löser in der Wettervorhersage:
+\end_layout
+
+\begin_layout Standard
+Heutzutage:
+\end_layout
+
+\begin_layout Itemize
+Maschenweite von ca.
+ 
+\begin_inset Formula $40\,\text{km}$
+\end_inset
+
+, ergibt ca.
+ 400000 Gitterpunkte
+\end_layout
+
+\begin_layout Itemize
+In der Höhe 40 Schichten.
+\end_layout
+
+\begin_layout Itemize
+Insgesamt ca.
+ 16 Millionen Gitterpunkte
+\end_layout
+
+\begin_layout Standard
+Zu lösen ist in jedem Zeitschritt ein Gleichungssystem mit 16 Millionen
+ Unbekannten.
+\end_layout
+
+\begin_layout Standard
+Es werden für 10 Tage-Vorhersage ca.
+ 6500 Zeitschritte der Länge ca.
+ 2 Minuten verwendet.
+\end_layout
+
+\begin_layout Standard
+Zukunft:
+\end_layout
+
+\begin_layout Itemize
+Maschenweite von ca.
+ 
+\begin_inset Formula $20\,\text{km}$
+\end_inset
+
+, ergibt ca.
+ 2 Millionen Gitterpunkte
+\end_layout
+
+\begin_layout Itemize
+In der Höhe 100 Schichten.
+\end_layout
+
+\begin_layout Itemize
+Insgesamt ca.
+ 200 Millionen Gitterpunkte
 \end_layout
 
 \begin_layout Part*
