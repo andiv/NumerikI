@@ -1,4 +1,4 @@
-%% LyX 2.0.5 created this file.  For more info, see http://www.lyx.org/.
+%% LyX 2.0.5.1 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[11pt,english,ngerman]{scrreprt}
 \usepackage[T1]{fontenc}
@@ -44,7 +44,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
 \usepackage{tikz,pgfplots}
 %\usepackage{tikz-3dplot,cancel,polynom,tocbasic}
-\usetikzlibrary{matrix,arrows,calc,decorations.markings,snakes,intersections}
+\usetikzlibrary{matrix,arrows,calc,decorations.markings,snakes,intersections,shapes}
 \usetikzlibrary{external}
 \tikzexternalize
 \usepackage{latexsym,stmaryrd,stackrel,braket,bbm,subfig,framed,booktabs,esvect,scrhack,calc}
@@ -282,7 +282,6 @@ Stand: \today{\normalsize }\\
 
 \maketitle
 \fancyhead[R]{Lizenz}
-\setcounter{page}{2} % sonst gibt es aus irgendeinem Grund zweimal die Seite 1!?!?!?
 
 
 \subsubsection*{ACHTUNG}
@@ -1611,9 +1610,9 @@ mit $z_{j}\not=0$ für $j\in\left\{ 1,\ldots,l\right\} $.
 \end{align*}
 Dabei ist
 \begin{align*}
-\varrho_{\overline{z}_{j}}\left(z_{j}\right) & :=\frac{\norm{z_{j}-\overline{z}_{j}}_{j}}{\norm{z_{j}}_{j}} &  & \text{der relativer Fehler der Daten,}\\
-\varrho_{f\left(\overline{z}\right)_{j}}\left(f\left(z\right)\right) & :=\frac{\norm{f\left(z\right)-f\left(\overline{z}\right)}}{\norm{f\left(z\right)}} &  & \text{der relativer Fehler der Lösung,}\\
-\kappa_{j}\left(f,z\right) & :=\frac{\left(\norm{\abs{\DD_{j}f\left(z\right)}}_{j}\norm{z_{j}}_{j}\right)}{\norm{f\left(z\right)}} &  & \text{der Verstärkungsfaktor}
+\varrho_{\overline{z}_{j}}\left(z_{j}\right) & :=\frac{\norm{z_{j}-\overline{z}_{j}}_{j}}{\norm{z_{j}}_{j}} &  & \text{der relative Fehler der Daten,}\\
+\varrho_{f\left(\overline{z}\right)_{j}}\left(f\left(z\right)\right) & :=\frac{\norm{f\left(z\right)-f\left(\overline{z}\right)}}{\norm{f\left(z\right)}} &  & \text{der relative Fehler der Lösung,}\\
+\kappa_{j}\left(f,z\right) & :=\frac{\opnorm{\DD_{j}f\left(z\right)}_{j}\cdot\norm{z_{j}}_{j}}{\norm{f\left(z\right)}} &  & \text{der Verstärkungsfaktor}
 \end{align*}
 und $\norm ._{j}$ und $\norm .$ sind Normen auf $\mathbb{R}^{k_{j}}$
 beziehungsweise $\mathbb{R}^{n}$ für $j\in\left\{ 1,\ldots,l\right\} $.
@@ -1724,7 +1723,7 @@ Der $\mathbb{R}^{n}$ sei versehen mit der euklidischen Norm. Es gilt:
 \DD_{1}f\left(x,y\right) & =\left(y_{1},\ldots,y_{n}\right)
 \end{align*}
 \begin{align*}
-\abs{\norm{\DD_{1}f\left(x,y\right)}} & =\sup_{x\in\mathbb{R}\setminus\left\{ 0\right\} }\frac{\abs{x\cdot y}}{\norm x}\stackrel{\max.\text{ bei }x=y}{=}\norm y
+\opnorm{\DD_{1}f\left(x,y\right)} & =\sup_{x\in\mathbb{R}\setminus\left\{ 0\right\} }\frac{\abs{x\cdot y}}{\norm x}\stackrel{\max.\text{ bei }x=y}{=}\norm y
 \end{align*}
 \begin{align*}
 \Rightarrow\quad\kappa_{1}\left(f,\left(x,y\right)\right) & =\frac{\norm y\cdot\norm x}{\abs{x\cdot y}}=\frac{1}{\abs{\cos\left(x,y\right)}}
@@ -1753,11 +1752,11 @@ f:\text{GL}\left(n\right)\times\mathbb{R}^{n} & \mapsto\mathbb{R}^{n}\\
 $\norm .$ sei Norm auf $\mathbb{R}^{n}$ und $\norm{\abs .}$ die
 zugehörige Operatornorm. Es gilt:
 \begin{align*}
-\kappa_{2}\left(A,b\right) & =\frac{\norm{\abs{\DD_{2}f}}\cdot\norm b}{\norm{A^{-1}b}}=\frac{\norm{\abs{A^{-1}}}\cdot\norm{Ax}}{\norm x}\le\frac{\norm{\abs{A^{-1}}}\cdot\norm{\abs A}\cdot\norm x}{\norm x}=\norm{\abs{A^{-1}}}\cdot\norm{\abs A}
+\kappa_{2}\left(A,b\right) & =\frac{\opnorm{\DD_{2}f}\cdot\norm b}{\norm{A^{-1}b}}=\frac{\opnorm{A^{-1}}\cdot\norm{Ax}}{\norm x}\le\frac{\opnorm{A^{-1}}\cdot\opnorm A\cdot\norm x}{\norm x}=\opnorm{A^{-1}}\cdot\opnorm A
 \end{align*}
 Weiter gilt:
 \begin{align*}
-\kappa_{1}\left(A,b\right) & =\frac{\norm{\abs{\DD_{1}f}}\cdot\norm{\abs A}}{\norm{A^{-1}b}}
+\kappa_{1}\left(A,b\right) & =\frac{\opnorm{\DD_{1}f}\cdot\opnorm A}{\norm{A^{-1}b}}
 \end{align*}
 Es gilt:
 \begin{align*}
@@ -1768,8 +1767,8 @@ Frage: Wie leite ich $A\mapsto A^{-1}$ ab?
 
 \subsection{Lemma \textmd{(Neumannsche Reihe)}}
 
-Sei $\norm{\abs .}$ eine Operatornorm und sei $B\in\text{GL}\left(n\right)$
-mit $\norm{\abs B}<1$. Dann gilt:
+Sei $\opnorm .$ eine Operatornorm und sei $B\in\text{GL}\left(n\right)$
+mit $\opnorm B<1$. Dann gilt:
 \begin{align*}
 \left(\mathbbm{1}-B\right)^{-1} & =\sum_{k=0}^{\infty}B^{k}
 \end{align*}
@@ -1782,9 +1781,9 @@ Zunächst zeigen wir:
 \begin{align*}
 \sum_{k=0}^{\infty}B^{k} & <\infty
 \end{align*}
-Sei $q:=\norm{\abs B}<1$.
+Sei $q:=\opnorm B<1$.
 \begin{align*}
-\norm{\abs{\sum_{k=m}^{l}B^{k}}} & \le\sum_{k=m}^{l}\norm{\abs{B^{k}}}\stackrel{\ref{sec:Def-Operatornorm}}{\le}\sum_{k=m}^{l}\norm{\abs B}^{k}\le\sum_{k=m}^{l}q^{k}\xrightarrow[\text{geo. R.}]{m,l\to\infty}0
+\opnorm{\sum_{k=m}^{l}B^{k}} & \le\sum_{k=m}^{l}\opnorm{B^{k}}\stackrel{\ref{sec:Def-Operatornorm}}{\le}\sum_{k=m}^{l}\opnorm B^{k}\le\sum_{k=m}^{l}q^{k}\xrightarrow[\text{geo. R.}]{m,l\to\infty}0
 \end{align*}
 Das Cauchysche Konvergenz-Kriterium liefert:
 \begin{align*}
@@ -1792,7 +1791,7 @@ Das Cauchysche Konvergenz-Kriterium liefert:
 \end{align*}
 Es gilt:
 \begin{align*}
-\norm{\abs{B^{k}}} & \le\norm{\abs B}^{k}=q^{k}\xrightarrow{k\to\infty}0
+\opnorm{B^{k}} & \le\opnorm B^{k}=q^{k}\xrightarrow{k\to\infty}0
 \end{align*}
 \begin{align*}
 \left(\sum_{k=0}^{\infty}B^{k}\right)\left(\mathbbm{1}-B\right) & =\lim_{l\to\infty}\left(\sum_{k=0}^{l}B^{k}\right)\left(\mathbbm{1}-B\right)=\\
@@ -1821,11 +1820,11 @@ B & \mapsto-A^{-1}BA^{-1}
 Sei $\norm{\abs B}$ klein.
 \begin{align*}
 \left(A+B\right)^{-1} & =\left(A\left(\mathbbm{1}+A^{-1}B\right)\right)^{-1}=\left(\mathbbm{1}+A^{-1}B\right)^{-1}A^{-1}=\\
- & \sr ={\text{Neumannsche}}{\text{Reihe}}\left(\sum_{k=0}^{\infty}\left(-A^{-1}B\right)^{k}\right)A^{-1}=A^{-1}-A^{-1}BA^{-1}+\mathcal{O}_{0}\left(\norm{\abs B}^{2}\right)
+ & \sr ={\text{Neumannsche}}{\text{Reihe}}\left(\sum_{k=0}^{\infty}\left(-A^{-1}B\right)^{k}\right)A^{-1}=A^{-1}-A^{-1}BA^{-1}+\mathcal{O}_{0}\left(\opnorm B^{2}\right)
 \end{align*}
 Es folgt:
 \begin{align*}
-\left(A+B\right)^{-1}-A^{-1} & =-A^{-1}BA^{-1}+\mathcal{O}_{0}\left(\norm{\abs B}^{2}\right)
+\left(A+B\right)^{-1}-A^{-1} & =-A^{-1}BA^{-1}+\mathcal{O}_{0}\left(\opnorm B^{2}\right)
 \end{align*}
 Damit erfüllt die Abbildung $B\mapsto-A^{-1}BA^{-1}$ die Definition
 der Ableitung.\qqed
@@ -1840,11 +1839,11 @@ Nach dem Lemma gilt:
 B & \mapsto-A^{-1}BA^{-1}b
 \end{align*}
 \begin{align*}
-\norm{\abs{\DD_{1}f\left(A,b\right)}} & =\sup_{B}\frac{\norm{A^{-1}BA^{1-}b}}{\norm{\abs B}}\le\sup_{B}\frac{\norm{\abs{A^{-1}}}\cdot\norm{\abs B}\cdot\norm x}{\norm{\abs B}}=\norm{\abs{A^{-1}}}\cdot\norm x
+\opnorm{\DD_{1}f\left(A,b\right)} & =\sup_{B}\frac{\norm{A^{-1}BA^{1-}b}}{\opnorm B}\le\sup_{B}\frac{\opnorm{A^{-1}}\cdot\opnorm B\cdot\norm x}{\opnorm B}=\opnorm{A^{-1}}\cdot\norm x
 \end{align*}
 Insgesamt folgt:
 \begin{align*}
-\kappa_{1}\left(A,b\right) & =\frac{\norm{\abs{\DD_{1}f}}\cdot\norm{\abs A}}{\norm{A^{-1}b}}\le\frac{\norm{\abs{A^{-1}}}\cdot\norm x\cdot\norm{\abs A}}{\norm x}=\norm{\abs{A^{-1}}}\cdot\norm{\abs A}
+\kappa_{1}\left(A,b\right) & =\frac{\opnorm{\DD_{1}f}\cdot\opnorm A}{\norm{A^{-1}b}}\le\frac{\opnorm{A^{-1}}\cdot\norm x\cdot\opnorm A}{\norm x}=\opnorm{A^{-1}}\cdot\opnorm A
 \end{align*}
 \qqed[\ref{sub:Kondition-linearer-Gleichungssysteme}]
 
@@ -2062,7 +2061,7 @@ Es folgt, dass das Berechnen von Nullstellen gut konditioniert ist.
 Algorithmus A ist schlecht, da er die Fehler eines gut konditionierten
 Problems stark verstärkt. ($p\gg q$)
 
-Algorithmus B ist gut konditioniert. (Gesamtfehler ist gegen $4\text{eps}$
+Algorithmus B ist gut konditioniert. (Gesamtfehler ist gegen $4\varepsilon$
 beschränkt.)
 
 
